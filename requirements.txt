@@ -1,0 +1,14 @@
+coverage
+django
+django-debug-toolbar
+django-oscar
+django-redis
+hiredis
+isort
+pip
+psycopg[binary]
+python-dotenv
+python-telegram-handler
+redis
+ruff
+wheel
