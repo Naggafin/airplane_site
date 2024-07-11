@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from oscar.defaults import *  # noqa: F403
 
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
 	"django.contrib.staticfiles",
 	"django.contrib.sites",
 	"django.contrib.flatpages",
+	# oscar
 	"oscar.config.Shop",
 	"oscar.apps.analytics.apps.AnalyticsConfig",
 	"oscar.apps.checkout.apps.CheckoutConfig",
@@ -63,8 +65,16 @@ INSTALLED_APPS = [
 	"oscar.apps.dashboard.vouchers.apps.VouchersDashboardConfig",
 	"oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig",
 	"oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig",
+	# allauth
+	"allauth_ui",
+	"allauth",
+	"allauth.account",
+	"allauth.socialaccount",
+	"allauth.socialaccount.providers.facebook",
+	"allauth.socialaccount.providers.google",
 	# 3rd-party apps that oscar depends on
 	"widget_tweaks",
+	"slippers",
 	"haystack",
 	"treebeard",
 	"sorl.thumbnail",  # Default thumbnail backend, can be replaced
@@ -81,6 +91,7 @@ MIDDLEWARE = [
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"allauth.account.middleware.AccountMiddleware",
 	"oscar.apps.basket.middleware.BasketMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 ]
@@ -130,6 +141,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = [
 	"oscar.apps.customer.auth_backends.EmailBackend",
+	"allauth.account.auth_backends.AuthenticationBackend",
 	"django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -137,7 +149,12 @@ AUTHENTICATION_BACKENDS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGES = [
+	("en", _("English")),
+	("es", _("Spanish")),
+]
+
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "UTC"
 
@@ -238,6 +255,27 @@ LOGGING = {
 			"level": "INFO",
 			"propagate": False,
 		},
+	},
+}
+
+
+# allauth-ui
+
+ALLAUTH_UI_THEME = "light"
+
+
+# django-allauth
+
+SOCIALACCOUNT_PROVIDERS = {
+	"google": {
+		"APP": {
+			"client_id": os.getenv("ALLAUTH_GOOGLE_CLIENT_ID"),
+			"secret": os.getenv("ALLAUTH_GOOGLE_SECRET"),
+			"key": os.getenv("ALLAUTH_GOOGLE_KEY"),
+		}
+	},
+	"facebook": {
+		"APP": {},
 	},
 }
 

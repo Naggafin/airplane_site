@@ -1,6 +1,6 @@
 import os
 
-from .settings import *  # noqa: F403
+from .base import *  # noqa: F403
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -31,7 +31,7 @@ DATABASES = {
 CACHES = {
 	"default": {
 		"BACKEND": "django_redis.cache.RedisCache",
-		"LOCATION": os.environ.get("REDIS_LOC"),
+		"LOCATION": os.environ.get("REDIS_URL"),
 		"OPTIONS": {
 			"CLIENT_CLASS": "django_redis.client.DefaultClient",
 			"PARSER_CLASS": "redis.connection._HiredisParser",
@@ -46,7 +46,7 @@ SESSION_CACHE_ALIAS = "default"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 
 HAYSTACK_CONNECTIONS = {
