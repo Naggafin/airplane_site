@@ -49,6 +49,11 @@ SESSION_CACHE_ALIAS = "default"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 
+# oscar
+
+OSCAR_URL_SCHEMA = "https"
+
+
 HAYSTACK_CONNECTIONS = {
 	"default": {
 		"ENGINE": "haystack.backends.solr_backend.SolrEngine",

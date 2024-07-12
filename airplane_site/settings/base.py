@@ -26,6 +26,8 @@ load_dotenv(BASE_DIR / ".env")
 # Application definition
 
 INSTALLED_APPS = [
+	"airplane_site",
+	# django
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
@@ -266,6 +268,7 @@ ALLAUTH_UI_THEME = "light"
 
 # django-allauth
 
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 SOCIALACCOUNT_PROVIDERS = {
 	"google": {
 		"APP": {
@@ -282,6 +285,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # django-oscar
 
+OSCAR_SHOP_NAME = "Aircraft e-commerce site"
+OSCAR_SHOP_TAGLINE = ""
 OSCAR_INITIAL_ORDER_STATUS = "Pending"
 OSCAR_INITIAL_LINE_STATUS = "Pending"
 OSCAR_ORDER_STATUS_PIPELINE = {
@@ -295,3 +300,8 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 	),
 	"Cancelled": (),
 }
+OSCAR_ALLOW_ANON_CHECKOUT = True
+OSCAR_FROM_EMAIL = "noreply@example.com"
+OSCAR_BASKET_COOKIE_OPEN = "aircraft_site_open_basket"
+OSCAR_DEFAULT_CURRENCY = "USD"
+OSCAR_GOOGLE_ANALYTICS_ID = None

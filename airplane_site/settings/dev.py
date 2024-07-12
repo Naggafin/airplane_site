@@ -54,6 +54,11 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
+# oscar
+
+OSCAR_URL_SCHEMA = "http"
+
+
 HAYSTACK_CONNECTIONS = {
 	"default": {
 		"ENGINE": "haystack.backends.simple_backend.SimpleEngine",
