@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% trans 'List Your Product' %}</h2>
+<form method="post">
+	{% csrf_token %}
+	{{ form }}
+	<button type="submit">{% trans 'List Product' %}</button>
+</form>
+{% endblock %}

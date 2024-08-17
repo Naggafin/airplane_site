@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{{ objec.title }}</h2>
+<p>{{ object.description }}</p>
+<h3>{% trans 'Reviews' %}</h3>
+{% for review in object.reviews.all %}
+	<div>
+		<strong>{{ review.user.username }}</strong> {% blocktrans rating=review.rating %}rated it {{ rating }} stars{% endblocktrans %}
+		<p>{{ review.comment }}</p>
+	</div>
+{% empty %}
+	<p>{% trans 'No reviews yet.' %}</p>
+{% endfor %}
+<a href="{% url 'catalogue:create_review' object.pk %}">{% trans 'Add a review' %}</a>
+{% endblock %}
