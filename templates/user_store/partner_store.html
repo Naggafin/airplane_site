@@ -1,0 +1,10 @@
+{% extends base.html %}
+
+{% block content %}
+<h1>{{ partner.name }}</h1>
+<ul>
+    {% for product in products %}
+        <li>{{ product.title }} - {{ product.stockrecords.first.price_excl_tax }} USD</li>
+    {% endfor %}
+</ul>
+{% endblock %}

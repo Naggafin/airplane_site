@@ -1,1 +1,1 @@
-from oscar.apps.dashboard.models import * 
+from oscar.apps.dashboard.models import *  # noqa: F403

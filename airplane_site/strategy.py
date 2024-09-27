@@ -1,10 +1,8 @@
-from oscar.apps.partner import prices, strategy
+from oscar.apps.partner import strategy
 
 
 class Selector(object):
-	"""
-	Custom selector class to returns a US strategy
-	"""
+	"""Custom selector class to returns a US strategy."""
 
 	def strategy(self, request=None, user=None, **kwargs):
 		return USStrategy()

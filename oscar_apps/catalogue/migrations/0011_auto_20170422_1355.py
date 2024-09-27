@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		("catalogue", "0010_auto_20170420_0439"),
+	]
 
-    dependencies = [
-        ('catalogue', '0010_auto_20170420_0439'),
-    ]
-
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='productimage',
-            unique_together=set([]),
-        ),
-    ]
+	operations = [
+		migrations.AlterUniqueTogether(
+			name="productimage",
+			unique_together=set([]),
+		),
+	]

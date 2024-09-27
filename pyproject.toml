@@ -2,8 +2,8 @@
 requires-python = ">=3.10"
 
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F", "B", "Q", "D"]
-ignore = ["E501", "D401", "D206", "D205", "D106", "D103", "D102", "D101", "D100"]
+select = ["E4", "E7", "E9", "F", "B", "Q"]
+ignore = ["E501"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
@@ -11,6 +11,11 @@ convention = "pep257"
 [tool.ruff.format]
 indent-style = "tab"
 docstring-code-format = true
+
+[tool.djlint]
+profile = "django"
+format_attribute_template_tags = true
+ignore = "T001,T002,T003,H021,H023"
 
 
 [tool.vulture]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		("catalogue", "0027_attributeoption_code_attributeoptiongroup_code_and_more"),
+	]
 
-    dependencies = [
-        ('catalogue', '0027_attributeoption_code_attributeoptiongroup_code_and_more'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='product',
-            name='video_url',
-            field=models.URLField(null=True, verbose_name='video URL'),
-        ),
-    ]
+	operations = [
+		migrations.AddField(
+			model_name="product",
+			name="video_url",
+			field=models.URLField(null=True, verbose_name="video URL"),
+		),
+	]

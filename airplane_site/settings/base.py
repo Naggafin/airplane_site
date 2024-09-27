@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 	"oscar.apps.checkout.apps.CheckoutConfig",
 	"oscar.apps.address.apps.AddressConfig",
 	"oscar.apps.shipping.apps.ShippingConfig",
-	#"oscar.apps.catalogue.apps.CatalogueConfig",
-	'oscar_apps.catalogue.apps.CatalogueConfig',
+	# "oscar.apps.catalogue.apps.CatalogueConfig",
+	"oscar_apps.catalogue.apps.CatalogueConfig",
 	"oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig",
 	"oscar.apps.communication.apps.CommunicationConfig",
 	"oscar.apps.partner.apps.PartnerConfig",
@@ -55,13 +55,13 @@ INSTALLED_APPS = [
 	"oscar.apps.search.apps.SearchConfig",
 	"oscar.apps.voucher.apps.VoucherConfig",
 	"oscar.apps.wishlists.apps.WishlistsConfig",
-	#"oscar.apps.dashboard.apps.DashboardConfig",
-	'oscar_apps.dashboard.apps.DashboardConfig',
+	# "oscar.apps.dashboard.apps.DashboardConfig",
+	"oscar_apps.dashboard.apps.DashboardConfig",
 	"oscar.apps.dashboard.reports.apps.ReportsDashboardConfig",
 	"oscar.apps.dashboard.users.apps.UsersDashboardConfig",
 	"oscar.apps.dashboard.orders.apps.OrdersDashboardConfig",
-	#"oscar.apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
-	'oscar_apps.dashboard.catalogue.apps.CatalogueDashboardConfig',
+	# "oscar.apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
+	"oscar_apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
 	"oscar.apps.dashboard.offers.apps.OffersDashboardConfig",
 	"oscar.apps.dashboard.partners.apps.PartnersDashboardConfig",
 	"oscar.apps.dashboard.pages.apps.PagesDashboardConfig",
@@ -78,6 +78,7 @@ INSTALLED_APPS = [
 	"allauth.socialaccount.providers.facebook",
 	"allauth.socialaccount.providers.google",
 	# 3rd-party apps that oscar depends on
+	"guardian",
 	"widget_tweaks",
 	"slippers",
 	"haystack",
@@ -145,8 +146,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-	"oscar.apps.customer.auth_backends.EmailBackend",
 	"allauth.account.auth_backends.AuthenticationBackend",
+	"guardian.backends.ObjectPermissionBackend",
 	"django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -178,10 +179,10 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "public" / "static"
 STATIC_URL = "static/"
 
-MEDIA_ROOT = BASE_DIR / "mediafiles"
+MEDIA_ROOT = BASE_DIR / "public" / "mediafiles"
 MEDIA_URL = "media/"
 
 
@@ -303,9 +304,10 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 	),
 	"Cancelled": (),
 }
-OSCAR_PRODUCT_MODEL = 'catalogue.Product'
+OSCAR_PRODUCT_MODEL = "catalogue.Product"
 OSCAR_ALLOW_ANON_CHECKOUT = True
-OSCAR_FROM_EMAIL = "noreply@example.com"
+OSCAR_FROM_EMAIL = "noreply@airvehicleservices.com"
 OSCAR_BASKET_COOKIE_OPEN = "aircraft_site_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
+OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = "oscar_apps.dashboard.nav.access_fn"

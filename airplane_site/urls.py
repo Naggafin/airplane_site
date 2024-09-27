@@ -14,10 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from allauth.account.decorators import secure_admin_login
 from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+
+admin.autodiscover()
+admin.site.login = secure_admin_login(admin.site.login)
 
 urlpatterns = [
 	path("i18n/", include("django.conf.urls.i18n")),

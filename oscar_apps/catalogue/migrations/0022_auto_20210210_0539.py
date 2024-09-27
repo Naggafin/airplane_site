@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		("catalogue", "0021_auto_20201005_0844"),
+	]
 
-    dependencies = [
-        ('catalogue', '0021_auto_20201005_0844'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='productattributevalue',
-            name='value_boolean',
-            field=models.BooleanField(blank=True, db_index=True, null=True, verbose_name='Boolean'),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name="productattributevalue",
+			name="value_boolean",
+			field=models.BooleanField(
+				blank=True, db_index=True, null=True, verbose_name="Boolean"
+			),
+		),
+	]
