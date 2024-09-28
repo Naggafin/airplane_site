@@ -63,7 +63,8 @@ INSTALLED_APPS = [
 	# "oscar.apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
 	"oscar_apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
 	"oscar.apps.dashboard.offers.apps.OffersDashboardConfig",
-	"oscar.apps.dashboard.partners.apps.PartnersDashboardConfig",
+	# "oscar.apps.dashboard.partners.apps.PartnersDashboardConfig",
+	"oscar_apps.dashboard.partners.apps.PartnersDashboardConfig",
 	"oscar.apps.dashboard.pages.apps.PagesDashboardConfig",
 	"oscar.apps.dashboard.ranges.apps.RangesDashboardConfig",
 	"oscar.apps.dashboard.reviews.apps.ReviewsDashboardConfig",
@@ -77,13 +78,14 @@ INSTALLED_APPS = [
 	"allauth.socialaccount",
 	"allauth.socialaccount.providers.facebook",
 	"allauth.socialaccount.providers.google",
-	# 3rd-party apps that oscar depends on
+	# other 3rd party dependencies
+	"taggit",
 	"guardian",
 	"widget_tweaks",
 	"slippers",
 	"haystack",
 	"treebeard",
-	"sorl.thumbnail",  # Default thumbnail backend, can be replaced
+	"sorl.thumbnail",
 	"django_tables2",
 ]
 
@@ -310,4 +312,3 @@ OSCAR_FROM_EMAIL = "noreply@airvehicleservices.com"
 OSCAR_BASKET_COOKIE_OPEN = "aircraft_site_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
-OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = "oscar_apps.dashboard.nav.access_fn"

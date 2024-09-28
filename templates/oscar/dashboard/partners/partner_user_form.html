@@ -1,0 +1,19 @@
+{% extends "oscar/dashboard/partners/partner_user_form.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+    <form method="post"
+          class="card card-body form-stacked wysiwyg"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {% include 'oscar/dashboard/partials/form_fields.html' with form=form %}
+            <small>{% trans 'Note: Adding both the edit and delete roles will make this user an "owner," and they will be able to alter other users\' roles.' %}</small>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary"
+                    type="submit"
+                    data-loading-text="{% trans 'Saving...' %}">{% trans "Save" %}</button>
+            {% trans "or" %} <a href="{% url 'dashboard:partner-manage' pk=partner.pk %}">{% trans "cancel" %}</a>.
+        </div>
+    </form>
+{% endblock dashboard_content %}

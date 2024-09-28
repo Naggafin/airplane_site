@@ -1,4 +1,3 @@
-django-allauth for authentication
-django-oscar for e-commerce engine
 django-filter to filter listings
 pinax-messages for user messaging
+Fix navigation for partners dashboard
