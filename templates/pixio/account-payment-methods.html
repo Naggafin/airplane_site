@@ -1,0 +1,101 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="account-card">
+            <form action="#">
+                <div class="row m-b30">
+                    <div class="col-md-12">
+                        <h4 class="title m-b15 text-capitalize">Payment Methods</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="custom-control style-1">
+                            <input class="form-check-input radio"
+                                   type="radio"
+                                   name="Methods1"
+                                   id="Methods5">
+                            <label class="custom-checkbox form-check-label payment" for="Methods5">
+                                <img src="{% static 'pixio/images/shop/payment/paypal.svg' %}" alt="/">
+                                <span>
+                                    <span class="title">Paypal</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="custom-control style-1">
+                            <input class="form-check-input radio"
+                                   type="radio"
+                                   name="Methods1"
+                                   id="Methods6">
+                            <label class="custom-checkbox form-check-label payment" for="Methods6">
+                                <img src="{% static 'pixio/images/shop/payment/debit.svg' %}" alt="/">
+                                <span>
+                                    <span class="title">Credit or Debit Card</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="custom-control style-1">
+                            <input class="form-check-input radio"
+                                   type="radio"
+                                   name="Methods1"
+                                   id="Methods7">
+                            <label class="custom-checkbox form-check-label payment" for="Methods7">
+                                <img src="{% static 'pixio/images/shop/payment/bank.svg' %}" alt="/">
+                                <span>
+                                    <span class="title">Direct bank Transfer</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="custom-control style-1">
+                            <input class="form-check-input radio"
+                                   type="radio"
+                                   name="Methods1"
+                                   id="Methods8">
+                            <label class="custom-checkbox form-check-label payment" for="Methods8">
+                                <img src="{% static 'pixio/images/shop/payment/cash.svg' %}" alt="/">
+                                <span>
+                                    <span class="title">Cash on Delivery</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group m-b25">
+                            <label class="label-title">Card Number</label>
+                            <input type="number"
+                                   name="dzNumber"
+                                   required=""
+                                   class="form-control"
+                                   placeholder="1234 4567 8910 1112">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group m-b25">
+                            <label class="label-title">Expiry Date</label>
+                            <input type="date"
+                                   required=""
+                                   class="form-control"
+                                   aria-label="calendar outline">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group m-b25">
+                            <label class="label-title">CVC/CVV</label>
+                            <input type="number" required="" class="form-control" placeholder="1234">
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'pixio:account-order-confirmation' %}"
+                   class="btn btn-secondary mt-2">Confirm Order</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}

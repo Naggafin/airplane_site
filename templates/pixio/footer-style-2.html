@@ -1,0 +1,210 @@
+{% extends 'pixio/elements/layouts/layout-footer.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <div class="content-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="code-copy">
+                    <a id="copyButton" class="btn">Copy</a>
+                    <pre class="code-box" id="copyTarget">
+&lt;footer class="site-footer footer-dark"&gt;
+&lt;div class="footer-top"&gt;
+&lt;div class="container"&gt;
+&lt;div class="row"&gt;
+    &lt;div class="col-xl-3 col-md-4"&gt;
+        &lt;div class="widget widget_about"&gt;
+            &lt;div class="footer-logo logo-white"&gt;
+                &lt;a href="{% url 'pixio:index' %}"&gt;&lt;img src="{% static 'pixio/images/logo-white.svg' %}" alt=""&gt;&lt;/a&gt; 
+            &lt;/div&gt;
+            &lt;ul class="widget-address"&gt;
+                &lt;li&gt;
+                    &lt;p&gt;&lt;span&gt;Address&lt;/span&gt; : 451 Wall Street, UK, London&lt;/p&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;p&gt;&lt;span&gt;E-mail&lt;/span&gt; : example@info.com&lt;/p&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;p&gt;&lt;span&gt;Phone&lt;/span&gt; : (064) 332-1233&lt;/p&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div class="subscribe_widget"&gt;
+                &lt;h6 class="title fw-medium text-capitalize"&gt;subscribe to our newsletter&lt;/h6&gt;	
+                &lt;form class="dzSubscribe style-1" action="#" method=""&gt;
+                    &lt;div class="dzSubscribeMsg"&gt;&lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;div class="input-group mb-0"&gt;
+                            &lt;input name="dzEmail" required="required" type="email" class="form-control" placeholder="Your Email Address"&gt;
+                            &lt;div class="input-group-addon"&gt;
+                                &lt;button name="submit" value="Submit" type="submit" class="btn"&gt;
+                                    &lt;i class="icon feather icon-arrow-right"&gt;&lt;/i&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-xl-3 col-md-4"&gt;
+        &lt;div class="widget widget_post"&gt;
+            &lt;h5 class="footer-title"&gt;Recent Posts&lt;/h5&gt;
+            &lt;ul&gt;
+                &lt;li&gt;
+                    &lt;div class="dz-media"&gt;
+                        &lt;img src="{% static 'pixio/images/shop/product/small/1.png' %}" alt=""&gt;
+                    &lt;/div&gt;
+                    &lt;div class="dz-content"&gt;
+                        &lt;h6 class="name"&gt;&lt;a href="javascript:void(0);"&gt;Cozy Knit Cardigan Sweater&lt;/a&gt;&lt;/h6&gt;
+                        &lt;span class="time"&gt;July 23, 2023&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;div class="dz-media"&gt;
+                        &lt;img src="{% static 'pixio/images/shop/product/small/2.png' %}" alt=""&gt;
+                    &lt;/div&gt;
+                    &lt;div class="dz-content"&gt;
+                        &lt;h6 class="name"&gt;&lt;a href="javascript:void(0);"&gt;Sophisticated Swagger Suit&lt;/a&gt;&lt;/h6&gt;
+                        &lt;span class="time"&gt;July 23, 2023&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li&gt;
+                    &lt;div class="dz-media"&gt;
+                        &lt;img src="{% static 'pixio/images/shop/product/small/3.png' %}" alt=""&gt;
+                    &lt;/div&gt;
+                    &lt;div class="dz-content"&gt;
+                        &lt;h6 class="name"&gt;&lt;a href="javascript:void(0);"&gt;Athletic Mesh Sports Leggings&lt;/a&gt;&lt;/h6&gt;
+                        &lt;span class="time"&gt;July 23, 2023&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-xl-2 col-md-3"&gt;
+        &lt;div class="widget widget_services"&gt;
+            &lt;h5 class="footer-title"&gt;Our Stores&lt;/h5&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;New York&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;London SF&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Edinburgh&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Los Angeles&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Chicago&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Las Vegas&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;   
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-xl-2 col-md-3"&gt;
+        &lt;div class="widget widget_services"&gt;
+            &lt;h5 class="footer-title"&gt;Useful Links&lt;/h5&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Returns&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Terms & Conditions&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Latest News&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Our Sitemap&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-xl-2 col-md-3"&gt;
+        &lt;div class="widget widget_services"&gt;
+            &lt;h5 class="footer-title"&gt;Footer Menu&lt;/h5&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Instagram profile&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;New Collection&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Woman Dress&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="javascript:void(0);"&gt;Latest News&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="footer-bottom"&gt;
+&lt;div class="container"&gt;
+&lt;div class="row fb-inner"&gt;
+    &lt;div class="col-lg-6 col-md-12 text-start"&gt; 
+        &lt;p class="copyright-text"&gt;©  &lt;span class="current-year"&gt;2024&lt;/span&gt;   &lt;a href="https://www.dexignzone.com/"&gt;DexignZone&lt;/a&gt; Theme. All Rights Reserved.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="col-lg-6 col-md-12 text-end"&gt; 
+        &lt;div class="d-flex align-items-center justify-content-center justify-content-md-center justify-content-xl-end"&gt;
+            &lt;span class="me-3"&gt;We Accept: &lt;/span&gt;
+            &lt;img src="{% static 'pixio/images/footer-img.png' %}" alt=""&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/footer&gt;
+            </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block additional_js %}
+    <script>
+$('#copyButton').on('click',function(e){
+    e.preventDefault;
+    $('#copyButton').addClass('active').text('Copied');
+    $('#copyTarget').addClass('active');
+    copyToClipboard('#copyTarget');
+});
+
+document.getElementById("copyButton").addEventListener("click", function(e) {
+    e.preventDefault;
+    $('#copyButton').addClass('active').text('Copied');
+    $('#copyTarget').addClass('active');
+    copyToClipboard(document.getElementById("copyTarget"));
+});
+function copyToClipboard(elem) {
+        // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+    
+    // copy the selection
+    var succeed;
+    try {
+            succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+    return succeed;
+}
+    </script>
+{% endblock %}

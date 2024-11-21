@@ -1,0 +1,255 @@
+from django.urls import path
+
+from pixio import pixio_views
+
+app_name = "pixio"
+urlpatterns = [
+	path("", pixio_views.index, name="index"),
+	path("index/", pixio_views.index, name="index"),
+	path("index-2/", pixio_views.index_2, name="index-2"),
+	path("index-3/", pixio_views.index_3, name="index-3"),
+	path("w3menu/", pixio_views.w3menu, name="w3menu"),
+	path("shop-standard/", pixio_views.shop_standard, name="shop-standard"),
+	path("shop-list/", pixio_views.shop_list, name="shop-list"),
+	path(
+		"shop-with-category/", pixio_views.shop_with_category, name="shop-with-category"
+	),
+	path(
+		"shop-filters-top-bar/",
+		pixio_views.shop_filters_top_bar,
+		name="shop-filters-top-bar",
+	),
+	path("shop-sidebar/", pixio_views.shop_sidebar, name="shop-sidebar"),
+	path("shop-style-1/", pixio_views.shop_style_1, name="shop-style-1"),
+	path("shop-style-2/", pixio_views.shop_style_2, name="shop-style-2"),
+	path("product-default/", pixio_views.product_default, name="product-default"),
+	path("product-thumbnail/", pixio_views.product_thumbnail, name="product-thumbnail"),
+	path(
+		"product-grid-media/", pixio_views.product_grid_media, name="product-grid-media"
+	),
+	path("product-carousel/", pixio_views.product_carousel, name="product-carousel"),
+	path(
+		"product-full-width/", pixio_views.product_full_width, name="product-full-width"
+	),
+	path("shop-wishlist/", pixio_views.shop_wishlist, name="shop-wishlist"),
+	path("shop-cart/", pixio_views.shop_cart, name="shop-cart"),
+	path("shop-checkout/", pixio_views.shop_checkout, name="shop-checkout"),
+	path("shop-compare/", pixio_views.shop_compare, name="shop-compare"),
+	path(
+		"shop-order-tracking/",
+		pixio_views.shop_order_tracking,
+		name="shop-order-tracking",
+	),
+	path("shop-my-account/", pixio_views.shop_my_account, name="shop-my-account"),
+	path("shop-registration/", pixio_views.shop_registration, name="shop-registration"),
+	path(
+		"blog-dark-2-column/", pixio_views.blog_dark_2_column, name="blog-dark-2-column"
+	),
+	path(
+		"blog-dark-2-column-sidebar/",
+		pixio_views.blog_dark_2_column_sidebar,
+		name="blog-dark-2-column-sidebar",
+	),
+	path(
+		"blog-dark-3-column/", pixio_views.blog_dark_3_column, name="blog-dark-3-column"
+	),
+	path(
+		"blog-dark-half-image/",
+		pixio_views.blog_dark_half_image,
+		name="blog-dark-half-image",
+	),
+	path(
+		"blog-light-2-column/",
+		pixio_views.blog_light_2_column,
+		name="blog-light-2-column",
+	),
+	path(
+		"blog-light-2-column-sidebar/",
+		pixio_views.blog_light_2_column_sidebar,
+		name="blog-light-2-column-sidebar",
+	),
+	path(
+		"blog-light-half-image/",
+		pixio_views.blog_light_half_image,
+		name="blog-light-half-image",
+	),
+	path("blog-exclusive/", pixio_views.blog_exclusive, name="blog-exclusive"),
+	path("blog-left-sidebar/", pixio_views.blog_left_sidebar, name="blog-left-sidebar"),
+	path(
+		"blog-right-sidebar/", pixio_views.blog_right_sidebar, name="blog-right-sidebar"
+	),
+	path("blog-both-sidebar/", pixio_views.blog_both_sidebar, name="blog-both-sidebar"),
+	path("blog-wide-sidebar/", pixio_views.blog_wide_sidebar, name="blog-wide-sidebar"),
+	path("blog-archive/", pixio_views.blog_archive, name="blog-archive"),
+	path("blog-author/", pixio_views.blog_author, name="blog-author"),
+	path("blog-category/", pixio_views.blog_category, name="blog-category"),
+	path("blog-tag/", pixio_views.blog_tag, name="blog-tag"),
+	path("post-standard/", pixio_views.post_standard, name="post-standard"),
+	path("post-left-sidebar/", pixio_views.post_left_sidebar, name="post-left-sidebar"),
+	path("post-header-image/", pixio_views.post_header_image, name="post-header-image"),
+	path("post-slide-show/", pixio_views.post_slide_show, name="post-slide-show"),
+	path("post-side-image/", pixio_views.post_side_image, name="post-side-image"),
+	path("post-gallery/", pixio_views.post_gallery, name="post-gallery"),
+	path(
+		"post-gallery-alternative/",
+		pixio_views.post_gallery_alternative,
+		name="post-gallery-alternative",
+	),
+	path(
+		"post-open-gutenberg/",
+		pixio_views.post_open_gutenberg,
+		name="post-open-gutenberg",
+	),
+	path("post-link/", pixio_views.post_link, name="post-link"),
+	path("post-audio/", pixio_views.post_audio, name="post-audio"),
+	path("post-video/", pixio_views.post_video, name="post-video"),
+	path("portfolio-tiles/", pixio_views.portfolio_tiles, name="portfolio-tiles"),
+	path("collage-style-1/", pixio_views.collage_style_1, name="collage-style-1"),
+	path("collage-style-2/", pixio_views.collage_style_2, name="collage-style-2"),
+	path("masonry-grid/", pixio_views.masonry_grid, name="masonry-grid"),
+	path("cobble-style-1/", pixio_views.cobble_style_1, name="cobble-style-1"),
+	path("cobble-style-2/", pixio_views.cobble_style_2, name="cobble-style-2"),
+	path(
+		"portfolio-thumbs-slider/",
+		pixio_views.portfolio_thumbs_slider,
+		name="portfolio-thumbs-slider",
+	),
+	path(
+		"portfolio-film-strip/",
+		pixio_views.portfolio_film_strip,
+		name="portfolio-film-strip",
+	),
+	path("carousel-showcase/", pixio_views.carousel_showcase, name="carousel-showcase"),
+	path(
+		"portfolio-split-slider/",
+		pixio_views.portfolio_split_slider,
+		name="portfolio-split-slider",
+	),
+	path(
+		"portfolio-details-1/",
+		pixio_views.portfolio_details_1,
+		name="portfolio-details-1",
+	),
+	path(
+		"portfolio-details-2/",
+		pixio_views.portfolio_details_2,
+		name="portfolio-details-2",
+	),
+	path(
+		"portfolio-details-3/",
+		pixio_views.portfolio_details_3,
+		name="portfolio-details-3",
+	),
+	path(
+		"portfolio-details-4/",
+		pixio_views.portfolio_details_4,
+		name="portfolio-details-4",
+	),
+	path(
+		"portfolio-details-5/",
+		pixio_views.portfolio_details_5,
+		name="portfolio-details-5",
+	),
+	path("about-us/", pixio_views.about_us, name="about-us"),
+	path("about-me/", pixio_views.about_me, name="about-me"),
+	path("pricing-table/", pixio_views.pricing_table, name="pricing-table"),
+	path("our-gift-vouchers/", pixio_views.our_gift_vouchers, name="our-gift-vouchers"),
+	path("what-we-do/", pixio_views.what_we_do, name="what-we-do"),
+	path("faqs-1/", pixio_views.faqs_1, name="faqs-1"),
+	path("faqs-2/", pixio_views.faqs_2, name="faqs-2"),
+	path("our-team/", pixio_views.our_team, name="our-team"),
+	path("contact-us-1/", pixio_views.contact_us_1, name="contact-us-1"),
+	path("contact-us-2/", pixio_views.contact_us_2, name="contact-us-2"),
+	path("contact-us-3/", pixio_views.contact_us_3, name="contact-us-3"),
+	path("error-404/", pixio_views.error_404, name="error-404"),
+	path("error-2/", pixio_views.error_2, name="error-2"),
+	path("coming-soon/", pixio_views.coming_soon, name="coming-soon"),
+	path(
+		"under-construction/", pixio_views.under_construction, name="under-construction"
+	),
+	path(
+		"banner-with-bg-color/",
+		pixio_views.banner_with_bg_color,
+		name="banner-with-bg-color",
+	),
+	path("banner-with-image/", pixio_views.banner_with_image, name="banner-with-image"),
+	path("banner-with-video/", pixio_views.banner_with_video, name="banner-with-video"),
+	path(
+		"banner-with-kanbern/",
+		pixio_views.banner_with_kanbern,
+		name="banner-with-kanbern",
+	),
+	path("banner-small/", pixio_views.banner_small, name="banner-small"),
+	path("banner-medium/", pixio_views.banner_medium, name="banner-medium"),
+	path("banner-large/", pixio_views.banner_large, name="banner-large"),
+	path("header-style-1/", pixio_views.header_style_1, name="header-style-1"),
+	path("header-style-2/", pixio_views.header_style_2, name="header-style-2"),
+	path("header-style-3/", pixio_views.header_style_3, name="header-style-3"),
+	path("header-style-4/", pixio_views.header_style_4, name="header-style-4"),
+	path("header-style-5/", pixio_views.header_style_5, name="header-style-5"),
+	path("header-style-6/", pixio_views.header_style_6, name="header-style-6"),
+	path("header-style-7/", pixio_views.header_style_7, name="header-style-7"),
+	path("footer-style-1/", pixio_views.footer_style_1, name="footer-style-1"),
+	path("footer-style-2/", pixio_views.footer_style_2, name="footer-style-2"),
+	path("footer-style-3/", pixio_views.footer_style_3, name="footer-style-3"),
+	path("footer-style-4/", pixio_views.footer_style_4, name="footer-style-4"),
+	path("footer-style-5/", pixio_views.footer_style_5, name="footer-style-5"),
+	path("footer-style-6/", pixio_views.footer_style_6, name="footer-style-6"),
+	path("footer-style-7/", pixio_views.footer_style_7, name="footer-style-7"),
+	path("account-dashboard/", pixio_views.account_dashboard, name="account-dashboard"),
+	path("account-orders/", pixio_views.account_orders, name="account-orders"),
+	path(
+		"account-order-details/",
+		pixio_views.account_order_details,
+		name="account-order-details",
+	),
+	path(
+		"account-order-confirmation/",
+		pixio_views.account_order_confirmation,
+		name="account-order-confirmation",
+	),
+	path("account-downloads/", pixio_views.account_downloads, name="account-downloads"),
+	path(
+		"account-return-request/",
+		pixio_views.account_return_request,
+		name="account-return-request",
+	),
+	path(
+		"account-return-request-detail/",
+		pixio_views.account_return_request_detail,
+		name="account-return-request-detail",
+	),
+	path(
+		"account-refund-request-confirmed/",
+		pixio_views.account_refund_request_confirmed,
+		name="account-refund-request-confirmed",
+	),
+	path("account-profile/", pixio_views.account_profile, name="account-profile"),
+	path("account-address/", pixio_views.account_address, name="account-address"),
+	path(
+		"account-shipping-methods/",
+		pixio_views.account_shipping_methods,
+		name="account-shipping-methods",
+	),
+	path(
+		"account-payment-methods/",
+		pixio_views.account_payment_methods,
+		name="account-payment-methods",
+	),
+	path("account-review/", pixio_views.account_review, name="account-review"),
+	path(
+		"account-billing-address/",
+		pixio_views.account_billing_address,
+		name="account-billing-address",
+	),
+	path(
+		"account-shipping-address/",
+		pixio_views.account_shipping_address,
+		name="account-shipping-address",
+	),
+	path(
+		"account-cancellation-requests/",
+		pixio_views.account_cancellation_requests,
+		name="account-cancellation-requests",
+	),
+]

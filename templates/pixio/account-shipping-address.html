@@ -1,0 +1,83 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="account-card">
+            <form class="row" action="#">
+                <h3 class="m-b30">Shipping address</h3>
+                <div class="col-md-6">
+                    <div class="form-group m-b25">
+                        <label class="label-title">First Name</label>
+                        <input name="dzName" required="" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group m-b25">
+                        <label class="label-title">Last Name</label>
+                        <input name="dzName" required="" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group m-b25">
+                        <label class="label-title">Company name (optional)</label>
+                        <input name="dzName" required="" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="m-b25">
+                        <label class="label-title">Country / Region *</label>
+                        <select class="default-select form-select w-100">
+                            <option selected>India</option>
+                            <option value="1">Another option</option>
+                            <option value="2">UK</option>
+                            <option value="3">Iraq</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group m-b25">
+                        <label class="label-title">Street address *</label>
+                        <input name="dzName"
+                               required=""
+                               class="form-control m-b15"
+                               placeholder="House number and street name">
+                        <input name="dzName"
+                               required=""
+                               class="form-control"
+                               placeholder="Apartment, suite, unit, etc. (optional)">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="m-b25">
+                        <label class="label-title">Town / City *</label>
+                        <select class="form-select default-select w-100">
+                            <option selected>Kota</option>
+                            <option value="1">Another option</option>
+                            <option value="2">Jaipur</option>
+                            <option value="3">Udaipur</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="m-b25">
+                        <label class="label-title">State*</label>
+                        <select class="default-select form-select w-100">
+                            <option selected>Rajasthan</option>
+                            <option value="1">Another option</option>
+                            <option value="2">Rajasthan</option>
+                            <option value="3">Rajasthan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group m-b25">
+                        <label class="label-title">pincode*</label>
+                        <input name="dzName" required="" class="form-control">
+                    </div>
+                </div>
+            </form>
+            <button class="btn btn-secondary">Save changes</button>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="row">
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic1.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Collar Casual Shirt</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$105</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic2.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Collar Casual Shirt</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$304</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 m-b30">
+                <h4>What do you want to return?</h4>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input class="form-check-input radio"
+                           type="radio"
+                           name="flexRadioDefault"
+                           id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">Refund</label>
+                </div>
+                <div class="custom-control custom-checkbox mb-1">
+                    <input class="form-check-input radio"
+                           type="radio"
+                           name="flexRadioDefault"
+                           id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">Replacment</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="custom-control style-1">
+                    <input class="form-check-input radio"
+                           type="radio"
+                           name="Methods1"
+                           id="Methods7">
+                    <label class="custom-checkbox form-check-label payment" for="Methods7">
+                        <span>
+                            <span class="title">Direct bank Transfer</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="custom-control style-1">
+                    <input class="form-check-input radio"
+                           type="radio"
+                           name="Methods1"
+                           id="Methods8">
+                    <label class="custom-checkbox form-check-label payment" for="Methods8">
+                        <span>
+                            <span class="title">Gifte Card Wallet</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 m-t10">
+                <a href="{% url 'pixio:shop-wishlist' %}"
+                   class="btn btn-secondary me-xl-3 me-2 btnhover20">Submit Request</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

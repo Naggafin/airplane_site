@@ -1,0 +1,155 @@
+{% extends 'pixio/elements/layouts/layout.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="content-inner pt-0 z-index-unset overflow-hidden">
+        <div class="site-filters style-2 clearfix center">
+            <ul class="filters" data-bs-toggle="buttons">
+                <li data-filter=".All" class="btn active">
+                    <a href="javascript:void(0);">All</a>
+                </li>
+                <li data-filter=".Dresses" class="btn">
+                    <a href="javascript:void(0);">Dresses</a>
+                </li>
+                <li data-filter=".Tops" class="btn">
+                    <a href="javascript:void(0);">Tops</a>
+                </li>
+                <li data-filter=".Outerwear" class="btn">
+                    <a href="javascript:void(0);">Outerwear</a>
+                </li>
+                <li data-filter=".jacket" class="btn">
+                    <a href="javascript:void(0);">Jacket</a>
+                </li>
+                <li data-filter=".Formal-wear" class="btn">
+                    <a href="javascript:void(0);">Formal wear</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="clearfix">
+                <ul id="masonry" class="lightgallery row">
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Tops">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic1.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Party Blouse</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">Satin Wrap Party Blouse</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Outerwear Formal-wear">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic2.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Jogger Pants</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-2' %}">Comfy Lounge Jogger Pants</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Dresses ">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic3.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Gear Collection</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-3' %}">Hiking Outdoor Gear Collection</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Tops">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic4.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Overalls</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-4' %}">Vintage Denim Overalls Shorts</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Outerwear jacket Formal-wear">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic5.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Winter Coat</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-5' %}">Plaid Wool Winter Coat</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="card-container col-xl-4 col-lg-4 col-md-6 m-b30 All Dresses jacket">
+                        <div class="portfolio-box style-1">
+                            <div class="dz-media">
+                                <a href="{% url 'pixio:portfolio-details-1' %}">
+                                    <img src="{% static 'pixio/images/portfolio/portfolio1/pic6.jpg' %}"
+                                         alt="/">
+                                </a>
+                            </div>
+                            <div class="dz-content">
+                                <div class="product-tag">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <span class="badge badge-primary">Leggings</span>
+                                    </a>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">Athletic Mesh Sports Leggings</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}

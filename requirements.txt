@@ -9,8 +9,10 @@ django-guardian
 django-oscar
 django-redis
 django-taggit
+django-template-partials
 djlint
 hiredis
+jwt
 isort
 nplusone
 parameterized

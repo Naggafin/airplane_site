@@ -36,6 +36,8 @@ INSTALLED_APPS = [
 	"django.contrib.staticfiles",
 	"django.contrib.sites",
 	"django.contrib.flatpages",
+	# frontend template
+	"pixio",
 	# oscar
 	"oscar.config.Shop",
 	"oscar.apps.analytics.apps.AnalyticsConfig",
@@ -87,6 +89,7 @@ INSTALLED_APPS = [
 	"treebeard",
 	"sorl.thumbnail",
 	"django_tables2",
+	"template_partials",
 ]
 
 SITE_ID = 1
@@ -121,6 +124,7 @@ TEMPLATES = [
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.apps.communication.notifications.context_processors.notifications",
 				"oscar.core.context_processors.metadata",
+				"custom_context_processor.dz_static",
 			],
 		},
 	},

@@ -1,0 +1,66 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="account-card">
+            <div class="table-responsive download-table">
+                <table class="table check-tbl">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="product-item-price">1</td>
+                            <td class="product-item-img">
+                                <img src="{% static 'pixio/images/shop/small/pic1.png' %}" alt="/">
+                            </td>
+                            <td class="product-item-name">Collar Casual Shirt</td>
+                            <td>
+                                <a href="{% url 'pixio:product-default' %}"
+                                   class="btn btn-md btn-outline-secondary btnhover20">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="product-item-price">2</td>
+                            <td class="product-item-img">
+                                <img src="{% static 'pixio/images/shop/small/pic2.png' %}" alt="/">
+                            </td>
+                            <td class="product-item-name">Collar Tranding Shirt</td>
+                            <td>
+                                <a href="{% url 'pixio:product-default' %}"
+                                   class="btn btn-md btn-outline-secondary btnhover20">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="product-item-price">3</td>
+                            <td class="product-item-img">
+                                <img src="{% static 'pixio/images/shop/small/pic1.png' %}" alt="/">
+                            </td>
+                            <td class="product-item-name">Casual Full Shirt</td>
+                            <td>
+                                <a href="{% url 'pixio:product-default' %}"
+                                   class="btn btn-md btn-outline-secondary btnhover20">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="product-item-price">4</td>
+                            <td class="product-item-img">
+                                <img src="{% static 'pixio/images/shop/small/pic2.png' %}" alt="/">
+                            </td>
+                            <td class="product-item-name">Tranding Full Shirt</td>
+                            <td>
+                                <a href="{% url 'pixio:product-default' %}"
+                                   class="btn btn-md btn-outline-secondary btnhover20">Download</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+{% endblock %}

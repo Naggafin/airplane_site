@@ -1,0 +1,26 @@
+{% extends 'pixio/elements/layouts/layout-1.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <div class="page-content bg-light">
+        <section class="content-inner-1">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-10 col-md-12">
+                        <div class="error-page style-1">
+                            <div class="dz-error-media">
+                                <img src="{% static 'pixio/images/pic-404.png' %}" alt="">
+                            </div>
+                            <div class="error-inner">
+                                <h1 class="dz_error">404</h1>
+                                <p class="error-head">Oh, no! This page does not exist.</p>
+                                <a href="{% url 'pixio:index' %}"
+                                   class="btn btn-secondary  text-uppercase">Go to Main Page</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

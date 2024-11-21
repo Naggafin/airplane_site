@@ -1,0 +1,7 @@
+<form class="dz-form dzForm" method="POST" action=".">
+    {% csrf_token %}
+    {{ form.name }}
+    {{ form.email }}
+    {{ form.content }}
+    <button type="submit" class="btn w-100 btn-white btnhover">SUBMIT</button>
+</form>

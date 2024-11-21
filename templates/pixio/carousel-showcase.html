@@ -1,0 +1,145 @@
+{% extends 'pixio/elements/layouts/layout-full.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <section class="pt-0 z-index-unset bg-white overflow-hidden">
+            <div class="container-fluid">
+                <div class="d-sm-flex justify-content-sm-between  justtify-content-center py-sm-3  py-3 mb-sm-0 m-b20">
+                    <nav aria-label="breadcrumb" class="breadcrumb-row">
+                        <ul class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'pixio:index' %}">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">Carousel Showcase</li>
+                        </ul>
+                    </nav>
+                    <div class="pagination-align style-2">
+                        <div class="portfolio-button-prev swiper-button-prev">Prev</div>
+                        <div class="portfolio-button-next swiper-button-next">Next</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="swiper portfolio-gallery3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio9/pic1.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Bottles</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-5' %}">Cozy Knit Cardigan Sweater</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio9/pic2.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Bottles</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-4' %}">Sophisticated Swagger Suit</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio9/pic3.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Bottles</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-3' %}">Classic Denim Skinny Jeans</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio9/pic1.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Bottles</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-2' %}">Athletic Mesh Sports Leggings</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio9/pic2.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Bottles</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">Vintage Denim Overalls Shorts</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination-two"></div>
+            <div class="banner-social-media">
+                <ul>
+                    <li>
+                        <a class="text-dark" href="javascript:void(0);">Instagram</a>
+                    </li>
+                    <li>
+                        <a class="text-dark" href="javascript:void(0);">Facebook</a>
+                    </li>
+                    <li>
+                        <a class="text-dark" href="javascript:void(0);">twitter</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+{% endblock %}

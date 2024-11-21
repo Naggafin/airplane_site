@@ -1,0 +1,26 @@
+{% load static %}
+<div class="dz-bnr-inr bg-secondary overlay-black-light">
+    <div class="container">
+        <div class="dz-bnr-inr-entry">
+            <h1>{{ page_title }}</h1>
+            <nav aria-label="breadcrumb" class="breadcrumb-row">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pixio:index' %}">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">{{ page_title }}</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="kanbern-bnr swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div style="background-image:url('{% static 'pixio/images/background/bg1.jpg' %}')"></div>
+            </div>
+            <div class="swiper-slide">
+                <div style="background-image:url('{% static 'pixio/images/background/bg7.jpg' %}')"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+{% extends 'pixio/elements/layouts/layout-full.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <div class="page-content bg-light">
+        <section class="pt-0 z-index-unset bg-white overflow-hidden">
+            <div class="container-fluid">
+                <div class="d-sm-flex justify-content-sm-between justtify-content-center py-sm-3 py-3 mb-sm-0 m-b20">
+                    <nav aria-label="breadcrumb" class="breadcrumb-row">
+                        <ul class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'pixio:index' %}">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">Portfolio Film Strip</li>
+                        </ul>
+                    </nav>
+                    <div class="pagination-align style-2">
+                        <div class="portfolio-button-prev swiper-button-prev">Prev</div>
+                        <div class="portfolio-button-next swiper-button-next">Next</div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid pe-md-0">
+                <div class="swiper portfolio-gallery2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio8/pic1.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">Sweater</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">Elevate your style with our exclusive shirt collection.</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio8/pic2.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">shirts</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-2' %}">Unleash your confidence in fashionable, tailored shirts.</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio8/pic3.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">comfort</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-3' %}">Embrace comfort without compromising on a sharp look.</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio8/pic1.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">designs</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-4' %}">Explore a blend of modern and classic shirt designs.</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="portfolio-box style-2">
+                                <div class="dz-media">
+                                    <a href="{% url 'pixio:portfolio-details-1' %}">
+                                        <img src="{% static 'pixio/images/portfolio/portfolio8/pic2.jpg' %}"
+                                             alt="/">
+                                    </a>
+                                </div>
+                                <div class="dz-content">
+                                    <div class="product-tag">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <span class="badge badge-secondary">sophistication</span>
+                                        </a>
+                                    </div>
+                                    <h4 class="title">
+                                        <a href="{% url 'pixio:portfolio-details-5' %}">Each shirt is a statement of individuality and sophistication.</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination-two"></div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="account-card confirmed-request text-center">
+            <div class="cancel-btn m-auto mb-sm-4 mb-2">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2>Cancellation Confirmed</h2>
+            <a class="btn btn-outline-secondary btn-lg btnhover20 m-t15"
+               href="{% url 'pixio:account-order-details' %}">Check Status</a>
+        </div>
+    </section>
+{% endblock %}

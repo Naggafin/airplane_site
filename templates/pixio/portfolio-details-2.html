@@ -1,0 +1,250 @@
+{% extends 'pixio/elements/layouts/layout-1.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <div class="page-content bg-light" id="lightgallery">
+        <!--banner-->
+        <div class="dz-bnr-inr dz-bnr-inr-lg overlay-black-middle text-center overflow-hidden"
+             style="background-image:url('{% static 'pixio/images/portfolio/details/portfolio-detail-2/banner-bg.jpg' %}')">
+            <div class="container">
+                <div class="post-header dz-bnr-inr-entry blog-single style-1">
+                    <a href="{% url 'pixio:portfolio-details-1' %}" class="mb-4">
+                        <span class="badge badge-primary mb-3">fashion</span>
+                    </a>
+                    <h1 class="dz-title text-white mx-auto">Make your fashion look mire charming</h1>
+                    <div class="detail-list-box style-2">
+                        <ul>
+                            <li>
+                                <span class="title">Client</span>
+                                <span>Martin Stewart</span>
+                            </li>
+                            <li>
+                                <span class="title">Seatpad</span>
+                                <span>100% Polyester</span>
+                            </li>
+                            <li>
+                                <span class="title">Location</span>
+                                <span>London, UK</span>
+                            </li>
+                            <li>
+                                <span class="title">Shipping</span>
+                                <span>Free Shipping</span>
+                            </li>
+                            <li>
+                                <span class="title">Category</span>
+                                <span>Child Trolly</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content-inner portfolio-detail-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 m-b30">
+                                <div class="dz-box portfolio-bx style-1">
+                                    <div class="dz-media rounded">
+                                        <a class="mfp-link lg-item"
+                                           href="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic1.jpg' %}"
+                                           data-src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic1.jpg' %}">
+                                            <i class="feather icon-maximize dz-maximize top-right"></i>
+                                        </a>
+                                        <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic1.jpg' %}"
+                                             alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 m-b30">
+                                <div class="dz-detail-box style-2">
+                                    <h2>Research & Planning</h2>
+                                    <p class="m-b30 m-sm-b20">
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+                                    </p>
+                                    <p class="mb-0">
+                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-4 col-sm-6 col-6 m-b30">
+                                <div class="dz-box portfolio-bx style-1">
+                                    <div class="dz-media rounded">
+                                        <a class="mfp-link lg-item"
+                                           href="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic2.jpg' %}"
+                                           data-src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic2.jpg' %}">
+                                            <i class="feather icon-maximize dz-maximize top-right"></i>
+                                        </a>
+                                        <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic2.jpg' %}"
+                                             alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-4 col-sm-6 col-6 m-b30">
+                                <div class="dz-box portfolio-bx style-1">
+                                    <div class="dz-media rounded">
+                                        <a class="mfp-link lg-item"
+                                           href="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic3.jpg' %}"
+                                           data-src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic3.jpg' %}">
+                                            <i class="feather icon-maximize dz-maximize top-right"></i>
+                                        </a>
+                                        <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic3.jpg' %}"
+                                             alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-4 m-b30">
+                                <div class="dz-box portfolio-bx style-1">
+                                    <div class="dz-media rounded">
+                                        <a class="mfp-link lg-item"
+                                           href="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic4.jpg' %}"
+                                           data-src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic4.jpg' %}">
+                                            <i class="feather icon-maximize dz-maximize top-right"></i>
+                                        </a>
+                                        <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-2/pic4.jpg' %}"
+                                             alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Post Pagination -->
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="post-pagination style-1">
+                        <div class="post-prev">
+                            <a href="{% url 'pixio:portfolio-details-5' %}" class="post-inner">
+                                <div class="inner-icon">
+                                    <i class="icon feather icon-chevron-left"></i>
+                                </div>
+                                <div class="dz-media me-3">
+                                    <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/post-pagination/post-1.jpg' %}"
+                                         alt="">
+                                </div>
+                                <div class="dz-info m-0">
+                                    <span>Swagger</span>
+                                    <h6 class="m-b0">Sophisticated Swagger Suit</h6>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="post-next">
+                            <a href="{% url 'pixio:portfolio-details-2' %}" class="post-inner">
+                                <div class="dz-info">
+                                    <span>Sweater</span>
+                                    <h6 class="m-b0">Cozy Knit Cardigan Sweater</h6>
+                                </div>
+                                <div class="dz-media">
+                                    <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/post-pagination/post-2.jpg' %}"
+                                         alt="">
+                                </div>
+                                <div class="inner-icon">
+                                    <i class="icon feather icon-chevron-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="content-inner-1  overflow-hidden releted-portfolio">
+            <div class="container">
+                <div class="section-head style-2">
+                    <div class="left-content">
+                        <h2 class="title mb-0">Related Projects</h2>
+                    </div>
+                </div>
+                <div class="swiper-btn-center-lr">
+                    <div class="swiper swiper-four">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="portfolio-box">
+                                    <div class="dz-media">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/related-img/pic1.jpg' %}"
+                                                 alt="/">
+                                        </a>
+                                    </div>
+                                    <div class="dz-content">
+                                        <div class="product-tag">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">
+                                                <span class="badge badge-primary">Sweater</span>
+                                            </a>
+                                        </div>
+                                        <h5 class="title">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">Cozy Knit Cardigan Sweater</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="portfolio-box">
+                                    <div class="dz-media">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/related-img/pic2.jpg' %}"
+                                                 alt="/">
+                                        </a>
+                                    </div>
+                                    <div class="dz-content">
+                                        <div class="product-tag">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">
+                                                <span class="badge badge-primary">Suit</span>
+                                            </a>
+                                        </div>
+                                        <h5 class="title">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">Sophisticated Swagger Suit</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="portfolio-box">
+                                    <div class="dz-media">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/related-img/pic3.jpg' %}"
+                                                 alt="/">
+                                        </a>
+                                    </div>
+                                    <div class="dz-content">
+                                        <div class="product-tag">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">
+                                                <span class="badge badge-primary">Jeans</span>
+                                            </a>
+                                        </div>
+                                        <h5 class="title">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">Classic Denim Skinny Jeans</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="portfolio-box">
+                                    <div class="dz-media">
+                                        <a href="{% url 'pixio:portfolio-details-1' %}">
+                                            <img src="{% static 'pixio/images/portfolio/details/portfolio-detail-1/related-img/pic4.jpg' %}"
+                                                 alt="/">
+                                        </a>
+                                    </div>
+                                    <div class="dz-content">
+                                        <div class="product-tag">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">
+                                                <span class="badge badge-primary">Leggings</span>
+                                            </a>
+                                        </div>
+                                        <h5 class="title">
+                                            <a href="{% url 'pixio:portfolio-details-1' %}">Athletic Mesh Sports Leggings</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

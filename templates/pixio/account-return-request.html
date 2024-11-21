@@ -1,0 +1,112 @@
+{% extends 'pixio/elements/layouts/layout-account.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+    <section class="col-xl-9 account-wrapper">
+        <div class="row">
+            <div class="col-12 m-b30">
+                <h3 class="mb-0">REQUEST FOR PRODUCT RETURN (2)</h3>
+            </div>
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                        <a href="javascript:void(0);"
+                           class="btn-link text-underline text-success">Return Made</a>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic1.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Collar Casual Shirt</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$105</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                        <a href="javascript:void(0);"
+                           class="btn-link text-underline text-priamry">Request Submited</a>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic2.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Collar Casual Shirt</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$304</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                        <a href="javascript:void(0);"
+                           class="btn-link text-underline text-priamry">Request Submited</a>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic1.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Classic Denim Skinny Jeans</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$657</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 m-b30">
+                <div class="order-cancel-card">
+                    <div class="order-head">
+                        <h6 class="mb-0">
+                            Request No: <span class="text-primary">#1374837</span>
+                        </h6>
+                        <a href="javascript:void(0);"
+                           class="btn-link text-underline text-priamry">Request Submited</a>
+                    </div>
+                    <a href="{% url 'pixio:account-return-request-detail' %}"
+                       class="order-cancel-box">
+                        <div class="cancel-media">
+                            <img src="{% static 'pixio/images/shop/small/pic2.png' %}" alt="">
+                        </div>
+                        <div class="order-cancel-content">
+                            <span>March 21, 2024</span>
+                            <h5 class="title mb-0">Plaid Wool Winter Coat</h5>
+                            <p class="mb-2">
+                                Quantity: <strong class="text-black">1</strong>
+                            </p>
+                            <h6 class="mb-0">$245</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

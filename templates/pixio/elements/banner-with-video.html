@@ -1,0 +1,20 @@
+{% load static %}
+<div class="dz-bnr-inr bg-secondary overlay-black-light">
+    <video autoplay loop muted id="video-background">
+        <source src="{% static 'pixio/images/background/bg-video.mp4' %}"
+                type="video/mp4">
+    </video>
+    <div class="container">
+        <div class="dz-bnr-inr-entry">
+            <h1>Banner With Video</h1>
+            <nav aria-label="breadcrumb" class="breadcrumb-row">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pixio:index' %}">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">Banner With Video</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
