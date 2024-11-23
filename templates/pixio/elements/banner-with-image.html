@@ -1,17 +1,17 @@
-{% load static %}
+{% load static i18n %}
 <div class="dz-bnr-inr"
      style="background-image:url({% static 'pixio/images/background/bg-shape.jpg' %})">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
                 <div class="dz-bnr-inr-entry text-start">
-                    <h1>Banner With Image</h1>
+                    <h1>{{ page_title }}</h1>
                     <nav aria-label="breadcrumb" class="breadcrumb-row">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{% url 'pixio:index' %}">Home</a>
+                                <a href="{% url 'index' %}">{% trans 'Home' %}</a>
                             </li>
-                            <li class="breadcrumb-item">Banner With Image</li>
+                            <li class="breadcrumb-item">{{ page_title }}</li>
                         </ul>
                     </nav>
                 </div>

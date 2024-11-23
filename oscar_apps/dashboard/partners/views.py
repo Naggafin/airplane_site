@@ -8,13 +8,13 @@ from django.views.generic import FormView
 from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 from guardian.shortcuts import assign_perm, remove_perm
 from oscar.apps.dashboard.partners.views import (  # PartnerUserUpdateView as OscarPartnerUserUpdateView,
-    PartnerCreateView as OscarPartnerCreateView,
-    PartnerDeleteView as OscarPartnerDeleteView,
-    PartnerListView as OscarPartnerListView,
-    PartnerManageView as OscarPartnerManageView,
-    PartnerUserLinkView as OscarPartnerUserLinkView,
-    PartnerUserSelectView as OscarPartnerUserSelectView,
-    PartnerUserUnlinkView as OscarPartnerUserUnlinkView,
+	PartnerCreateView as OscarPartnerCreateView,
+	PartnerDeleteView as OscarPartnerDeleteView,
+	PartnerListView as OscarPartnerListView,
+	PartnerManageView as OscarPartnerManageView,
+	PartnerUserLinkView as OscarPartnerUserLinkView,
+	PartnerUserSelectView as OscarPartnerUserSelectView,
+	PartnerUserUnlinkView as OscarPartnerUserUnlinkView,
 )
 from oscar.apps.partner.models import Partner
 from oscar.core.compat import get_user_model

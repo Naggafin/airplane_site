@@ -1,6 +1,6 @@
-import allauth
 import oscar.apps.dashboard.apps as apps
-from django.urls import include, path
+from django.urls import include, path, reverse
+from django.views.generic import RedirectView
 
 
 class DashboardConfig(apps.DashboardConfig):
@@ -21,7 +21,15 @@ class DashboardConfig(apps.DashboardConfig):
 			path("vouchers/", include(self.vouchers_app.urls[0])),
 			path("comms/", include(self.comms_app.urls[0])),
 			path("shipping/", include(self.shipping_app.urls[0])),
-			path("login/", allauth.account.views.login, name="login"),
-			path("logout/", allauth.account.views.logout, name="logout"),
+			path(
+				"login/",
+				RedirectView.as_view(pattern_name="account_login", permanent=True),
+				name="login",
+			),
+			path(
+				"logout/",
+				RedirectView.as_view(pattern_name="account_logout", permanent=True),
+				name="logout",
+			),
 		]
 		return self.post_process_urls(urls)

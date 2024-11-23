@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="">
+        <meta name="keywords" content="TODO" />
+        <meta name="description" content="TODO" />
+        <meta property="og:title" content="TODO" />
+        <meta property="og:description" content="TODO" />
+        <meta property="og:image" content="TODO" />
+        <meta name="format-detection" content="telephone=no">
+        <!-- Mobile Specific -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- PAGE TITLE HERE -->
+        <title>TODO</title>
+        <!-- FAVICONS ICON -->
+        <link rel="shortcut icon" type="image/png" href="TODO" />
+        <!-- Custom Stylesheet -->
+        {% block css %}{% endblock %}
+        {% block global_css %}
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/swiper/swiper-bundle.min.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/nouislider/nouislider.min.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/animate/animate.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lightgallery.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-thumbnail.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-zoom.css' %}">
+            <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
+        {% endblock %}
+        <!-- GOOGLE FONTS-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+              rel="stylesheet">
+    </head>
+    <body>
+        <div class="page-wraper">
+            {% block preloader %}
+                {% include 'pixio/elements/preloader.html' %}
+            {% endblock %}
+            {% block header %}
+                {% include 'pixio/elements/header.html' %}
+            {% endblock %}
+            <div class="page-content bg-light">
+                {% block banner %}{% endblock %}
+                {% block content %}{% endblock %}
+            </div>
+            {% block footer %}
+                {% include 'pixio/elements/footer.html' %}
+            {% endblock %}
+            <button class="scroltop" type="button">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </div>
+        <!-- JAVASCRIPT FILES ========================================= -->
+        {% block top_js %}
+            <script src="{% static 'pixio/js/jquery.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/wow/wow.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+        {% endblock %}
+        {% block js %}{% endblock %}
+        {% block bottom_js %}
+            <script src="{% static 'pixio/vendor/bootstrap-touchspin/bootstrap-touchspin.js' %}"></script>
+            <script src="{% static 'pixio/vendor/counter/waypoints-min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/counter/counterup.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/swiper/swiper-bundle.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/imagesloaded/imagesloaded.js' %}"></script>
+            <script src="{% static 'pixio/vendor/masonry/masonry-4.2.2.js' %}"></script>
+            <script src="{% static 'pixio/vendor/masonry/isotope.pkgd.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/countdown/jquery.countdown.js' %}"></script>
+            <script src="{% static 'pixio/vendor/wnumb/wNumb.js' %}"></script>
+            <script src="{% static 'pixio/vendor/nouislider/nouislider.min.js' %}"></script>
+            <script src="{% static 'pixio/js/dz.carousel.js' %}"></script>
+            <script src="{% static 'pixio/js/dz.ajax.js' %}"></script>
+            <script src="{% static 'pixio/js/custom.js' %}"></script>
+        {% endblock %}
+    </body>
+</html>

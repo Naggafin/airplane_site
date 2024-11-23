@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <div class="dz-bnr-inr bg-secondary overlay-black-light">
     <div class="container">
         <div class="dz-bnr-inr-entry">
@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-row">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{% url 'pixio:index' %}">Home</a>
+                        <a href="{% url 'index' %}">{% trans 'Home' %}</a>
                     </li>
                     <li class="breadcrumb-item">{{ page_title }}</li>
                 </ul>

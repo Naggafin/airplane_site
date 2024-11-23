@@ -1,26 +1,115 @@
-{% extends 'pixio/elements/layouts/layout-1.html' %}
-{% load static %}
-{% block additional_css %}{% endblock %}
-{% block content %}
-    <div class="page-content bg-light">
-        <section class="content-inner-1">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-8 col-lg-10 col-md-12">
-                        <div class="error-page style-1">
-                            <div class="dz-error-media">
-                                <img src="{% static 'pixio/images/pic-404.png' %}" alt="">
-                            </div>
-                            <div class="error-inner">
-                                <h1 class="dz_error">404</h1>
-                                <p class="error-head">Oh, no! This page does not exist.</p>
-                                <a href="{% url 'pixio:index' %}"
-                                   class="btn btn-secondary  text-uppercase">Go to Main Page</a>
-                            </div>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta -->
+        {% load static custom_tags %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="author" content="DexignZone">
+        <meta name="robots" content="">
+        <meta name="keywords" content="{{ dz_array.public.keywords }}" />
+        <meta name="description" content="{{ dz_array.public.description }}" />
+        <meta property="og:title" content="{{ dz_array.public.og_title }}" />
+        <meta property="og:description"
+              content="{{ dz_array.public.og_description }}" />
+        <meta property="og:image" content="{{ dz_array.public.og_image }}" />
+        <meta name="format-detection" content="telephone=no">
+        <!-- Mobile Specific -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- PAGE TITLE HERE -->
+        <title>{{ dz_array.public.title }}</title>
+        <!-- FAVICONS ICON -->
+        <link rel="shortcut icon"
+              type="image/png"
+              href="{% static dz_array.public.favicon %}" />
+        {% for cssurl in dz_array.pagelevel.pixio.pixio_views.css|getdata:request.path %}
+            <link rel="stylesheet" href="{% static cssurl %}">
+        {% endfor %}
+        <!-- Custom Stylesheet -->
+        {% for cssurl in dz_array.global.css %}
+            <link rel="stylesheet" href="{% static cssurl %}">
+        {% endfor %}
+        <!-- GOOGLE FONTS-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+              rel="stylesheet">
+    </head>
+    <body>
+        <div class="page-wraper">
+            <div id="loading-area"  class="preloader-wrapper-1">
+                <div class="loader">
+                    <div class="load-circle">
+                        <div class="circle-2">
+                            <img src="{% static 'pixio/images/logo.png' %}" alt="/">
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-{% endblock %}
+            <div class="page-content">
+                <section class="overflow-hidden">
+                    <div class="row error-page style-2">
+                        <div class="col-lg-6 col-md-6 error-start-content">
+                            <div class="logo">
+                                <a href="{% url 'pixio:index' %}">
+                                    <img src="{% static 'pixio/images/logo-white.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="dz_error">404</div>
+                            <div class="dz-social-icon style-2 white">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.facebook.com/dexignzone" target="_blank">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://twitter.com/dexignzones" target="_blank">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.linkedin.com/showcase/3686700/admin/"
+                                           target="_blank">
+                                            <i class="fa-brands fa-linkedin"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.instagram.com/dexignzone/" target="_blank">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <img src="{% static 'pixio/images/circle-lines3.png' %}"
+                                 class="bg-img"
+                                 alt="">
+                        </div>
+                        <div class="col-lg-6 col-md-6 error-end-content">
+                            <div class="error-inner">
+                                <h1 class="error-head">OOPS!</h1>
+                                <p class="error-para">Oh, no! This page does not exist.</p>
+                                <a href="{% url 'pixio:index' %}"
+                                   class="btn btn-secondary  text-uppercase">Go to Main Page</a>
+                            </div>
+                            <img src="{% static 'pixio/images/circle-lines4.png' %}"
+                                 class="bg-img2"
+                                 alt="">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- JAVASCRIPT FILES ========================================= -->
+        {% for jsurl in dz_array.global.js.top %}
+            <script src="{% static jsurl %}"></script>
+        {% endfor %}
+        {% for jsurl in dz_array.pagelevel.pixio.pixio_views.js|getdata:request.path %}
+            <script src="{% static jsurl %}"></script>
+        {% endfor %}
+        {% for jsurl in dz_array.global.js.bottom %}
+            <script src="{% static jsurl %}"></script>
+        {% endfor %}
+        {% block additional_js %}{% endblock %}
+    </body>
+</html>

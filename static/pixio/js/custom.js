@@ -1158,7 +1158,7 @@ var Pixio = function () {
 			handleShopPannel();
 			handleHeaderMenuItem();
 			cartButton();
-			handlePointerEffect();
+			// handlePointerEffect();
 			handleColorFilter();
 			handleLightgallery();
 			handleOpenModal();
