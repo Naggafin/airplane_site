@@ -1,10 +1,7 @@
-from django.apps import apps
 from django.conf import settings
-from django.urls import path, reverse_lazy
+from django.urls import path
 from django.views.generic.base import RedirectView
 from oscar import config
-from oscar.core.application import OscarConfig
-from oscar.core.loading import get_class
 
 
 class AircraftShopConfig(config.Shop):
@@ -23,4 +20,4 @@ class AircraftShopConfig(config.Shop):
 			path("offers/", self.offer_app.urls),
 			path("wishlists/", self.wishlists_app.urls),
 		]
-		return urlpatterns
+		return urls

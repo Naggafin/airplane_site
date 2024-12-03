@@ -1,5 +1,5 @@
 import oscar.apps.dashboard.apps as apps
-from django.urls import include, path, reverse
+from django.urls import include, path
 from django.views.generic import RedirectView
 
 

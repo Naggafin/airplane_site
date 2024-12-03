@@ -26,7 +26,7 @@ load_dotenv(BASE_DIR / ".env")
 # Application definition
 
 INSTALLED_APPS = [
-	"airplane_site",
+	"airplane_site.apps.AircraftShopConfig",
 	# django
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -41,22 +41,27 @@ INSTALLED_APPS = [
 	# oscar
 	"oscar.config.Shop",
 	"oscar.apps.analytics.apps.AnalyticsConfig",
-	"oscar.apps.checkout.apps.CheckoutConfig",
+	# "oscar.apps.checkout.apps.CheckoutConfig",
+	"oscar_apps.checkout.apps.CheckoutConfig",
 	"oscar.apps.address.apps.AddressConfig",
 	"oscar.apps.shipping.apps.ShippingConfig",
 	# "oscar.apps.catalogue.apps.CatalogueConfig",
 	"oscar_apps.catalogue.apps.CatalogueConfig",
 	"oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig",
 	"oscar.apps.communication.apps.CommunicationConfig",
-	"oscar.apps.partner.apps.PartnerConfig",
-	"oscar.apps.basket.apps.BasketConfig",
+	# "oscar.apps.partner.apps.PartnerConfig",
+	"oscar_apps.partner.apps.PartnerConfig",
+	# "oscar.apps.basket.apps.BasketConfig",
+	"oscar_apps.basket.apps.BasketConfig",
 	"oscar.apps.payment.apps.PaymentConfig",
 	"oscar.apps.offer.apps.OfferConfig",
 	"oscar.apps.order.apps.OrderConfig",
-	"oscar.apps.customer.apps.CustomerConfig",
+	# "oscar.apps.customer.apps.CustomerConfig",
+	"oscar_apps.customer.apps.CustomerConfig",
 	"oscar.apps.search.apps.SearchConfig",
 	"oscar.apps.voucher.apps.VoucherConfig",
-	"oscar.apps.wishlists.apps.WishlistsConfig",
+	# "oscar.apps.wishlists.apps.WishlistsConfig",
+	"oscar_apps.wishlists.apps.WishlistsConfig",
 	# "oscar.apps.dashboard.apps.DashboardConfig",
 	"oscar_apps.dashboard.apps.DashboardConfig",
 	"oscar.apps.dashboard.reports.apps.ReportsDashboardConfig",
@@ -124,7 +129,7 @@ TEMPLATES = [
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.apps.communication.notifications.context_processors.notifications",
 				"oscar.core.context_processors.metadata",
-				"custom_context_processor.dz_static",
+				"airplane_site.context.populate_products",
 			],
 		},
 	},
@@ -188,7 +193,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "public" / "static"
 STATIC_URL = "static/"
 
-MEDIA_ROOT = BASE_DIR / "public" / "mediafiles"
+MEDIA_ROOT = BASE_DIR / "public" / "media"
 MEDIA_URL = "media/"
 
 

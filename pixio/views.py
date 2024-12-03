@@ -3,112 +3,9 @@ from django.shortcuts import render
 
 def index(request):
 	context = {
-		"page_title": "Home 1",
 		"preloader": "preloader-1",
-		"header": "header-1",
-		"footer": "footer-1",
 	}
 	return render(request, "pixio/index.html", context)
-
-
-def index_2(request):
-	context = {
-		"page_title": "Home 2",
-		"preloader": "preloader-2",
-		"header": "header-2",
-		"footer": "footer-2",
-	}
-	return render(request, "pixio/index-2.html", context)
-
-
-def index_3(request):
-	context = {
-		"page_title": "Home 3",
-		"preloader": "preloader-3",
-		"header": "header-1",
-		"footer": "footer-1",
-	}
-	return render(request, "pixio/index-3.html", context)
-
-
-def w3menu(request):
-	context = {"page_title": "W3menu"}
-	return render(request, "pixio/w3menu.html", context)
-
-
-def shop_standard(request):
-	context = {"page_title": "Shop Standard"}
-	return render(request, "pixio/shop-standard.html", context)
-
-
-def shop_list(request):
-	context = {"page_title": "Shop List"}
-	return render(request, "pixio/shop-list.html", context)
-
-
-def shop_with_category(request):
-	context = {"page_title": "Shop With Category"}
-	return render(request, "pixio/shop-with-category.html", context)
-
-
-def shop_filters_top_bar(request):
-	context = {"page_title": "Shop Filters Top"}
-	return render(request, "pixio/shop-filters-top-bar.html", context)
-
-
-def shop_sidebar(request):
-	context = {"page_title": "Shop Sidebar"}
-	return render(request, "pixio/shop-sidebar.html", context)
-
-
-def shop_style_1(request):
-	context = {"page_title": "Shop Style 1"}
-	return render(request, "pixio/shop-style-1.html", context)
-
-
-def shop_style_2(request):
-	context = {"page_title": "Shop Style 2"}
-	return render(request, "pixio/shop-style-2.html", context)
-
-
-def product_default(request):
-	context = {"page_title": "Product Default"}
-	return render(request, "pixio/product-default.html", context)
-
-
-def product_thumbnail(request):
-	context = {"page_title": "Product Thumbnail"}
-	return render(request, "pixio/product-thumbnail.html", context)
-
-
-def product_grid_media(request):
-	context = {"page_title": "Product Grid Media"}
-	return render(request, "pixio/product-grid-media.html", context)
-
-
-def product_carousel(request):
-	context = {"page_title": "Product Carousel"}
-	return render(request, "pixio/product-carousel.html", context)
-
-
-def product_full_width(request):
-	context = {"page_title": "Product Full Width"}
-	return render(request, "pixio/product-full-width.html", context)
-
-
-def shop_wishlist(request):
-	context = {"page_title": "Shop Wishlist"}
-	return render(request, "pixio/shop-wishlist.html", context)
-
-
-def shop_cart(request):
-	context = {"page_title": "Shop Cart"}
-	return render(request, "pixio/shop-cart.html", context)
-
-
-def shop_checkout(request):
-	context = {"page_title": "Shop Checkout"}
-	return render(request, "pixio/shop-checkout.html", context)
 
 
 def shop_compare(request):
@@ -124,16 +21,6 @@ def shop_compare(request):
 def shop_order_tracking(request):
 	context = {"page_title": "Shop Order Tracking"}
 	return render(request, "pixio/shop-order-tracking.html", context)
-
-
-def shop_my_account(request):
-	context = {"page_title": "Shop My Account"}
-	return render(request, "pixio/shop-my-account.html", context)
-
-
-def shop_registration(request):
-	context = {"page_title": "Shop Registration"}
-	return render(request, "pixio/shop-registration.html", context)
 
 
 def blog_dark_2_column(request):
@@ -356,11 +243,6 @@ def about_us(request):
 	return render(request, "pixio/about-us.html", context)
 
 
-def about_me(request):
-	context = {"page_title": "About Me"}
-	return render(request, "pixio/about-me.html", context)
-
-
 def pricing_table(request):
 	context = {"page_title": "Pricing Table"}
 	return render(request, "pixio/pricing-table.html", context)
@@ -376,14 +258,9 @@ def what_we_do(request):
 	return render(request, "pixio/what-we-do.html", context)
 
 
-def faqs_1(request):
-	context = {"page_title": "Faq 1"}
-	return render(request, "pixio/faqs-1.html", context)
-
-
-def faqs_2(request):
+def faq(request):
 	context = {"page_title": "Faq 2"}
-	return render(request, "pixio/faqs-2.html", context)
+	return render(request, "pixio/faq.html", context)
 
 
 def our_team(request):
@@ -391,144 +268,9 @@ def our_team(request):
 	return render(request, "pixio/our-team.html", context)
 
 
-def contact_us_1(request):
+def contact_us(request):
 	context = {"page_title": "Contact Us 1"}
-	return render(request, "pixio/contact-us-1.html", context)
-
-
-def contact_us_2(request):
-	context = {"page_title": "Contact Us 2"}
-	return render(request, "pixio/contact-us-2.html", context)
-
-
-def contact_us_3(request):
-	context = {"page_title": "Contact Us 3"}
-	return render(request, "pixio/contact-us-3.html", context)
-
-
-def error_404(request):
-	context = {"page_title": "Error 404"}
-	return render(request, "404.html", context)
-
-
-def error_2(request):
-	context = {"page_title": "Error 404 2"}
-	return render(request, "pixio/error-2.html", context)
-
-
-def coming_soon(request):
-	context = {"page_title": "Coming Soon"}
-	return render(request, "pixio/coming-soon.html", context)
-
-
-def under_construction(request):
-	context = {"page_title": "Under Construction"}
-	return render(request, "pixio/under-construction.html", context)
-
-
-def banner_with_bg_color(request):
-	context = {"page_title": "Banner With Bg-Color", "banner": "banner-with-bg-color"}
-	return render(request, "pixio/banner-with-bg-color.html", context)
-
-
-def banner_with_image(request):
-	context = {"page_title": "Banner With Image", "banner": "banner-with-image"}
-	return render(request, "pixio/banner-with-image.html", context)
-
-
-def banner_with_video(request):
-	context = {"page_title": "Banner With Video", "banner": "banner-with-video"}
-	return render(request, "pixio/banner-with-video.html", context)
-
-
-def banner_with_kanbern(request):
-	context = {"page_title": "Banner With Kanbern", "banner": "banner-with-kanbern"}
-	return render(request, "pixio/banner-with-kanbern.html", context)
-
-
-def banner_small(request):
-	context = {"page_title": "Banner Small", "banner": "banner-small"}
-	return render(request, "pixio/banner-small.html", context)
-
-
-def banner_medium(request):
-	context = {"page_title": "Banner Medium", "banner": "banner-medium"}
-	return render(request, "pixio/banner-medium.html", context)
-
-
-def banner_large(request):
-	context = {"page_title": "Banner Large", "banner": "banner-large"}
-	return render(request, "pixio/banner-large.html", context)
-
-
-def header_style_1(request):
-	context = {"page_title": "Header Style 1", "header": "header"}
-	return render(request, "pixio/header-style-1.html", context)
-
-
-def header_style_2(request):
-	context = {"page_title": "Header Style 2", "header": "header-2"}
-	return render(request, "pixio/header-style-2.html", context)
-
-
-def header_style_3(request):
-	context = {"page_title": "Header Style 3", "header": "header-3"}
-	return render(request, "pixio/header-style-3.html", context)
-
-
-def header_style_4(request):
-	context = {"page_title": "Header Style 4", "header": "header-4"}
-	return render(request, "pixio/header-style-4.html", context)
-
-
-def header_style_5(request):
-	context = {"page_title": "Header Style 5", "header": "header-5"}
-	return render(request, "pixio/header-style-5.html", context)
-
-
-def header_style_6(request):
-	context = {"page_title": "Header Style 6", "header": "header-6"}
-	return render(request, "pixio/header-style-6.html", context)
-
-
-def header_style_7(request):
-	context = {"page_title": "Header Style 7", "header": "header-7"}
-	return render(request, "pixio/header-style-7.html", context)
-
-
-def footer_style_1(request):
-	context = {"page_title": "Footer Style 1", "footer": "footer"}
-	return render(request, "pixio/footer-style-1.html", context)
-
-
-def footer_style_2(request):
-	context = {"page_title": "Footer Style 2", "footer": "footer-3"}
-	return render(request, "pixio/footer-style-2.html", context)
-
-
-def footer_style_3(request):
-	context = {"page_title": "Footer Style 3", "footer": "footer-4"}
-	return render(request, "pixio/footer-style-3.html", context)
-
-
-def footer_style_4(request):
-	context = {"page_title": "Footer Style 4", "footer": "footer-5"}
-	return render(request, "pixio/footer-style-4.html", context)
-
-
-def footer_style_5(request):
-	context = {"page_title": "Footer Style 5", "footer": "footer-6"}
-	return render(request, "pixio/footer-style-5.html", context)
-
-
-def footer_style_6(request):
-	context = {"page_title": "Footer Style 6", "footer": "footer-7"}
-	return render(request, "pixio/footer-style-6.html", context)
-
-
-def footer_style_7(request):
-	context = {"page_title": "Footer Style 7", "footer": "footer-8"}
-	return render(request, "pixio/footer-style-7.html", context)
+	return render(request, "pixio/contact-us.html", context)
 
 
 def account_dashboard(request):

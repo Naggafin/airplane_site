@@ -1,4 +1,4 @@
-{% extends 'pixio/elements/layouts/layout-home.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load display_tags %}
 {% load i18n %}
@@ -74,8 +74,8 @@
                     <path d="M52.6617 37.6496L58.7381 40.0325L75.0609 49.0874L66.6016 63.7422L49.9214 54.6872L45.1557 50.7554L46.1088 57.1892V75.18H28.952V57.1892L30.0243 50.5171L24.9011 54.6872L8.45924 63.7422L0 49.0874L16.3228 39.7942L22.3991 37.6496L16.3228 35.1475L0 26.2117L8.45924 11.557L25.1394 20.4928L30.0243 24.6629L28.952 18.3482V0H46.1088V18.3482L45.1557 24.4246L49.9214 20.4928L66.6016 11.557L75.0609 26.2117L58.7381 35.3858L52.6617 37.6496Z" fill="black" />
                 </svg>
                 <div>
-                    <span class="sub-title">Summer Collection</span>
-                    <h4 class="title">Trendy and Classic  for the New Season</h4>
+                    <span class="sub-title">TODO: TAG LINE HEADER</span>
+                    <h4 class="title">TODO: TAG LINE</h4>
                 </div>
             </div>
         </div>
@@ -116,11 +116,13 @@
                             <div class="swiper-slide">
                                 <div class="shop-box style-1 wow fadeInUp" data-wow-delay="0.2s">
                                     <div class="dz-media">
-                                        <img src="{% static 'pixio/images/shop/product/clothes/1.png' %}"
-                                             alt="image">
+                                        {% with image=product.primary_image %}
+                                            {% oscar_thumbnail image.original "x255" as thumb %}
+                                            <img src="{{ thumb.url }}" alt="{{ category.name }}">
+                                        {% endwith %}
                                     </div>
                                     <h6 class="product-name">
-                                        <a href="{% url 'catalogue:category' category.slug %}">{{ category.name|capfirst }}</a>
+                                        <a href="{{ category.get_absolute_url }}">{{ category.name|capfirst }}</a>
                                     </h6>
                                 </div>
                             </div>
@@ -129,7 +131,7 @@
                 </div>
                 <a class="icon-button" href="{% url 'catalogue:index' %}">
                     <div class="text-row word-rotate-box c-black border-secondary">
-                        <span class="word-rotate">More Collection Explore</span>
+                        <span class="word-rotate">{% trans 'More Collection Explore' %}</span>
                         <svg class="badge__emoji"
                              xmlns="http://www.w3.org/2000/svg"
                              width="40"
@@ -144,8 +146,8 @@
             </div>
             <div class="col-lg-4 right-box">
                 <div>
-                    <h3 class="title wow fadeInUp" data-wow-delay="1.2s">Featured Categories</h3>
-                    <p class="text wow fadeInUp" data-wow-delay="1.4s">Discover the most trending products in Pixio.</p>
+                    <h3 class="title wow fadeInUp" data-wow-delay="1.2s">{% trans 'Featured Categories' %}</h3>
+                    <p class="text wow fadeInUp" data-wow-delay="1.4s">{% trans 'Discover the most trending products.' %}</p>
                     <div class="pagination-align wow fadeInUp" data-wow-delay="1.6s">
                         <div class="shop-button-prev">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +171,7 @@
                 </div>
                 <a class="icon-button" href="{% url 'catalogue:index' %}">
                     <div class="text-row word-rotate-box c-black border-white">
-                        <span class="word-rotate">More Collection Explore</span>
+                        <span class="word-rotate">{% trans 'More Collection Explore' %}</span>
                         <svg class="badge__emoji"
                              xmlns="http://www.w3.org/2000/svg"
                              width="40"
@@ -234,7 +236,7 @@
                                        data-bs-toggle="modal"
                                        data-bs-target="#exampleModal">
                                         <i class="fa-solid fa-eye d-md-none d-block"></i>
-                                        <span class="d-md-block d-none">Quick View</span>
+                                        <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                                     </a>
                                     <div class="btn btn-primary meta-icon dz-wishicon">
                                         <i class="icon feather icon-heart dz-heart"></i>
@@ -262,6 +264,222 @@
         </div>
     </div>
 </section>
+{% endpartialdef %}
+{% partialdef product-modal %}
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+            <i class="icon feather icon-x"></i>
+        </button>
+        <div class="modal-body">
+            <div class="row g-xl-4 g-3">
+                <div class="col-xl-6 col-md-6">
+                    <div class="dz-product-detail mb-0">
+                        <div class="swiper-btn-center-lr">
+                            <div class="swiper quick-modal-swiper2">
+                                <div class="swiper-wrapper" id="lightgallery">
+                                    <div class="swiper-slide">
+                                        <div class="dz-media DZoomImage">
+                                            <a class="mfp-link lg-item"
+                                               href="{% static 'pixio/images/products/lady-1.png' %}"
+                                               data-src="{% static 'pixio/images/products/lady-1.png' %}">
+                                                <i class="feather icon-maximize dz-maximize top-right"></i>
+                                            </a>
+                                            <img src="{% static 'pixio/images/products/lady-1.png' %}" alt="image">
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="dz-media DZoomImage">
+                                            <a class="mfp-link lg-item"
+                                               href="{% static 'pixio/images/products/lady-2.png' %}"
+                                               data-src="{% static 'pixio/images/products/lady-2.png' %}">
+                                                <i class="feather icon-maximize dz-maximize top-right"></i>
+                                            </a>
+                                            <img src="{% static 'pixio/images/products/lady-2.png' %}" alt="image">
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="dz-media DZoomImage">
+                                            <a class="mfp-link lg-item"
+                                               href="{% static 'pixio/images/products/lady-3.png' %}"
+                                               data-src="{% static 'pixio/images/products/lady-3.png' %}">
+                                                <i class="feather icon-maximize dz-maximize top-right"></i>
+                                            </a>
+                                            <img src="{% static 'pixio/images/products/lady-3.png' %}" alt="image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper quick-modal-swiper thumb-swiper-lg thumb-sm swiper-vertical">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="{% static 'pixio/images/products/thumb-img/lady-1.png' %}"
+                                             alt="image">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="{% static 'pixio/images/products/thumb-img/lady-2.png' %}"
+                                             alt="image">
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <img src="{% static 'pixio/images/products/thumb-img/lady-3.png' %}"
+                                             alt="image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6">
+                    <div class="dz-product-detail style-2 ps-xl-3 ps-0 pt-2 mb-0">
+                        <div class="dz-content">
+                            <div class="dz-content-footer">
+                                <div class="dz-content-start">
+                                    <span class="badge bg-secondary mb-2">SALE 20% Off</span>
+                                    <h4 class="title mb-1">
+                                        <a>Cozy Knit Cardigan Sweater</a>
+                                    </h4>
+                                    <div class="review-num">
+                                        <ul class="dz-rating me-2">
+                                            <li class="star-fill">
+                                                <i class="flaticon-star-1"></i>
+                                            </li>
+                                            <li class="star-fill">
+                                                <i class="flaticon-star-1"></i>
+                                            </li>
+                                            <li class="star-fill">
+                                                <i class="flaticon-star-1"></i>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-star-1"></i>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-star-1"></i>
+                                            </li>
+                                        </ul>
+                                        <span class="text-secondary me-2">4.7 Rating</span>
+                                        <a href="javascript:void(0);">(5 customer reviews)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="para-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has.</p>
+                            <div class="meta-content m-b20 d-flex align-items-end">
+                                <div class="me-3">
+                                    <span class="form-label">Price</span>
+                                    <span class="price">$125.75 <del>$132.17</del></span>
+                                </div>
+                                <div class="btn-quantity light me-0">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="text" value="1" name="demo_vertical2">
+                                </div>
+                            </div>
+                            <div class=" cart-btn">
+                                <a class="btn btn-secondary text-uppercase">Add To Cart</a>
+                                <a class="btn btn-md btn-outline-secondary btn-icon">
+                                    <svg width="19"
+                                         height="17"
+                                         viewBox="0 0 19 17"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9.24805 16.9986C8.99179 16.9986 8.74474 16.9058 8.5522 16.7371C7.82504 16.1013 7.12398 15.5038 6.50545 14.9767L6.50229 14.974C4.68886 13.4286 3.12289 12.094 2.03333 10.7794C0.815353 9.30968 0.248047 7.9162 0.248047 6.39391C0.248047 4.91487 0.755203 3.55037 1.67599 2.55157C2.60777 1.54097 3.88631 0.984375 5.27649 0.984375C6.31552 0.984375 7.26707 1.31287 8.10464 1.96065C8.52734 2.28763 8.91049 2.68781 9.24805 3.15459C9.58574 2.68781 9.96875 2.28763 10.3916 1.96065C11.2292 1.31287 12.1807 0.984375 13.2197 0.984375C14.6098 0.984375 15.8885 1.54097 16.8202 2.55157C17.741 3.55037 18.248 4.91487 18.248 6.39391C18.248 7.9162 17.6809 9.30968 16.4629 10.7792C15.3733 12.094 13.8075 13.4285 11.9944 14.9737C11.3747 15.5016 10.6726 16.1001 9.94376 16.7374C9.75136 16.9058 9.50417 16.9986 9.24805 16.9986ZM5.27649 2.03879C4.18431 2.03879 3.18098 2.47467 2.45108 3.26624C1.71033 4.06975 1.30232 5.18047 1.30232 6.39391C1.30232 7.67422 1.77817 8.81927 2.84508 10.1066C3.87628 11.3509 5.41011 12.658 7.18605 14.1715L7.18935 14.1743C7.81021 14.7034 8.51402 15.3033 9.24654 15.9438C9.98344 15.302 10.6884 14.7012 11.3105 14.1713C13.0863 12.6578 14.6199 11.3509 15.6512 10.1066C16.7179 8.81927 17.1938 7.67422 17.1938 6.39391C17.1938 5.18047 16.7858 4.06975 16.045 3.26624C15.3152 2.47467 14.3118 2.03879 13.2197 2.03879C12.4197 2.03879 11.6851 2.29312 11.0365 2.79465C10.4585 3.24179 10.0558 3.80704 9.81975 4.20255C9.69835 4.40593 9.48466 4.52733 9.24805 4.52733C9.01143 4.52733 8.79774 4.40593 8.67635 4.20255C8.44041 3.80704 8.03777 3.24179 7.45961 2.79465C6.811 2.29312 6.07643 2.03879 5.27649 2.03879Z" fill="black">
+                                        </path>
+                                    </svg>
+                                    Add To Wishlist
+                                </a>
+                            </div>
+                            <div class="dz-info mb-0">
+                                <ul>
+                                    <li>
+                                        <strong>SKU:</strong>
+                                    </li>
+                                    <li>PRT584E63A</li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <strong>Category:</strong>
+                                    </li>
+                                    <li>
+                                        <a>Dresses,</a>
+                                    </li>
+                                    <li>
+                                        <a>Jeans,</a>
+                                    </li>
+                                    <li>
+                                        <a>Swimwear,</a>
+                                    </li>
+                                    <li>
+                                        <a>Summer,</a>
+                                    </li>
+                                    <li>
+                                        <a>Clothing</a>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <strong>Tags:</strong>
+                                    </li>
+                                    <li>
+                                        <a>Casual</a>
+                                    </li>
+                                    <li>
+                                        <a>Athletic,</a>
+                                    </li>
+                                    <li>
+                                        <a>Workwear,</a>
+                                    </li>
+                                    <li>
+                                        <a>Accessories</a>
+                                    </li>
+                                </ul>
+                                <div class="dz-social-icon">
+                                    <ul>
+                                        <li>
+                                            <a target="_blank"
+                                               class="text-dark"
+                                               href="https://www.facebook.com/dexignzone">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank"
+                                               class="text-dark"
+                                               href="https://twitter.com/dexignzones">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank"
+                                               class="text-dark"
+                                               href="https://www.youtube.com/@dexignzone1723">
+                                                <i class="fa-brands fa-youtube"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank"
+                                               class="text-dark"
+                                               href="https://www.linkedin.com/showcase/3686700/admin/">
+                                                <i class="fa-brands fa-linkedin-in"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank"
+                                               class="text-dark"
+                                               href="https://www.instagram.com/dexignzone/">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endpartialdef %}
 {% block content %}
     <div class="page-content bg-light">
@@ -501,226 +719,9 @@
         </section>
         <!-- Collection Section End-->
         <!-- collection-bx -->
+        <div class="modal quick-view-modal fade"
+             id="productModal"
+             tabindex="-1"
+             aria-hidden="true"></div>
     </div>
-    <!-- Quick Modal Start -->
-    <div class="modal quick-view-modal fade"
-         id="exampleModal"
-         tabindex="-1"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                    <i class="icon feather icon-x"></i>
-                </button>
-                <div class="modal-body">
-                    <div class="row g-xl-4 g-3">
-                        <div class="col-xl-6 col-md-6">
-                            <div class="dz-product-detail mb-0">
-                                <div class="swiper-btn-center-lr">
-                                    <div class="swiper quick-modal-swiper2">
-                                        <div class="swiper-wrapper" id="lightgallery">
-                                            <div class="swiper-slide">
-                                                <div class="dz-media DZoomImage">
-                                                    <a class="mfp-link lg-item"
-                                                       href="{% static 'pixio/images/products/lady-1.png' %}"
-                                                       data-src="{% static 'pixio/images/products/lady-1.png' %}">
-                                                        <i class="feather icon-maximize dz-maximize top-right"></i>
-                                                    </a>
-                                                    <img src="{% static 'pixio/images/products/lady-1.png' %}" alt="image">
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="dz-media DZoomImage">
-                                                    <a class="mfp-link lg-item"
-                                                       href="{% static 'pixio/images/products/lady-2.png' %}"
-                                                       data-src="{% static 'pixio/images/products/lady-2.png' %}">
-                                                        <i class="feather icon-maximize dz-maximize top-right"></i>
-                                                    </a>
-                                                    <img src="{% static 'pixio/images/products/lady-2.png' %}" alt="image">
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="dz-media DZoomImage">
-                                                    <a class="mfp-link lg-item"
-                                                       href="{% static 'pixio/images/products/lady-3.png' %}"
-                                                       data-src="{% static 'pixio/images/products/lady-3.png' %}">
-                                                        <i class="feather icon-maximize dz-maximize top-right"></i>
-                                                    </a>
-                                                    <img src="{% static 'pixio/images/products/lady-3.png' %}" alt="image">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper quick-modal-swiper thumb-swiper-lg thumb-sm swiper-vertical">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img src="{% static 'pixio/images/products/thumb-img/lady-1.png' %}"
-                                                     alt="image">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img src="{% static 'pixio/images/products/thumb-img/lady-2.png' %}"
-                                                     alt="image">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img src="{% static 'pixio/images/products/thumb-img/lady-3.png' %}"
-                                                     alt="image">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-md-6">
-                            <div class="dz-product-detail style-2 ps-xl-3 ps-0 pt-2 mb-0">
-                                <div class="dz-content">
-                                    <div class="dz-content-footer">
-                                        <div class="dz-content-start">
-                                            <span class="badge bg-secondary mb-2">SALE 20% Off</span>
-                                            <h4 class="title mb-1">
-                                                <a>Cozy Knit Cardigan Sweater</a>
-                                            </h4>
-                                            <div class="review-num">
-                                                <ul class="dz-rating me-2">
-                                                    <li class="star-fill">
-                                                        <i class="flaticon-star-1"></i>
-                                                    </li>
-                                                    <li class="star-fill">
-                                                        <i class="flaticon-star-1"></i>
-                                                    </li>
-                                                    <li class="star-fill">
-                                                        <i class="flaticon-star-1"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="flaticon-star-1"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="flaticon-star-1"></i>
-                                                    </li>
-                                                </ul>
-                                                <span class="text-secondary me-2">4.7 Rating</span>
-                                                <a href="javascript:void(0);">(5 customer reviews)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="para-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has.</p>
-                                    <div class="meta-content m-b20 d-flex align-items-end">
-                                        <div class="me-3">
-                                            <span class="form-label">Price</span>
-                                            <span class="price">$125.75 <del>$132.17</del></span>
-                                        </div>
-                                        <div class="btn-quantity light me-0">
-                                            <label class="form-label">Quantity</label>
-                                            <input type="text" value="1" name="demo_vertical2">
-                                        </div>
-                                    </div>
-                                    <div class=" cart-btn">
-                                        <a class="btn btn-secondary text-uppercase">Add To Cart</a>
-                                        <a class="btn btn-md btn-outline-secondary btn-icon">
-                                            <svg width="19"
-                                                 height="17"
-                                                 viewBox="0 0 19 17"
-                                                 fill="none"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.24805 16.9986C8.99179 16.9986 8.74474 16.9058 8.5522 16.7371C7.82504 16.1013 7.12398 15.5038 6.50545 14.9767L6.50229 14.974C4.68886 13.4286 3.12289 12.094 2.03333 10.7794C0.815353 9.30968 0.248047 7.9162 0.248047 6.39391C0.248047 4.91487 0.755203 3.55037 1.67599 2.55157C2.60777 1.54097 3.88631 0.984375 5.27649 0.984375C6.31552 0.984375 7.26707 1.31287 8.10464 1.96065C8.52734 2.28763 8.91049 2.68781 9.24805 3.15459C9.58574 2.68781 9.96875 2.28763 10.3916 1.96065C11.2292 1.31287 12.1807 0.984375 13.2197 0.984375C14.6098 0.984375 15.8885 1.54097 16.8202 2.55157C17.741 3.55037 18.248 4.91487 18.248 6.39391C18.248 7.9162 17.6809 9.30968 16.4629 10.7792C15.3733 12.094 13.8075 13.4285 11.9944 14.9737C11.3747 15.5016 10.6726 16.1001 9.94376 16.7374C9.75136 16.9058 9.50417 16.9986 9.24805 16.9986ZM5.27649 2.03879C4.18431 2.03879 3.18098 2.47467 2.45108 3.26624C1.71033 4.06975 1.30232 5.18047 1.30232 6.39391C1.30232 7.67422 1.77817 8.81927 2.84508 10.1066C3.87628 11.3509 5.41011 12.658 7.18605 14.1715L7.18935 14.1743C7.81021 14.7034 8.51402 15.3033 9.24654 15.9438C9.98344 15.302 10.6884 14.7012 11.3105 14.1713C13.0863 12.6578 14.6199 11.3509 15.6512 10.1066C16.7179 8.81927 17.1938 7.67422 17.1938 6.39391C17.1938 5.18047 16.7858 4.06975 16.045 3.26624C15.3152 2.47467 14.3118 2.03879 13.2197 2.03879C12.4197 2.03879 11.6851 2.29312 11.0365 2.79465C10.4585 3.24179 10.0558 3.80704 9.81975 4.20255C9.69835 4.40593 9.48466 4.52733 9.24805 4.52733C9.01143 4.52733 8.79774 4.40593 8.67635 4.20255C8.44041 3.80704 8.03777 3.24179 7.45961 2.79465C6.811 2.29312 6.07643 2.03879 5.27649 2.03879Z" fill="black">
-                                                </path>
-                                            </svg>
-                                            Add To Wishlist
-                                        </a>
-                                    </div>
-                                    <div class="dz-info mb-0">
-                                        <ul>
-                                            <li>
-                                                <strong>SKU:</strong>
-                                            </li>
-                                            <li>PRT584E63A</li>
-                                        </ul>
-                                        <ul>
-                                            <li>
-                                                <strong>Category:</strong>
-                                            </li>
-                                            <li>
-                                                <a>Dresses,</a>
-                                            </li>
-                                            <li>
-                                                <a>Jeans,</a>
-                                            </li>
-                                            <li>
-                                                <a>Swimwear,</a>
-                                            </li>
-                                            <li>
-                                                <a>Summer,</a>
-                                            </li>
-                                            <li>
-                                                <a>Clothing</a>
-                                            </li>
-                                        </ul>
-                                        <ul>
-                                            <li>
-                                                <strong>Tags:</strong>
-                                            </li>
-                                            <li>
-                                                <a>Casual</a>
-                                            </li>
-                                            <li>
-                                                <a>Athletic,</a>
-                                            </li>
-                                            <li>
-                                                <a>Workwear,</a>
-                                            </li>
-                                            <li>
-                                                <a>Accessories</a>
-                                            </li>
-                                        </ul>
-                                        <div class="dz-social-icon">
-                                            <ul>
-                                                <li>
-                                                    <a target="_blank"
-                                                       class="text-dark"
-                                                       href="https://www.facebook.com/dexignzone">
-                                                        <i class="fab fa-facebook-f"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank"
-                                                       class="text-dark"
-                                                       href="https://twitter.com/dexignzones">
-                                                        <i class="fab fa-twitter"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank"
-                                                       class="text-dark"
-                                                       href="https://www.youtube.com/@dexignzone1723">
-                                                        <i class="fa-brands fa-youtube"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank"
-                                                       class="text-dark"
-                                                       href="https://www.linkedin.com/showcase/3686700/admin/">
-                                                        <i class="fa-brands fa-linkedin-in"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank"
-                                                       class="text-dark"
-                                                       href="https://www.instagram.com/dexignzone/">
-                                                        <i class="fab fa-instagram"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Quick Modal End -->
 {% endblock %}

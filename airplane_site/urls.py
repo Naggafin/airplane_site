@@ -21,8 +21,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from pixio import views as pixio_views
-
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)
 
@@ -30,7 +28,7 @@ urlpatterns = [
 	path("i18n/", include("django.conf.urls.i18n")),
 	path("admin/", admin.site.urls),
 	path("accounts/", include("allauth.urls")),
-	path("", pixio_views.index, name="index"),
+	path("", include("pixio.urls")),
 	path("", include(apps.get_app_config("airplane_site").urls[0])),
 ]
 
