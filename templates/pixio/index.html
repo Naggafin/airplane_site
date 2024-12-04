@@ -21,7 +21,7 @@
                                 <div class="swiper-slide">
                                     <div class="swiper-content">
                                         <div class="content-info">
-                                            <h1 class="title  wow fadeInUp" data-wow-delay="0.2s">{{ product.get_title }}</h1>
+                                            <h1 class="title wow fadeInUp" data-wow-delay="0.2s">{{ product.get_title }}</h1>
                                             <div class="swiper-meta-items">
                                                 <div class="meta-content wow fadeInUp" data-wow-delay="0.4s">
                                                     <span class="price-name">{% trans 'Price' %}</span>
@@ -47,7 +47,12 @@
                         <div class="swiper-wrapper">
                             {% for product in top_products %}
                                 <div class="swiper-slide">
-                                    <div class="banner-media" data-name="{{ product.product_class.name }}">
+                                    <div class="banner-media"
+                                         data-name="{% if product.product_class %}
+                                                        {{ product.product_class.name }}
+                                                    {% else %}
+                                                        {{ product.title }}
+                                                    {% endif %}">
                                         <div class="img-preview">
                                             {% with image=product.primary_image %}
                                                 {% oscar_thumbnail image.original "780x1050" as thumb %}
@@ -116,9 +121,13 @@
                             <div class="swiper-slide">
                                 <div class="shop-box style-1 wow fadeInUp" data-wow-delay="0.2s">
                                     <div class="dz-media">
-                                        {% with image=product.primary_image %}
-                                            {% oscar_thumbnail image.original "x255" as thumb %}
-                                            <img src="{{ thumb.url }}" alt="{{ category.name }}">
+                                        {% with image=category.image %}
+                                            {% if image %}
+                                                {% oscar_thumbnail image "x255" as thumb %}
+                                                <img src="{{ thumb.url }}" alt="{{ category.name }}">
+                                            {% else %}
+                                                <img width="255" height="255" alt="{{ category.name }}">
+                                            {% endif %}
                                         {% endwith %}
                                     </div>
                                     <h6 class="product-name">
@@ -485,13 +494,13 @@
     <div class="page-content bg-light">
         {% partial top-products-section %}
         {% partial top-categories-section %}
+        {% comment %}
         <!--About Section Start -->
         <section class="content-inner overflow-hidden">
             <div class="container">
                 <div class="row about-style1">
                     <div class="col-lg-6 col-md-12 m-b30">
-                        <div class="about-thumb wow fadeInUp position-relative"
-                             data-wow-delay="0.2s">
+                        <div class="about-thumb wow fadeInUp position-relative" data-wow-delay="0.2s">
                             <div class="dz-media h-100">
                                 <img src="{% static 'pixio/images/women.png' %}" alt="">
                             </div>
@@ -508,11 +517,7 @@
                             </div>
                             <a class="service-btn-2 wow fadeInUp" data-wow-delay="0.6s">
                                 <span class="icon-wrapper">
-                                    <svg width="44"
-                                         height="44"
-                                         viewBox="0 0 44 44"
-                                         fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12.832 31.1663L31.1654 12.833" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         <path d="M12.832 12.833H31.1654V31.1663" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
@@ -522,8 +527,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="shop-card style-6 wow fadeInUp" data-wow-delay="0.8s">
                                         <div class="dz-media">
-                                            <img src="{% static 'pixio/images/shop/product/medium/1.png' %}"
-                                                 alt="image">
+                                            <img src="{% static 'pixio/images/shop/product/medium/1.png' %}" alt="image">
                                         </div>
                                         <div class="dz-content">
                                             <a class="btn btn-outline-secondary btn-light btn-md">Child Fashion</a>
@@ -533,8 +537,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="shop-card style-6 wow fadeInUp" data-wow-delay="1.0s">
                                         <div class="dz-media">
-                                            <img src="{% static 'pixio/images/shop/product/medium/2.png' %}"
-                                                 alt="image">
+                                            <img src="{% static 'pixio/images/shop/product/medium/2.png' %}" alt="image">
                                         </div>
                                         <div class="dz-content">
                                             <a class="btn btn-outline-secondary btn-light btn-md">Man collection</a>
@@ -561,11 +564,7 @@
                         <h2 class="title">Jacket</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -573,11 +572,7 @@
                         <h2 class="title">Jeans</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -585,11 +580,7 @@
                         <h2 class="title">Shirts</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -597,11 +588,7 @@
                         <h2 class="title">Shorts</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -609,11 +596,7 @@
                         <h2 class="title">t-shirt</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -621,11 +604,7 @@
                         <h2 class="title">Blazer</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -633,11 +612,7 @@
                         <h2 class="title">Jacket</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -645,11 +620,7 @@
                         <h2 class="title">Jeans</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -657,11 +628,7 @@
                         <h2 class="title">Shirts</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -669,11 +636,7 @@
                         <h2 class="title">Shorts</h2>
                     </li>
                     <li class="item">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="61"
-                             height="60"
-                             viewBox="0 0 61 60"
-                             fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                             <path opacity="0.3" d="M29.302 -0.00499268L38.533 21.2005L60.3307 28.9297L39.1253 38.1607L31.396 59.9585L22.165 38.753L0.367297 31.0237L21.5728 21.7928L29.302 -0.00499268Z" fill="black" />
                         </svg>
                     </li>
@@ -681,15 +644,16 @@
             </div>
         </section>
         <!-- Dz Silder End-->
-        {% partial products-preview-section %}
+        {% endcomment %}
+        {% partial popular-products-section %}
+        {% comment %}
         <!-- Collection Section Start -->
         <section class=" adv-area">
             <div class="container-fluid px-0">
                 <div class="row product-style2 g-0">
                     <div class="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="product-box style-4">
-                            <div class="product-media"
-                                 style="background-image: url('{% static 'pixio/images/shop/large/product1.png' %}')">
+                            <div class="product-media" style="background-image: url('{% static 'pixio/images/shop/large/product1.png' %}')">
                             </div>
                             <div class="sale-box">
                                 <div class="badge style-1 mb-1">Sale Up to 50% Off</div>
@@ -702,8 +666,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="product-box style-4">
-                            <div class="product-media"
-                                 style="background-image: url('{% static 'pixio/images/shop/large/product2.png' %}')">
+                            <div class="product-media" style="background-image: url('{% static 'pixio/images/shop/large/product2.png' %}')">
                             </div>
                             <div class="product-content">
                                 <div class="main-content">
@@ -719,6 +682,7 @@
         </section>
         <!-- Collection Section End-->
         <!-- collection-bx -->
+        {% endcomment %}
         <div class="modal quick-view-modal fade"
              id="productModal"
              tabindex="-1"

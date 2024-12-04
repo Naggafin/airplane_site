@@ -6,7 +6,7 @@
         <div class="container-fluid clearfix d-lg-flex d-block">
             <!-- Website Logo -->
             <div class="logo-header logo-dark me-md-5">
-                <a href="{% url 'index' %}">
+                <a href="{% url 'pixio:index' %}">
                     <img src="{% static 'images/logo.svg' %}" alt="{% trans 'logo' %}">
                 </a>
             </div>
@@ -26,22 +26,22 @@
             <div class="header-nav w3menu navbar-collapse collapse justify-content-start"
                  id="navbarNavDropdown">
                 <div class="logo-header logo-dark">
-                    <a href="{% url 'index' %}">
+                    <a href="{% url 'pixio:index' %}">
                         <img src="{% static 'images/logo.svg' %}" alt="{% trans 'logo' %}">
                     </a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="auto-width menu-left">
-                        <a href="{% url 'index' %}"><span>{% trans 'Home' %}</span></a>
+                        <a href="{% url 'pixio:index' %}"><span>{% trans 'Home' %}</span></a>
                     </li>
                     <li>
                         <a href="{% url 'catalogue:index' %}"><span>{% trans 'Shop' %}</span></a>
                     </li>
                     <li>
-                        <a href="{% url 'about-us' %}"><span>{% trans 'About Us' %}</span></a>
+                        <a href="{% url 'pixio:about-us' %}"><span>{% trans 'About Us' %}</span></a>
                     </li>
                     <li>
-                        <a href="{% url 'contact-us' %}"><span>{% trans 'Contact Us' %}</span></a>
+                        <a href="{% url 'pixio:contact-us' %}"><span>{% trans 'Contact Us' %}</span></a>
                     </li>
                     {% if not request.user.is_authenticated %}
                         <li>
@@ -198,7 +198,8 @@
             <div class="input-group search-input">
                 <select name="selected_facets" class="default-select">
                     <option value="">{% trans 'All Categories' %}</option>
-                    {% for category, info in category_tree %}
+                    {% category_tree as tree_categories %}
+                    {% for category, info in tree_categories %}
                         {% if info.has_children %}
                             <optgroup label="{{ category.name|capfirst }}">
                                 <option value="productcategory:{{ category.pk }}">{% trans 'All' %} {{ category.name|capfirst }}</option>
@@ -222,7 +223,7 @@
                 </li>
                 {% for category in popular_categories %}
                     <li>
-                        <a href="{% url 'catalogue:category' category.slug %}">{{ category.name|capfirst }}</a>
+                        <a href="{{ category.get_absolute_url }}">{{ category.name|capfirst }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -293,12 +294,7 @@
                                 type="button"
                                 role="tab"
                                 aria-controls="wishlist-pane"
-                                aria-selected="false">
-                            {% trans 'Wishlist' %}
-                            {% with wishlist|length as total %}
-                                {% if total > 0 %}<span class="badge badge-light">{{ total }}</span>{% endif %}
-                            {% endwith %}
-                        </button>
+                                aria-selected="false">{% trans 'Wishlists' %}</button>
                     </li>
                 </ul>
                 <div class="tab-content pt-4" id="dz-shopcart-sidebar">
@@ -339,7 +335,7 @@
                             </ul>
                             <div class="cart-total">
                                 <h5 class="mb-0">{% trans 'Subtotal' %}:</h5>
-                                <h5 class="mb-0">{{ shopping_cart_total|currency:session.price.currency }}</h5>
+                                <h5 class="mb-0">{{ shopping_cart_total|currency }}</h5>
                             </div>
                             <div class="mt-auto">
                                 {% comment %}
@@ -396,7 +392,7 @@
                                 {% endfor %}
                             </ul>
                             <div class="mt-auto">
-                                <a href="{% url 'wishlist' %}" class="btn btn-secondary btn-block">{% trans 'View All Wishlists' %}</a>
+                                <a href="#TODO" class="btn btn-secondary btn-block">{% trans 'View All Wishlists' %}</a>
                             </div>
                         </div>
                     </div>

@@ -1161,15 +1161,15 @@ var Pixio = function () {
 			// handlePointerEffect();
 			handleColorFilter();
 			handleLightgallery();
-			handleOpenModal();
-			//handleSupport();
+			// handleOpenModal();
+			// handleSupport();
 			menuHover();
 			wishlistBtn();
 			navScroller();
 			handleMagnifyGallery();
 			handleMultiScroll();
 			handleTextChar();
-			handleOpenModalCookie();
+			// handleOpenModalCookie();
 		},
 
 		load: function () {
@@ -1177,7 +1177,7 @@ var Pixio = function () {
 			masonryBox();
 			handleMultipleImageSize();
 			handleIsotope();
-			handleOpenModal();
+			// handleOpenModal();
 			jQuery('.modal').on('show.bs.modal', reposition);
 		},
 
