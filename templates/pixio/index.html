@@ -240,7 +240,7 @@
 {% endpartialdef %}
 {% partialdef product-modal %}
 {% purchase_info_for_product request product as session %}
-<div class="modal fade">
+<div class="modal quick-view-modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <button type="button"
@@ -259,7 +259,7 @@
                                 <div class="swiper quick-modal-swiper2">
                                     <div class="swiper-wrapper" id="lightgallery">
                                         {% for image in product.images.all %}
-                                            {% oscar_thumbnail image "1500x1500" as thumb %}
+                                            {% oscar_thumbnail image.original "1500x1500" as thumb %}
                                             <div class="swiper-slide">
                                                 <div class="dz-media DZoomImage">
                                                     <a class="mfp-link lg-item"
@@ -305,9 +305,17 @@
                                                     </li>
                                                 {% endfor %}
                                             </ul>
-                                            <span class="text-secondary me-2">{% blocktrans with rating=product.rating %}{{ rating }} Rating{% endblocktrans %}</span>
+                                            <span class="text-secondary me-2">
+                                                {% if product.rating %}
+                                                    {% blocktrans with rating=product.rating %}{{ rating }} Rating{% endblocktrans %}
+                                                {% else %}
+                                                    {% trans 'Unrated' %}
+                                                {% endif %}
+                                            </span>
                                             {# TODO: anchor to product reviews #}
-                                            <a href="javascript:void(0);">{% blocktrans with num=product.num_approved_reviews %}({{ num }} customer reviews){% endblocktrans %}</a>
+                                            <a href="javascript:void(0);">
+                                                {% blocktrans with num=product.num_approved_reviews %}({{ num }} customer reviews){% endblocktrans %}
+                                            </a>
                                         </div>
                                     {% endiffeature %}
                                 </div>
@@ -363,9 +371,8 @@
                                     </li>
                                     {% for category in product.categories.all %}
                                         <li>
-                                            <a>{{ category|capfirst }}
-                                                {% if not forloop.last %},{% endif %}
-                                            </a>
+                                            <a>{{ category|capfirst }}</a>
+                                            {% if not forloop.last %}<br>{% endif %}
                                         </li>
                                     {% empty %}
                                         <li>{% trans 'Uncategorized' %}</li>
@@ -430,7 +437,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endpartialdef %}
 {% block content %}
