@@ -9,7 +9,7 @@ class ProductDetailView(CoreProductDetailView):
 
 	def get_template_names(self):
 		if self.request.htmx:
-			return ["pixio/index.html#productModal"]
+			return ["pixio/index.html#product-modal"]
 		return super().get_template_names()
 
 

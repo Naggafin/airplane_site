@@ -5,6 +5,7 @@
 {% load image_tags %}
 {% load reviews_tags %}
 {% load partials %}
+{% load product_tags %}
 {% load purchase_info_tags %}
 {% load currency_filters %}
 {% block additional_css %}{% endblock %}
@@ -230,44 +231,7 @@
         <div class="clearfix">
             <ul id="masonry" class="row g-xl-4 g-3">
                 {% for product in popular_products %}
-                    {% purchase_info_for_product request product as session %}
-                    <li class="card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp"
-                        data-wow-delay="0.6s">
-                        <div class="shop-card">
-                            <div class="dz-media">
-                                {% with image=product.primary_image %}
-                                    {% oscar_thumbnail image.original "450x600" as thumb %}
-                                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
-                                {% endwith %}
-                                <div class="shop-meta">
-                                    <a href="javascript:void(0);"
-                                       class="btn btn-secondary btn-md btn-rounded"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#exampleModal">
-                                        <i class="fa-solid fa-eye d-md-none d-block"></i>
-                                        <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
-                                    </a>
-                                    <div class="btn btn-primary meta-icon dz-wishicon">
-                                        <i class="icon feather icon-heart dz-heart"></i>
-                                        <i class="icon feather icon-heart-on dz-heart-fill"></i>
-                                    </div>
-                                    <div class="btn btn-primary meta-icon dz-carticon">
-                                        <i class="flaticon flaticon-basket"></i>
-                                        <i class="flaticon flaticon-basket-on dz-heart-fill"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dz-content">
-                                <h5 class="title">
-                                    <a>{{ product.get_title }}</a>
-                                </h5>
-                                <h5 class="price">{{ session.price.excl_tax|currency:session.price.currency }}</h5>
-                            </div>
-                            <div class="product-tag">
-                                <!-- TODO <span class="badge ">Get 20% Off</span> -->
-                            </div>
-                        </div>
-                    </li>
+                    {% render_product product %}
                 {% endfor %}
             </ul>
         </div>
@@ -280,7 +244,7 @@
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close">
+                aria-label="{% trans 'Close' %}">
             <i class="icon feather icon-x"></i>
         </button>
         <div class="modal-body">

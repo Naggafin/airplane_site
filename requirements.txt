@@ -1,3 +1,4 @@
+cachetools
 coverage
 django
 django-allauth
@@ -6,6 +7,7 @@ django-debug-toolbar
 django-fastdev
 django-filter
 django-guardian
+git+https://www.github.com/Naggafin/django-htmx-utils.git
 django-oscar
 django-redis
 django-taggit

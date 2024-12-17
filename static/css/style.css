@@ -1,0 +1,44 @@
+.shop-card {
+  min-width: 450px;
+  min-height: 600px;
+  max-width: 450px;
+  max-height: 600px;
+}
+.shop-card .product-reviews {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+@media only screen and (max-width: 575px) {
+  .shop-card .product-reviws {
+    bottom: 10px;
+    left: 10px;
+  }
+}
+
+.star-rating {
+  color: var(--bs-gray-400);
+}
+.star-rating i {
+  letter-spacing: -1px;
+  width: auto;
+}
+.star-rating.One i:first-child {
+  color: var(--bs-primary);
+}
+.star-rating.Two i:first-child, .star-rating.Two i:first-child + i {
+  color: var(--bs-primary);
+}
+.star-rating.Three i:first-child, .star-rating.Three i:first-child + i, .star-rating.Three i:first-child + i + i {
+  color: var(--bs-primary);
+}
+.star-rating.Four i:first-child, .star-rating.Four i:first-child + i, .star-rating.Four i:first-child + i + i, .star-rating.Four i:first-child + i + i + i {
+  color: var(--bs-primary);
+}
+.star-rating.Five i {
+  color: var(--bs-primary);
+}

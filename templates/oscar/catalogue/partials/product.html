@@ -1,0 +1,128 @@
+{% load i18n partials %}
+{% load purchase_info_tags basket_tags image_tags currency_filters %}
+{% partialdef add-to-wishlist %}
+{% endpartialdef %}
+{% partialdef remove-from-wishlist %}
+{% endpartialdef %}
+{% partialdef add-to-basket %}
+{% basket_form request product 'single' as basket_form %}
+<form action="{% url 'basket:add' pk=product.pk %}"
+      method="post"
+      hx-push-url="false"
+      hx-swap="outerHTML"
+      hx-boost="true"
+      x-data="{submitting: false}"
+      @htmx:before-send="$data.submitting = true;"
+      @htmx:after-swap="$data.submitting = false;"
+      @htmx:response-error="console.error($event);">
+    {% csrf_token %}
+    {{ basket_form }}
+    <button type="submit"
+            class="btn btn-primary meta-icon dz-carticon"
+            :disabled="submitting">
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i>
+        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
+        <i class="flaticon flaticon-basket-on dz-heart-fill"
+           x-show="!submitting"></i>
+    </button>
+</form>
+{% endpartialdef %}
+{% partialdef remove-from-basket %}
+<form action="{% url 'basket:remove' pk=product.pk %}"
+      method="post"
+      hx-push-url="false"
+      hx-swap="outerHTML"
+      hx-boost="true"
+      x-data="{submitting: false}"
+      @htmx:before-send="$data.submitting = true;"
+      @htmx:after-swap="$data.submitting = false;"
+      @htmx:response-error="console.error($event);">
+    {% csrf_token %}
+    {{ basket_remove_form }}
+    <button type="submit"
+            class="btn btn-primary meta-icon dz-carticon"
+            :disabled="submitting">
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i>
+        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
+        <i class="flaticon flaticon-basket-on dz-heart-fill"
+           x-show="!submitting"></i>
+    </button>
+</form>
+{% endpartialdef %}
+{% block product %}
+    {% purchase_info_for_product request product as session %}
+    <li class="card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp"
+        data-wow-delay="0.6s">
+        <div class="shop-card">
+            <div class="dz-media">
+                {% with image=product.primary_image %}
+                    {% oscar_thumbnail image.original "450x600" as thumb %}
+                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="mx-auto">
+                {% endwith %}
+                <div class="shop-meta">
+                    <a href="{{ product.get_absolute_url }}"
+                       class="btn btn-secondary btn-md btn-rounded"
+                       hx-boost="true"
+                       hx-target="#modalContainer"
+                       hx-push-url="false">
+                        <i class="fa-solid fa-eye d-md-none d-block"></i>
+                        <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
+                    </a>
+                    <div class="btn btn-primary meta-icon dz-wishicon">
+                        <i class="icon feather icon-heart dz-heart"></i>
+                        <i class="icon feather icon-heart-on dz-heart-fill"></i>
+                    </div>
+                    {# TODO: if product already in wishlist, should show button to remove #}
+                    {% if session.availability.is_available_to_buy and session.price.exists %}
+                        {% partial add-to-basket %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="dz-content">
+                {% block product_title %}
+                    <h5 class="title">
+                        <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
+                    </h5>
+                {% endblock %}
+                {% block product_price %}
+                    {% if session.price.exists %}
+                        {% if session.price.excl_tax == 0 %}
+                            <h5 class="price">{% trans "Free" %}</h5>
+                        {% elif session.price.is_tax_known %}
+                            <h5 class="price">{{ session.price.incl_tax|currency:session.price.currency }}</h5>
+                        {% else %}
+                            <h5 class="price">{{ session.price.excl_tax|currency:session.price.currency }}</h5>
+                        {% endif %}
+                    {% else %}
+                        <h5 class="price">&nbsp;</h5>
+                    {% endif %}
+                {% endblock %}
+            </div>
+            <div class="product-tag">
+                {% block product_availability %}
+                    {% if not session.price.exists or not session.availability.is_available_to_buy %}
+                        <span class="badge ">{% trans 'Unavailable' %}</span>
+                    {% endif %}
+                {% endblock %}
+                <!-- TODO <span class="badge ">Get 20% Off</span> -->
+            </div>
+            {% block product_review %}
+                {% iffeature "reviews" %}
+                <div class="product-reviews star-rating {{ product.rating|as_stars }}">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            {% endiffeature %}
+        {% endblock %}
+    </div>
+</li>
+{% endblock %}

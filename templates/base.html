@@ -36,19 +36,36 @@
             <link rel="stylesheet"
                   href="{% static 'pixio/vendor/lightgallery/dist/css/lg-zoom.css' %}">
             <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
+            <link rel="stylesheet"
+                  href="{% static 'fontawesome/css/fontawesome.min.css' %}">
+            <link rel="stylesheet" href="{% static 'fontawesome/css/brands.min.css' %}">
+            <link rel="stylesheet" href="{% static 'fontawesome/css/solid.min.css' %}">
+            <link rel="stylesheet" href="{% static 'css/style.css' %}">
         {% endblock %}
         <!-- GOOGLE FONTS-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
               rel="stylesheet">
+        {% block global_js %}
+            <script src="{% static 'js/main.js' %}"></script>
+            <script src="{% static 'js/htmx.min.js' %}" defer="true"></script>
+            <script src="{% static 'js/alpine.min.js' %}" defer="true"></script>
+        {% endblock %}
     </head>
-    <body>
+    <body x-data="{showScrollToTop: false}">
         <div class="page-wraper">
             {% block preloader %}
                 {% include 'pixio/elements/preloader.html' %}
             {% endblock %}
+            {% block modal %}
+                <div id="modalContainer"
+                     @htmx:before-swap="if ($event.detail.target == $el) {const modalElem = $el.querySelector('#modal'); if (!!modalElem) {const modal = bootstrap.Modal.getOrCreateInstance(modalElem);modal.hide();}}"
+                     @htmx:after-swap="if ($event.detail.target == $el) {const modalElem = $el.querySelector('#modal'); const modal = bootstrap.Modal.getOrCreateInstance(modalElem);modal.show();}"
+                     x-data></div>
+            {% endblock %}
             {% block header %}
+                <div id="alerts">{% include 'pixio/elements/alert.html' %}</div>
                 {% include 'pixio/elements/header.html' %}
             {% endblock %}
             <div class="page-content bg-light">

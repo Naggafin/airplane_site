@@ -105,6 +105,7 @@ MIDDLEWARE = [
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"htmx_utils.middleware.HtmxMessagesMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
@@ -321,3 +322,9 @@ OSCAR_FROM_EMAIL = "noreply@airvehicleservices.com"
 OSCAR_BASKET_COOKIE_OPEN = "aircraft_site_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
+
+
+# django-htmx-utils
+
+HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "pixio/elements/alert.html"
+HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alert"
