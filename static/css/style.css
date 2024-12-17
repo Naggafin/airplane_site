@@ -1,10 +1,12 @@
+/* TODO
 .shop-card {
   min-width: 450px;
   min-height: 600px;
   max-width: 450px;
   max-height: 600px;
 }
-.shop-card .product-reviews {
+*/
+.shop-card .product-rating {
   position: absolute;
   bottom: 20px;
   left: 20px;
@@ -14,7 +16,7 @@
   justify-content: space-between;
 }
 @media only screen and (max-width: 575px) {
-  .shop-card .product-reviws {
+  .shop-card .product-rating {
     bottom: 10px;
     left: 10px;
   }
@@ -41,4 +43,19 @@
 }
 .star-rating.Five i {
   color: var(--bs-primary);
+}
+
+.htmx-indicator {
+  display: none;
+}
+.htmx-request>.htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: inline;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+/* alpinejs cloak property; prevents items from being displayed before alpinejs was able to load fully */
+[x-cloak] {
+  display: none !important;
 }

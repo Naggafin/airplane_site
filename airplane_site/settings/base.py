@@ -95,6 +95,8 @@ INSTALLED_APPS = [
 	"sorl.thumbnail",
 	"django_tables2",
 	"template_partials",
+	"django_htmx",
+	"django_user_agents",
 ]
 
 SITE_ID = 1
@@ -105,12 +107,14 @@ MIDDLEWARE = [
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"django_htmx.middleware.HtmxMiddleware",
 	"htmx_utils.middleware.HtmxMessagesMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
 	"oscar.apps.basket.middleware.BasketMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
+	"django_user_agents.middleware.UserAgentMiddleware",
 ]
 
 ROOT_URLCONF = "airplane_site.urls"
@@ -131,6 +135,9 @@ TEMPLATES = [
 				"oscar.apps.communication.notifications.context_processors.notifications",
 				"oscar.core.context_processors.metadata",
 				"airplane_site.context.populate_products",
+			],
+			"builtins": [
+				"django_extensions.templatetags.misc",
 			],
 		},
 	},

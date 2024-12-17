@@ -10,6 +10,7 @@ from .base import *  # noqa: F403
 DEBUG = True
 SECRET_KEY = "django-insecure--xzwi*2w$a$qe7g+01_fzh%_&i03@8$!t6idzd%o%_acdo*9&m"
 ALLOWED_HOSTS = ["*"]
+INTERNAL_IPS = ["*", "127.0.0.1", "localhost"]
 
 INSTALLED_APPS.append("django_fastdev")  # noqa: F405
 

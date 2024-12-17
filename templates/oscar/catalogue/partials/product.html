@@ -110,19 +110,21 @@
                         <span class="badge ">{% trans 'Unavailable' %}</span>
                     {% endif %}
                 {% endblock %}
-                <!-- TODO <span class="badge ">Get 20% Off</span> -->
+                {# TODO <span class="badge ">Get 20% Off</span> #}
             </div>
-            {% block product_review %}
+            {% comment %}
+            <div class="product-rating">
+            {% block product_rating %}
                 {% iffeature "reviews" %}
-                <div class="product-reviews star-rating {{ product.rating|as_stars }}">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-            {% endiffeature %}
-        {% endblock %}
-    </div>
-</li>
+                    {% for i in 5|range %}
+                    <li {% if i <= product.rating %}class="star-fill"{% endif %}>
+                        <i class="flaticon-star-1"></i>
+                    </li>
+                    {% endfor %}
+	            {% endiffeature %}
+	        {% endblock %}
+			</div>
+            {% endcomment %}
+        </div>
+    </li>
 {% endblock %}

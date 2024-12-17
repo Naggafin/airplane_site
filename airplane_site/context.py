@@ -11,7 +11,11 @@ _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 
 # TODO
 def populate_products(request):
-	products = list(Product.objects.all())
+	products = list(
+		Product.objects.all()
+		.select_related("parent", "product_class")
+		.prefetch_related("images", "stockrecords")
+	)
 	categories = list(Category.objects.all())
 	return {
 		"top_products": random.sample(products, 5),

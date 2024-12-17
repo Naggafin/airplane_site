@@ -840,6 +840,7 @@ var Pixio = function () {
 	}
 
 	var handleOpenModal = function () {
+		console.trace("Stack trace:");
 
 		var modalBox = `<div class="modal fade inquiry-modal style-1" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog" role="document">

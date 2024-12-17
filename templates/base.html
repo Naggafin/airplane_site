@@ -1,4 +1,4 @@
-{% load static %}
+{% load static django_htmx %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -35,11 +35,14 @@
                   href="{% static 'pixio/vendor/lightgallery/dist/css/lg-thumbnail.css' %}">
             <link rel="stylesheet"
                   href="{% static 'pixio/vendor/lightgallery/dist/css/lg-zoom.css' %}">
-            <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
             <link rel="stylesheet"
-                  href="{% static 'fontawesome/css/fontawesome.min.css' %}">
+                  href="{% static 'pixio/vendor/magnific-popup/magnific-popup.min.css' %}">
+            <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
+            {% comment %}
+            <link rel="stylesheet" href="{% static 'fontawesome/css/fontawesome.min.css' %}">
             <link rel="stylesheet" href="{% static 'fontawesome/css/brands.min.css' %}">
             <link rel="stylesheet" href="{% static 'fontawesome/css/solid.min.css' %}">
+            {% endcomment %}
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
         {% endblock %}
         <!-- GOOGLE FONTS-->
@@ -48,12 +51,21 @@
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@100;300;400;500;700;900&display=swap"
               rel="stylesheet">
         {% block global_js %}
+            {% if debug and not request.user_agent.is_pc %}
+                <script src="{% static 'js/eruda.js' %}"></script>
+                <script src="{% static 'js/eruda-code.js' %}"></script>
+                <script type="text/javascript">
+					eruda.add(erudaCode);
+					eruda.init();
+                </script>
+            {% endif %}
             <script src="{% static 'js/main.js' %}"></script>
             <script src="{% static 'js/htmx.min.js' %}" defer="true"></script>
             <script src="{% static 'js/alpine.min.js' %}" defer="true"></script>
+            {% django_htmx_script %}
         {% endblock %}
     </head>
-    <body x-data="{showScrollToTop: false}">
+    <body>
         <div class="page-wraper">
             {% block preloader %}
                 {% include 'pixio/elements/preloader.html' %}
@@ -98,6 +110,7 @@
             <script src="{% static 'pixio/vendor/countdown/jquery.countdown.js' %}"></script>
             <script src="{% static 'pixio/vendor/wnumb/wNumb.js' %}"></script>
             <script src="{% static 'pixio/vendor/nouislider/nouislider.min.js' %}"></script>
+            <script src="{% static 'pixio/vendor/magnific-popup/magnific-popup.min.js' %}"></script>
             <script src="{% static 'pixio/js/dz.carousel.js' %}"></script>
             <script src="{% static 'pixio/js/dz.ajax.js' %}"></script>
             <script src="{% static 'pixio/js/custom.js' %}"></script>
