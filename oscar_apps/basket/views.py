@@ -1,5 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.utils.translation import gettext_lazy as _
+from django_htmx.http import trigger_client_event
 from htmx_utils.views import HtmxActionView
 from oscar.apps.basket.utils import BasketMessageGenerator
 from oscar.apps.basket.views import (
@@ -17,11 +20,6 @@ class BasketView(CoreBasketView):
 
 
 class BasketAddView(CoreBasketAddView):
-	def get_template_names(self):
-		if self.request.htmx:
-			return ["oscar/catalogue/partials/product.html#remove-from-basket"]
-		return super().get_template_names()
-
 	def form_valid(self, form):
 		offers_before = self.request.basket.applied_offers()
 
@@ -45,7 +43,27 @@ class BasketAddView(CoreBasketAddView):
 			request=self.request,
 		)
 
+		if self.request.htmx:
+			context = {"product": form.product}
+			return render(
+				self.request,
+				"oscar/catalogue/partials/product.html#remove-from-basket",
+				context,
+			)
 		return super().form_valid(form)
+
+	def form_invalid(self, form):
+		if self.request.htmx:
+			message = _(
+				"A problem occurred while trying to add the product to your cart. Try again later."
+			)
+			response = trigger_client_event(
+				HttpResponse(),
+				"showMessage",
+				message,
+			)
+			return response
+		return super().form_invalid(form)
 
 
 class BasketRemoveView(HtmxActionView):

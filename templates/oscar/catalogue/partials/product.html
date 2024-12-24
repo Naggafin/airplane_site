@@ -1,6 +1,10 @@
 {% load i18n partials %}
 {% load purchase_info_tags basket_tags image_tags currency_filters %}
 {% partialdef add-to-wishlist %}
+<div class="btn btn-primary meta-icon dz-wishicon">
+    <i class="icon feather icon-heart dz-heart"></i>
+    <i class="icon feather icon-heart-on dz-heart-fill"></i>
+</div>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
 {% endpartialdef %}
@@ -24,9 +28,9 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
-        <i class="flaticon flaticon-basket-on dz-heart-fill"
-           x-show="!submitting"></i>
+        {# <i class="flaticon flaticon-basket" x-show="!submitting"></i> #}
+        {# <i class="flaticon flaticon-basket-on dz-heart-fill"
+    x-show="!submitting"></i> #}
     </button>
 </form>
 {% endpartialdef %}
@@ -41,7 +45,6 @@
       @htmx:after-swap="$data.submitting = false;"
       @htmx:response-error="console.error($event);">
     {% csrf_token %}
-    {{ basket_remove_form }}
     <button type="submit"
             class="btn btn-primary meta-icon dz-carticon"
             :disabled="submitting">
@@ -49,8 +52,8 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
-        <i class="flaticon flaticon-basket-on dz-heart-fill"
+        <i class="icon feather icon-trash-2" x-show="!submitting"></i>
+        <i class="icon feather icon-trash-2-on dz-heart-fill"
            x-show="!submitting"></i>
     </button>
 </form>
@@ -74,10 +77,7 @@
                         <i class="fa-solid fa-eye d-md-none d-block"></i>
                         <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                     </a>
-                    <div class="btn btn-primary meta-icon dz-wishicon">
-                        <i class="icon feather icon-heart dz-heart"></i>
-                        <i class="icon feather icon-heart-on dz-heart-fill"></i>
-                    </div>
+                    {% partial add-to-wishlist %}
                     {# TODO: if product already in wishlist, should show button to remove #}
                     {% if session.availability.is_available_to_buy and session.price.exists %}
                         {% partial add-to-basket %}

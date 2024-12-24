@@ -119,11 +119,11 @@
         "pk": 2,
         "model": "offer.benefit",
         "fields": {
-            "range": null,
-            "proxy_class": "apps.offers.ChangesOwnerName",
-            "type": "",
+            "range": 1,
+            "proxy_class": null,
+            "type": "Percentage",
             "max_affected_items": null,
-            "value": null
+            "value": "10.0"
         }
     },
     {
