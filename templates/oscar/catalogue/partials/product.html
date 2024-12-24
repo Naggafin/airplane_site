@@ -12,13 +12,14 @@
 {% basket_form request product 'single' as basket_form %}
 <form action="{% url 'basket:add' pk=product.pk %}"
       method="post"
-      hx-push-url="false"
-      hx-swap="outerHTML"
+      hx-swap="outerHTML show:none"
       hx-boost="true"
-      x-data="{submitting: false}"
-      @htmx:before-send="$data.submitting = true;"
-      @htmx:after-swap="$data.submitting = false;"
-      @htmx:response-error="console.error($event);">
+      hx-target="this"
+      hx-push-url="false"
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
     {% csrf_token %}
     {{ basket_form }}
     <button type="submit"
@@ -28,22 +29,23 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        {# <i class="flaticon flaticon-basket" x-show="!submitting"></i> #}
-        {# <i class="flaticon flaticon-basket-on dz-heart-fill"
-    x-show="!submitting"></i> #}
+        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
+        <i class="flaticon flaticon-basket-on dz-heart-fill"
+           x-show="!submitting"></i>
     </button>
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-basket %}
 <form action="{% url 'basket:remove' pk=product.pk %}"
       method="post"
-      hx-push-url="false"
-      hx-swap="outerHTML"
+      hx-swap="outerHTML show:none"
       hx-boost="true"
-      x-data="{submitting: false}"
-      @htmx:before-send="$data.submitting = true;"
-      @htmx:after-swap="$data.submitting = false;"
-      @htmx:response-error="console.error($event);">
+      hx-target="this"
+      hx-push-url="false"
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
     {% csrf_token %}
     <button type="submit"
             class="btn btn-primary meta-icon dz-carticon"
@@ -78,8 +80,9 @@
                         <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                     </a>
                     {% partial add-to-wishlist %}
-                    {# TODO: if product already in wishlist, should show button to remove #}
-                    {% if session.availability.is_available_to_buy and session.price.exists %}
+                    {% if product|is_in_basket:request %}
+                        {% partial remove-from-basket %}
+                    {% elif session.availability.is_available_to_buy and session.price.exists %}
                         {% partial add-to-basket %}
                     {% endif %}
                 </div>

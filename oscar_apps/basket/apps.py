@@ -15,7 +15,7 @@ class BasketConfig(apps.BasketConfig):
 		urls = [
 			path("", self.summary_view.as_view(), name="summary"),
 			path("add/<int:pk>/", self.add_view.as_view(), name="add"),
-			path("remove/<int:pk>/", self.add_view.as_view(), name="remove"),
+			path("remove/<int:pk>/", self.remove_view.as_view(), name="remove"),
 			path("vouchers/add/", self.add_voucher_view.as_view(), name="vouchers-add"),
 			path(
 				"vouchers/<int:pk>/remove/",

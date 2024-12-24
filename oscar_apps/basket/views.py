@@ -1,9 +1,11 @@
+from http import HTTPStatus
+
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import trigger_client_event
-from htmx_utils.views import HtmxActionView
+from htmx_utils.views import HtmxModelActionView
 from oscar.apps.basket.utils import BasketMessageGenerator
 from oscar.apps.basket.views import (
 	BasketAddView as CoreBasketAddView,
@@ -45,11 +47,12 @@ class BasketAddView(CoreBasketAddView):
 
 		if self.request.htmx:
 			context = {"product": form.product}
-			return render(
+			response = render(
 				self.request,
 				"oscar/catalogue/partials/product.html#remove-from-basket",
 				context,
 			)
+			return response
 		return super().form_valid(form)
 
 	def form_invalid(self, form):
@@ -58,7 +61,7 @@ class BasketAddView(CoreBasketAddView):
 				"A problem occurred while trying to add the product to your cart. Try again later."
 			)
 			response = trigger_client_event(
-				HttpResponse(),
+				HttpResponse(status=HTTPStatus.NO_CONTENT),
 				"showMessage",
 				message,
 			)
@@ -66,16 +69,22 @@ class BasketAddView(CoreBasketAddView):
 		return super().form_invalid(form)
 
 
-class BasketRemoveView(HtmxActionView):
+class BasketRemoveView(HtmxModelActionView):
+	model = Product
 	action_class = BasketRemoveAction
 
-	def get_template_names(self, action):
+	def get_template_names(self):
 		return ["oscar/catalogue/partials/product.html#add-to-basket"]
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
-		kwargs["product"] = get_object_or_404(Product, pk=self.kwargs["pk"])
+		kwargs["product"] = self.object
 		return kwargs
 
 	def get_success_url(self):
 		return self.request.path
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["product"] = self.object
+		return context

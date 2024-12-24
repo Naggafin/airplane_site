@@ -5,8 +5,8 @@ from htmx_utils import Action
 
 class BasketRemoveAction(Action):
 	def action(self, product):
-		basket = self.request.user.basket
-		num = basket.lines.filter(product=product).delete()
+		basket = self.request.basket
+		num = basket.lines.filter(product=product).delete()[0]
 		message = ngettext_lazy(
 			"<strong>%(title)s</strong> has been added to your removed.",
 			"<strong>%(quantity)d</strong> copies of <strong>%(title)s</strong> have been removed to your basket.",

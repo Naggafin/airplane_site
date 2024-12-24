@@ -17,7 +17,9 @@
         <!-- PAGE TITLE HERE -->
         <title>TODO</title>
         <!-- FAVICONS ICON -->
-        <link rel="shortcut icon" type="image/png" href="TODO" />
+        <link rel="shortcut icon"
+              type="image/png"
+              href="{% static 'images/favicon.png' %}" />
         <!-- Custom Stylesheet -->
         {% block additional_css %}{% endblock %}
         {% block global_css %}
@@ -38,8 +40,6 @@
             <link rel="stylesheet"
                   href="{% static 'pixio/vendor/magnific-popup/magnific-popup.min.css' %}">
             <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
-            {# <link rel="stylesheet"
-       href="{% static 'pixio/icons/fontawesome/css/all.min.css' %}"> #}
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
         {% endblock %}
         <!-- GOOGLE FONTS-->
@@ -79,7 +79,6 @@
                      x-data></div>
             {% endblock %}
             {% block header %}
-                <div id="alerts">{% include 'pixio/elements/alert.html' %}</div>
                 {% include 'pixio/elements/header.html' %}
             {% endblock %}
             <div class="page-content bg-light">
