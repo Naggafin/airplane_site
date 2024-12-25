@@ -1,12 +1,55 @@
 {% load i18n partials %}
 {% load purchase_info_tags basket_tags image_tags currency_filters %}
 {% partialdef add-to-wishlist %}
-<div class="btn btn-primary meta-icon dz-wishicon">
-    <i class="icon feather icon-heart dz-heart"></i>
-    <i class="icon feather icon-heart-on dz-heart-fill"></i>
-</div>
+<form id="add_to_wishlist_form"
+      action="{% url 'customer:wishlists-add-product' product_pk=product.pk %}"
+      method="post"
+      hx-swap="outerHTML show:none"
+      hx-boost="true"
+      hx-target="this"
+      hx-push-url="false"
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
+    {% csrf_token %}
+    <button type="submit"
+            class="btn btn-primary meta-icon dz-wishicon"
+            :disabled="submitting">
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i>
+        <i class="icon feather icon-heart dz-heart" x-show="!submitting"></i>
+        <i class="icon feather icon-heart-on dz-heart-fill" x-show="!submitting"></i>
+    </button>
+</form>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
+<form id="add_to_wishlist_form"
+      action="{% url 'customer:wishlists-remove-product' key=wishlist.pk product_pk=product.pk %}"
+      method="post"
+      hx-swap="outerHTML show:none"
+      hx-boost="true"
+      hx-target="this"
+      hx-push-url="false"
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
+    {% csrf_token %}
+    <button type="submit"
+            class="btn btn-primary meta-icon dz-wishicon"
+            :disabled="submitting">
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i>
+        <i class="flaticon flaticon-broken-heart" x-show="!submitting"></i>
+        <i class="flaticon flaticon-broken-heart-on dz-heart-fill"
+           x-show="!submitting"></i>
+    </button>
+</form>
 {% endpartialdef %}
 {% partialdef add-to-basket %}
 {% basket_form request product 'single' as basket_form %}

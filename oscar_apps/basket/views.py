@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from django.contrib import messages
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +16,7 @@ from oscar.apps.basket.views import (
 from oscar_apps.catalogue.models import Product
 
 from .actions import BasketRemoveAction
+from .constants import BASKET_CACHE_KEY
 
 
 class BasketView(CoreBasketView):
@@ -28,6 +30,11 @@ class BasketAddView(CoreBasketAddView):
 		self.request.basket.add_product(
 			form.product, form.cleaned_data["quantity"], form.cleaned_options()
 		)
+
+		# clear basket cache since it has changed
+		basket = self.request.basket
+		cache_key = BASKET_CACHE_KEY % basket.pk
+		cache.delete(cache_key)
 
 		if not self.request.htmx:
 			messages.success(
@@ -83,6 +90,13 @@ class BasketRemoveView(HtmxModelActionView):
 
 	def get_success_url(self):
 		return self.request.path
+
+	def action_valid(self, action):
+		# clear basket cache since it has changed
+		basket = self.request.basket
+		cache_key = BASKET_CACHE_KEY % basket.pk
+		cache.delete(cache_key)
+		return super().action_valid(action)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
