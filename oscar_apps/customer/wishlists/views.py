@@ -1,4 +1,4 @@
-from htmx_utils.view import HtmxActionView, HtmxModelActionView
+from htmx_utils.views import HtmxActionView, HtmxModelActionView
 from oscar.apps.customer.wishlists.views import (
 	WishListAddProduct as CoreWishListAddProduct,
 	WishListListView as CoreWishListListView,
@@ -15,6 +15,7 @@ class WishListListView(CoreWishListListView):
 
 class WishListAddProduct(HtmxModelActionView, CoreWishListAddProduct):
 	model = Product
+	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
 
 	def get_template_names(self):
@@ -30,12 +31,6 @@ class WishListAddProduct(HtmxModelActionView, CoreWishListAddProduct):
 
 	def get_success_url(self):
 		return self.request.path
-
-	def action_valid(self, action):
-		# clear basket cache since it has changed
-		# cache_key = BASKET_CACHE_KEY % basket.pk
-		# cache.delete(cache_key)
-		return super().action_valid(action)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -58,19 +53,13 @@ class WishListRemoveProduct(HtmxActionView):
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
-		kwargs["wishlist_key"] = (self.kwargs["key"],)
+		kwargs["wishlist_key"] = self.kwargs["key"]
 		kwargs["line_pk"] = self.kwargs.get("line_pk")
 		kwargs["product_pk"] = self.kwargs.get("product_pk")
 		return kwargs
 
 	def get_success_url(self):
 		return self.request.path
-
-	def action_valid(self, action):
-		# clear basket cache since it has changed
-		# cache_key = BASKET_CACHE_KEY % basket.pk
-		# cache.delete(cache_key)
-		return super().action_valid(action)
 
 	def get_context_data(self, action, **kwargs):
 		context = super().get_context_data(**kwargs)

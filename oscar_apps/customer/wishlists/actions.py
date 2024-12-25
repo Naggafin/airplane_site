@@ -4,8 +4,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from htmx_utils import Action
-
-from oscar_apps.wishlists.models import Line
+from oscar.apps.wishlists.models import Line
 
 
 class WishlistAddProductAction(Action):
@@ -34,7 +33,7 @@ class WishlistRemoveProductAction(Action):
 			line = get_object_or_404(
 				Line,
 				pk=line_pk,
-				wishlist__owner=user,
+				wishlist__owner=user.pk,
 				wishlist__key=wishlist_key,
 			)
 		else:
@@ -42,7 +41,7 @@ class WishlistRemoveProductAction(Action):
 				line = get_object_or_404(
 					Line,
 					product_id=product_pk,
-					wishlist__owner=user,
+					wishlist__owner=user.pk,
 					wishlist__key=wishlist_key,
 				)
 			except Line.MultipleObjectsReturned as e:

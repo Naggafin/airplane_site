@@ -1,1 +1,1 @@
-BASKET_CACHE_KEY = "basket_products_%s"
+BASKET_CACHE_KEY = "user_%s_basket_products"

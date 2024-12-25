@@ -20,14 +20,16 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="icon feather icon-heart dz-heart" x-show="!submitting"></i>
-        <i class="icon feather icon-heart-on dz-heart-fill" x-show="!submitting"></i>
+        <div x-show="!submitting">
+            <i class="icon feather icon-heart dz-heart"></i>
+            <i class="icon feather icon-heart-on dz-heart-fill"></i>
+        </div>
     </button>
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
 <form id="add_to_wishlist_form"
-      action="{% url 'customer:wishlists-remove-product' key=wishlist.pk product_pk=product.pk %}"
+      action="{% url 'customer:wishlists-remove-product' key=wishlist.key product_pk=product.pk %}"
       method="post"
       hx-swap="outerHTML show:none"
       hx-boost="true"
@@ -45,9 +47,10 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="flaticon flaticon-broken-heart" x-show="!submitting"></i>
-        <i class="flaticon flaticon-broken-heart-on dz-heart-fill"
-           x-show="!submitting"></i>
+        <div x-show="!submitting">
+            <i class="fa-solid fa-heart-crack"></i>
+            <i class="fa-solid fa-heart-crack-on dz-heart-fill"></i>
+        </div>
     </button>
 </form>
 {% endpartialdef %}
@@ -72,9 +75,10 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="flaticon flaticon-basket" x-show="!submitting"></i>
-        <i class="flaticon flaticon-basket-on dz-heart-fill"
-           x-show="!submitting"></i>
+        <div x-show="!submitting">
+            <i class="flaticon flaticon-basket"></i>
+            <i class="flaticon flaticon-basket-on dz-heart-fill"></i>
+        </div>
     </button>
 </form>
 {% endpartialdef %}
@@ -97,9 +101,10 @@
            role="status"
            aria-hidden="true"
            x-show="submitting"></i>
-        <i class="icon feather icon-trash-2" x-show="!submitting"></i>
-        <i class="icon feather icon-trash-2-on dz-heart-fill"
-           x-show="!submitting"></i>
+        <div x-show="!submitting">
+            <i class="icon feather icon-trash-2"></i>
+            <i class="icon feather icon-trash-2-on dz-heart-fill"></i>
+        </div>
     </button>
 </form>
 {% endpartialdef %}
@@ -153,10 +158,10 @@
             <div class="product-tag">
                 {% block product_availability %}
                     {% if not session.price.exists or not session.availability.is_available_to_buy %}
-                        <span class="badge ">{% trans 'Unavailable' %}</span>
+                        <span class="badge border">{% trans 'Unavailable' %}</span>
                     {% endif %}
                 {% endblock %}
-                {# TODO <span class="badge ">Get 20% Off</span> #}
+                {# TODO <span class="badge border">Get 20% Off</span> #}
             </div>
             {% comment %}
             <div class="product-rating">

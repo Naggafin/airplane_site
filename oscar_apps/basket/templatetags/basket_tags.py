@@ -1,29 +1,33 @@
 from django.core.cache import cache
+from oscar.apps.basket.models import Basket
 from oscar.templatetags import basket_tags
 
 from ..constants import BASKET_CACHE_KEY
 
+CACHE_TIMEOUT = 60 * 5  # 5 minutes
+
 register = basket_tags.register
 
 
-@register.filter(needs_context=True)
+@register.filter
 def is_in_basket(product, request):
 	"""
 	Optimized template filter to check if a product is in the user's basket.
 	Caches the basket's product IDs to reduce database queries.
 	"""
-	basket = getattr(request, "basket", None)
-	if not basket:
-		return False  # If the basket is not available, return False
+	if not request.user.is_authenticated:
+		return False
 
-	# Cache key based on the user's basket ID
-	cache_key = BASKET_CACHE_KEY % basket.pk
+	user_id = request.user.pk
+	cache_key = BASKET_CACHE_KEY % user_id
 	product_ids = cache.get(cache_key)
 
 	if product_ids is None:
-		# Cache miss: Fetch product IDs from the basket lines and cache them
-		product_ids = set(basket.lines.values_list("product_id", flat=True))
-		cache.set(cache_key, product_ids, timeout=300)  # Cache for 5 minutes
+		product_ids = set(
+			Basket.objects.filter(owner=user_id).values_list(
+				"lines__product_id", flat=True
+			)
+		)
+		cache.set(cache_key, product_ids, timeout=CACHE_TIMEOUT)
 
-	# Check if the product ID is in the cached product IDs
 	return product.pk in product_ids
