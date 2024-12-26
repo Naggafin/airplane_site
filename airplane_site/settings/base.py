@@ -108,6 +108,7 @@ MIDDLEWARE = [
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django_htmx.middleware.HtmxMiddleware",
+	"htmx_utils.middleware.HtmxRedirectMiddleware",
 	"htmx_utils.middleware.HtmxMessagesMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
