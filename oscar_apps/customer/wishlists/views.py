@@ -1,13 +1,16 @@
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, reverse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, UpdateView
+from django_extensions.auth.mixins import ModelUserFieldPermissionMixin
+from django_htmx.http import reswap, retarget
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
+from htmx_utils.views.mixins import HtmxFormMixin
 
 from oscar_apps.catalogue.models import Product
+from oscar_apps.wishlists.models import Line, WishList
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
-from .models import Line, WishList
 from .utils import fetch_wishlist
 
 
@@ -62,9 +65,36 @@ class WishListAddProduct(HtmxModelActionView):
 		return context
 
 
-class WishListUpdateLine(UpdateView):
+class WishListUpdateLine(ModelUserFieldPermissionMixin, HtmxFormMixin, UpdateView):
 	model = Line
+	fields = ["quantity"]
 	pk_url_kwarg = "line_pk"
+	model_permission_user_field = "wishlist__owner"
+
+	def get(self, request, *args, **kwargs):
+		if request.is_authenticated:
+			return redirect(self.get_success_url())
+		return redirect("index")
+
+	def get_success_url(self):
+		return reverse("customer:wishlist-detail")
+
+	def form_valid(self, form):
+		line = form.instance
+		deleted = line.quantity <= 0
+
+		if deleted:
+			line.delete()
+		else:
+			line.save()
+
+		if self.request.htmx:
+			response = str(form)
+			if deleted:
+				response = reswap(retarget(response, "closest tr"), "delete")
+			return response
+
+		return redirect(self.get_success_url())
 
 
 class WishListRemoveProduct(HtmxActionView):

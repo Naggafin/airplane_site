@@ -146,17 +146,19 @@
                     </h5>
                 {% endblock %}
                 {% block product_price %}
-                    {% if session.price.exists %}
-                        {% if session.price.excl_tax == 0 %}
-                            <h5 class="price">{% trans "Free" %}</h5>
-                        {% elif session.price.is_tax_known %}
-                            <h5 class="price">{{ session.price.incl_tax|currency:session.price.currency }}</h5>
+                    <h5 class="price">
+                        {% if session.price.exists %}
+                            {% if session.price.excl_tax == 0 %}
+                                {% trans "Free" %}
+                            {% elif session.price.is_tax_known %}
+                                {{ session.price.incl_tax|currency:session.price.currency }}
+                            {% else %}
+                                {{ session.price.excl_tax|currency:session.price.currency }}
+                            {% endif %}
                         {% else %}
-                            <h5 class="price">{{ session.price.excl_tax|currency:session.price.currency }}</h5>
+                            &nbsp;
                         {% endif %}
-                    {% else %}
-                        <h5 class="price">&nbsp;</h5>
-                    {% endif %}
+                    </h5>
                 {% endblock %}
             </div>
             <div class="product-tag">

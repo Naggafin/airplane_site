@@ -26,7 +26,19 @@
                                             <div class="swiper-meta-items">
                                                 <div class="meta-content wow fadeInUp" data-wow-delay="0.4s">
                                                     <span class="price-name">{% trans 'Price' %}</span>
-                                                    <span class="price-num d-inline-block">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                                                    <span class="price-num d-inline-block">
+                                                        {% if session.price.exists %}
+                                                            {% if session.price.excl_tax == 0 %}
+                                                                {% trans "Free" %}
+                                                            {% elif session.price.is_tax_known %}
+                                                                {{ session.price.incl_tax|currency:session.price.currency }}
+                                                            {% else %}
+                                                                {{ session.price.excl_tax|currency:session.price.currency }}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            &nbsp;
+                                                        {% endif %}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="content-btn m-b30 wow fadeInUp" data-wow-delay="0.8s">
