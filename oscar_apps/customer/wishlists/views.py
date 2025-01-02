@@ -1,19 +1,42 @@
+from django.conf import settings
+from django.http import Http404
+from django.shortcuts import redirect
+from django.views.generic import DetailView, UpdateView
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
-from oscar.apps.customer.wishlists.views import (
-	WishListAddProduct as CoreWishListAddProduct,
-	WishListListView as CoreWishListListView,
-)
 
 from oscar_apps.catalogue.models import Product
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
+from .models import Line, WishList
+from .utils import fetch_wishlist
 
 
-class WishListListView(CoreWishListListView):
+class WishListDetailView(DetailView):
+	model = WishList
+	slug_field = "key"
 	template_name = "pixio/shop-wishlist.html"
 
+	def get_queryset(self):
+		queryset = super().get_queryset().prefetch_related("lines__product")
+		return queryset
 
-class WishListAddProduct(HtmxModelActionView, CoreWishListAddProduct):
+	def get_object(self, queryset=None):
+		try:
+			obj = super().get_object(queryset=queryset)
+			if not obj.is_allowed_to_see(self.request.user):
+				raise Http404
+		except Http404:
+			if not self.request.is_authenticated:
+				raise
+			return redirect("customer:wishlist-detail")
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["wishlist"] = self.object
+		return context
+
+
+class WishListAddProduct(HtmxModelActionView):
 	model = Product
 	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
@@ -24,25 +47,24 @@ class WishListAddProduct(HtmxModelActionView, CoreWishListAddProduct):
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
 		kwargs["product"] = self.object
-		kwargs["wishlist"] = self.get_or_create_wishlist(
-			self.request, self.args, self.kwargs
-		)
+		kwargs["wishlist"] = fetch_wishlist(self.request, eager=False)
 		return kwargs
 
 	def get_success_url(self):
+		login_url = settings.LOGIN_URL
+		if self.request.path.startswith(login_url):
+			return redirect("customer:wishlist-detail")
 		return self.request.path
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["product"] = self.object
-		context["wishlist"] = self.wishlist
 		return context
 
-	def get_or_create_wishlist(self, request, *args, **kwargs):
-		wishlist = self.wishlist = super().get_or_create_wishlist(
-			request, *args, **kwargs
-		)
-		return wishlist
+
+class WishListUpdateLine(UpdateView):
+	model = Line
+	pk_url_kwarg = "line_pk"
 
 
 class WishListRemoveProduct(HtmxActionView):
@@ -53,17 +75,20 @@ class WishListRemoveProduct(HtmxActionView):
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
-		kwargs["wishlist_key"] = self.kwargs["key"]
 		kwargs["line_pk"] = self.kwargs.get("line_pk")
 		kwargs["product_pk"] = self.kwargs.get("product_pk")
+		kwargs["wishlist"] = fetch_wishlist(self.request, eager=False)
 		return kwargs
 
 	def get_success_url(self):
+		login_url = settings.LOGIN_URL
+		if self.request.path.startswith(login_url):
+			return redirect("customer:wishlist-detail")
 		return self.request.path
 
 	def get_context_data(self, action, **kwargs):
 		context = super().get_context_data(**kwargs)
-		product, wishlist = action.result
+		line, product = action.result
+		context["line"] = line
 		context["product"] = product
-		context["wishlist"] = wishlist
 		return context

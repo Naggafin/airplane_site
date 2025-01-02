@@ -294,7 +294,7 @@
                                 type="button"
                                 role="tab"
                                 aria-controls="wishlist-pane"
-                                aria-selected="false">{% trans 'Wishlists' %}</button>
+                                aria-selected="false">{% trans 'Wishlist' %}</button>
                     </li>
                 </ul>
                 <div class="tab-content pt-4" id="dz-shopcart-sidebar">
@@ -305,7 +305,7 @@
                          tabindex="0">
                         <div class="shop-sidebar-cart">
                             <ul class="sidebar-cart-list">
-                                {% for product in shopping_cart %}
+                                {% for product in shopping_cart|slice:":5" %}
                                     {% purchase_info_for_product request product as session %}
                                     <li>
                                         <div class="cart-widget">
@@ -367,8 +367,8 @@
                          tabindex="0">
                         <div class="shop-sidebar-cart">
                             <ul class="sidebar-cart-list">
-                                {% for wishlist in wishlists %}
-                                    {% with product=wishlist.lines.first.product %}
+                                {% for line in wishlist.lines.all|slice:":5" %}
+                                    {% with product=line.product %}
                                         {% purchase_info_for_product request product as session %}
                                         <li>
                                             <div class="cart-widget">
@@ -380,7 +380,7 @@
                                                 </div>
                                                 <div class="cart-content">
                                                     <h6 class="title">
-                                                        <a href="{{ wishlist.get_absolute_url }}">{{ wishlist.name|truncatechars:30 }}</a>
+                                                        <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
                                                     </h6>
                                                 </div>
                                                 <a href="javascript:void(0);" class="dz-close">
@@ -392,7 +392,8 @@
                                 {% endfor %}
                             </ul>
                             <div class="mt-auto">
-                                <a href="#TODO" class="btn btn-secondary btn-block">{% trans 'View All Wishlists' %}</a>
+                                <a href="{% url 'customer:wishlist-detail' %}"
+                                   class="btn btn-secondary btn-block">{% trans 'View Wishlist' %}</a>
                             </div>
                         </div>
                     </div>

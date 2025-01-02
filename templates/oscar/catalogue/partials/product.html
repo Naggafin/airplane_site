@@ -2,7 +2,7 @@
 {% load purchase_info_tags basket_tags image_tags currency_filters %}
 {% partialdef add-to-wishlist %}
 <form id="add_to_wishlist_form"
-      action="{% url 'customer:wishlists-add-product' product_pk=product.pk %}"
+      action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"
       method="post"
       hx-swap="outerHTML show:none"
       hx-boost="true"
@@ -29,7 +29,7 @@
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
 <form id="add_to_wishlist_form"
-      action="{% url 'customer:wishlists-remove-product' key=wishlist.key product_pk=product.pk %}"
+      action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
       method="post"
       hx-swap="outerHTML show:none"
       hx-boost="true"
@@ -127,7 +127,11 @@
                         <i class="fa-solid fa-eye d-md-none d-block"></i>
                         <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                     </a>
-                    {% partial add-to-wishlist %}
+                    {% if product|is_in_wishlist:request %}
+                        {% partial remove-from-wishlist %}
+                    {% else %}
+                        {% partial add-to-wishlist %}
+                    {% endif %}
                     {% if product|is_in_basket:request %}
                         {% partial remove-from-basket %}
                     {% elif session.availability.is_available_to_buy and session.price.exists %}

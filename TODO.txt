@@ -1,6 +1,4 @@
 django-filter to filter listings
 pinax-messages for user messaging
 Fix navigation for partners dashboard
-get product quick view modal dynamically populating
-get quick add/remove to/from wishlist working
-update icon for quick remove from basket
+oscar_apps.customer.wishlists.views.WishListUpdateLine

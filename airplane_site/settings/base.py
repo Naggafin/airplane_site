@@ -114,6 +114,7 @@ MIDDLEWARE = [
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
 	"oscar.apps.basket.middleware.BasketMiddleware",
+	"oscar_apps.wishlist.middleware.WishListMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 	"django_user_agents.middleware.UserAgentMiddleware",
 ]

@@ -1,6 +1,7 @@
 cachetools
 coverage
 django
+djangorestframework
 django-allauth
 django-allauth-ui
 django-debug-toolbar
@@ -26,6 +27,7 @@ pinax-messages
 psycopg[c]
 psycopg_pool
 pycountry
+python-box
 python-dotenv
 python-telegram-handler
 redis

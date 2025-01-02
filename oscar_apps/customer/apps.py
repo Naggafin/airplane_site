@@ -2,10 +2,17 @@ import oscar.apps.customer.apps as apps
 from django.contrib.auth.decorators import login_required
 from django.urls import path, re_path
 from django.views import generic
+from oscar.core.loading import get_class
 
 
 class CustomerConfig(apps.CustomerConfig):
 	name = "oscar_apps.customer"
+
+	def ready(self):
+		super().ready()
+		self.wishlists_update_line_view = get_class(
+			"customer.wishlists.views", "WishListUpdateLine"
+		)
 
 	def get_urls(self):
 		urls = [
@@ -142,60 +149,34 @@ class CustomerConfig(apps.CustomerConfig):
 			),
 			# Wishlists
 			path(
-				"wishlists/",
-				login_required(self.wishlists_list_view.as_view()),
-				name="wishlists-list",
+				"wishlist/",
+				login_required(self.wishlists_detail_view.as_view()),
+				name="wishlist-detail",
 			),
 			path(
-				"wishlists/add/<int:product_pk>/",
-				login_required(self.wishlists_add_product_view.as_view()),
-				name="wishlists-add-product",
-			),
-			path(
-				"wishlists/<str:key>/add/<int:product_pk>/",
-				login_required(self.wishlists_add_product_view.as_view()),
-				name="wishlists-add-product",
-			),
-			path(
-				"wishlists/create/",
-				login_required(self.wishlists_create_view.as_view()),
-				name="wishlists-create",
-			),
-			path(
-				"wishlists/create/with-product/<int:product_pk>/",
-				login_required(self.wishlists_create_view.as_view()),
-				name="wishlists-create-with-product",
-			),
-			# Wishlists can be publicly shared, no login required
-			path(
-				"wishlists/<str:key>/",
+				"wishlist/<str:key>/",
 				self.wishlists_detail_view.as_view(),
-				name="wishlists-detail",
+				name="wishlist-detail",
 			),
 			path(
-				"wishlists/<str:key>/update/",
-				login_required(self.wishlists_update_view.as_view()),
-				name="wishlists-update",
+				"wishlist/add/<int:product_pk>/",
+				login_required(self.wishlists_add_product_view.as_view()),
+				name="wishlist-add-product",
 			),
 			path(
-				"wishlists/<str:key>/delete/",
-				login_required(self.wishlists_delete_view.as_view()),
-				name="wishlists-delete",
+				"wishlist/lines/<int:line_pk>/update/",
+				login_required(self.wishlists_update_line_view.as_view()),
+				name="wishlist-update-line",
 			),
 			path(
-				"wishlists/<str:key>/lines/<int:line_pk>/delete/",
+				"wishlist/lines/<int:line_pk>/delete/",
+				login_required(self.wishlists_remove_product_view.as_view()),
+				name="wishlist-remove-product",
+			),
+			path(
+				"wishlist/products/<int:product_pk>/delete/",
 				login_required(self.wishlists_remove_product_view.as_view()),
 				name="wishlists-remove-product",
-			),
-			path(
-				"wishlists/<str:key>/products/<int:product_pk>/delete/",
-				login_required(self.wishlists_remove_product_view.as_view()),
-				name="wishlists-remove-product",
-			),
-			path(
-				"wishlists/<str:key>/lines/<int:line_pk>/move-to/<str:to_key>/",
-				login_required(self.wishlists_move_product_to_another_view.as_view()),
-				name="wishlists-move-product-to-another",
 			),
 		]
 
