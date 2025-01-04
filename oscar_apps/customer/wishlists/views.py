@@ -1,6 +1,9 @@
+from http import HTTPStatus
+
 from django.conf import settings
-from django.http import Http404, reverse
-from django.shortcuts import redirect
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import DetailView, UpdateView
 from django_extensions.auth.mixins import ModelUserFieldPermissionMixin
 from django_htmx.http import reswap, retarget
@@ -9,9 +12,9 @@ from htmx_utils.views.mixins import HtmxFormMixin
 
 from oscar_apps.catalogue.models import Product
 from oscar_apps.wishlists.models import Line, WishList
+from oscar_apps.wishlists.utils import fetch_wishlist
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
-from .utils import fetch_wishlist
 
 
 class WishListDetailView(DetailView):
@@ -28,8 +31,14 @@ class WishListDetailView(DetailView):
 			obj = super().get_object(queryset=queryset)
 			if not obj.is_allowed_to_see(self.request.user):
 				raise Http404
+			return obj
+		except AttributeError:
+			if not self.request.user.is_authenticated:
+				return redirect("index")
+			obj = get_object_or_404(self.model, owner=self.request.user)
+			return obj
 		except Http404:
-			if not self.request.is_authenticated:
+			if not self.request.user.is_authenticated:
 				raise
 			return redirect("customer:wishlist-detail")
 
@@ -43,6 +52,12 @@ class WishListAddProduct(HtmxModelActionView):
 	model = Product
 	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
+
+	def get(self, request, *args, **kwargs):
+		if request.user.is_authenticated:
+			self.object = self.get_object()
+			return redirect(self.object)
+		return redirect("index")
 
 	def get_template_names(self):
 		return ["oscar/catalogue/partials/product.html#remove-from-wishlist"]
@@ -72,7 +87,7 @@ class WishListUpdateLine(ModelUserFieldPermissionMixin, HtmxFormMixin, UpdateVie
 	model_permission_user_field = "wishlist__owner"
 
 	def get(self, request, *args, **kwargs):
-		if request.is_authenticated:
+		if request.user.is_authenticated:
 			return redirect(self.get_success_url())
 		return redirect("index")
 
@@ -89,16 +104,20 @@ class WishListUpdateLine(ModelUserFieldPermissionMixin, HtmxFormMixin, UpdateVie
 			line.save()
 
 		if self.request.htmx:
-			response = str(form)
+			response = HttpResponse(status=HTTPStatus.NO_CONTENT)
 			if deleted:
 				response = reswap(retarget(response, "closest tr"), "delete")
 			return response
-
 		return redirect(self.get_success_url())
 
 
 class WishListRemoveProduct(HtmxActionView):
 	action_class = WishlistRemoveProductAction
+
+	def get(self, request, *args, **kwargs):
+		if request.user.is_authenticated:
+			return redirect(self.get_success_url())
+		return redirect("index")
 
 	def get_template_names(self):
 		return ["oscar/catalogue/partials/product.html#add-to-wishlist"]

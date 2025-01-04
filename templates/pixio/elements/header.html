@@ -367,33 +367,32 @@
                          tabindex="0">
                         <div class="shop-sidebar-cart">
                             <ul class="sidebar-cart-list">
-                                {% for line in wishlist.lines.all|slice:":5" %}
-                                    {% with product=line.product %}
-                                        {% purchase_info_for_product request product as session %}
-                                        <li>
-                                            <div class="cart-widget">
-                                                <div class="dz-media me-3">
-                                                    {% with image=product.primary_image %}
-                                                        {% oscar_thumbnail image.original "100x100" as thumb %}
-                                                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
-                                                    {% endwith %}
+                                {% if wishlist %}
+                                    {% for line in wishlist.lines.all|slice:":5" %}
+                                        {% with product=line.product %}
+                                            {% purchase_info_for_product request product as session %}
+                                            <li>
+                                                <div class="cart-widget">
+                                                    <div class="dz-media me-3">
+                                                        {% with image=product.primary_image %}
+                                                            {% oscar_thumbnail image.original "100x100" as thumb %}
+                                                            <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                                                        {% endwith %}
+                                                    </div>
+                                                    <div class="cart-content">
+                                                        <h6 class="title">
+                                                            <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
+                                                        </h6>
+                                                    </div>
                                                 </div>
-                                                <div class="cart-content">
-                                                    <h6 class="title">
-                                                        <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
-                                                    </h6>
-                                                </div>
-                                                <a href="javascript:void(0);" class="dz-close">
-                                                    <i class="ti-close"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    {% endwith %}
-                                {% endfor %}
+                                            </li>
+                                        {% endwith %}
+                                    {% endfor %}
+                                {% endif %}
                             </ul>
                             <div class="mt-auto">
                                 <a href="{% url 'customer:wishlist-detail' %}"
-                                   class="btn btn-secondary btn-block">{% trans 'View Wishlist' %}</a>
+                                   class="btn btn-secondary btn-block">{% trans 'Check Your Favorites' %}</a>
                             </div>
                         </div>
                     </div>

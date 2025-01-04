@@ -17,6 +17,9 @@ CACHE_TIMEOUT = 60 * 5  # 5 minutes
 
 def fetch_wishlist(request, eager=True):
 	user = request.user
+	if not user.is_authenticated:
+		return None
+
 	queryset = WishList.objects.all()
 	# Prefetch 'lines__product' when fetching the wishlist for a user, if eager
 	if eager:
@@ -67,23 +70,31 @@ def get_or_create_wishlist_cache(request):
 	    dict: Serialized wishlist data or an empty list if the user is not authenticated.
 	"""
 
+	if not request.user.is_authenticated:
+		return None
+
 	def get_cache_key(user_id):
 		return WISHLIST_CACHE_KEY % user_id
-
-	if not request.user.is_authenticated:
-		return []
 
 	user_id = request.user.pk
 	cache_key = get_cache_key(user_id)
 	cached_wishlist = cache.get(cache_key)
 
+	def box_cache(data):
+		boxed = Box(data)
+		boxed.lines.all = lambda: boxed.lines
+		for line in boxed.lines:
+			line.product_id = line.product
+			line.wishlist_id = line.wishlist
+		return boxed
+
 	if cached_wishlist:
-		return Box(cached_wishlist)
+		return box_cache(cached_wishlist)
 
 	wishlist = fetch_wishlist(request.user)
 	if not wishlist:
-		return []
+		return None
 
 	serialized_wishlist = WishListSerializer(wishlist).data
 	cache.set(cache_key, serialized_wishlist, timeout=CACHE_TIMEOUT)
-	return Box(serialized_wishlist)
+	return box_cache(serialized_wishlist)

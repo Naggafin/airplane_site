@@ -55,6 +55,10 @@
   pointer-events: none;
 }
 
+.require-js {
+  display: none !important;
+}
+
 /* alpinejs cloak property; prevents items from being displayed before alpinejs was able to load fully */
 [x-cloak] {
   display: none !important;

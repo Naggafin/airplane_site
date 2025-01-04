@@ -18,11 +18,3 @@ class WishListMiddleware:
 
 	def get_wishlist(self, request):
 		return fetch_wishlist(request)
-
-	def process_template_response(self, request, response):
-		if hasattr(response, "context_data"):
-			if response.context_data is None:
-				response.context_data = {}
-			if "wishlist" not in response.context_data:
-				response.context_data["wishlist"] = request.wishlist
-		return response

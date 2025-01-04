@@ -1,5 +1,4 @@
 from oscar.apps.wishlists.abstract_models import AbstractWishList
-from oscar.apps.wishlists.models import Line
 
 
 class WishList(AbstractWishList):
@@ -31,6 +30,7 @@ class WishList(AbstractWishList):
 		"""
 		For transferring a line from another wishlist to this one.
 		"""
+		Line = type(line)
 		try:
 			existing_line = self.lines.get(product=line.product_id)
 		except Line.DoesNotExist:

@@ -1,6 +1,6 @@
-{% extends 'pixio/elements/layouts/layout.html' %}
-{% load 18n %}
-{% load product_tags image_tags %}
+{% extends 'base.html' %}
+{% load i18n %}
+{% load purchase_info_tags currency_filters image_tags %}
 {% block additional_css %}{% endblock %}
 {% block content %}
     <div class="content-inner-1">
@@ -24,11 +24,12 @@
                                 {% for line in wishlist.lines.all %}
                                     {% with product=line.product %}
                                         {% purchase_info_for_product request product as session %}
-                                        <tr>
+                                        <tr x-data="{quantity: {{ line.quantity }}}">
                                             {% with image=product.primary_image %}
                                                 {% oscar_thumbnail image.original "100x100" as thumb %}
                                                 <td class="product-item-img">
-                                                    <img src="{{ thumb.url }}" alt="{{ image.caption|default:caption }}">
+                                                    <img src="{{ thumb.url }}"
+                                                         alt="{{ image.caption|default:product.get_title }}">
                                                 </td>
                                             {% endwith %}
                                             <td class="product-item-name">{( product.get_title }}</td>
@@ -46,20 +47,95 @@
                                                 {% endif %}
                                                 {# TODO: <span>$45.00</span><strong>$28.00</strong> #}
                                             </td>
-                                            <td class="product-item-stock">
-                                                {% if session.availability.is_available_to_buy %}
-                                                    {% trans 'In Stock' %}
-                                                {% else %}
-                                                    {% trans 'Unavailable' %}
-                                                {% endif %}
+                                            <td class="product-item-stock">{{ session.availability.is_available_to_buy|yesno:"In Stock,Unavailable" }}</td>
+                                            <td>
+                                                <noscript>
+                                                    <form action="{% url 'wishlists:wishlist-update-line' pk=line.pk %}"
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <button type="submit"
+                                                                    name="quantity"
+                                                                    value="{{ line.quantity - 1 }}"
+                                                                    class="btn btn-light rounded-circle"
+                                                                    {% if line.quantity <= 1 %}disabled{% endif %}>-</button>
+                                                            <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
+                                                            <input id="quantity-{{ line.pk }}"
+                                                                   type="number"
+                                                                   name="quantity"
+                                                                   class="form-control"
+                                                                   min="1"
+                                                                   value="{{ line.quantity }}"
+                                                                   aria-label="{% trans 'Quantity of item in wishlist' %}">
+                                                            <button type="submit"
+                                                                    name="quantity"
+                                                                    value="{{ line.quantity + 1 }}"
+                                                                    class="btn btn-light rounded-circle">+</button>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-secondary btn-sm mt-1">{% trans 'Update' %}</button>
+                                                    </form>
+                                                </noscript>
+                                                <div class="require-js">
+                                                    <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
+                                                    <input id="quantity-{{ line.pk }}"
+                                                           type="number"
+                                                           class="form-control"
+                                                           min="1"
+                                                           aria-label="{% trans 'Quantity of item in wishlist' %}"
+                                                           hx-post="{% url 'wishlists:wishlist-update-line' line_pk=line.pk %}"
+                                                           hx-trigger="input changed delay:500ms, search"
+                                                           hx-swap="none"
+                                                           x-model="quantity">
+                                                </div>
                                             </td>
-                                            <td>{{ line.quantity }}</td>
                                             <td class="product-item-totle">
-                                                <a href="{% url 'pixio:shop-cart' %}"
-                                                   class="btn btn-secondary btnhover text-nowrap">{% trans 'Add To Cart' %}</a>
+                                                <form action="{% url 'basket:add' pk=product.pk %}"
+                                                      method="post"
+                                                      hx-swap="outerHTML show:none"
+                                                      hx-boost="true"
+                                                      hx-target="this"
+                                                      hx-push-url="false"
+                                                      @submit="$data.submitting = true;"
+                                                      @htmx:after-on-load="$data.submitting = false;"
+                                                      @htmx:response-error="console.error($event);"
+                                                      x-data="{submitting: false}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden"
+                                                           name="quantity"
+                                                           value="{{ line.quantity }}"
+                                                           :value="quantity">
+                                                    <button type="submit"
+                                                            class="btn btn-secondary btnhover text-nowrap"
+                                                            :disabled="submitting">
+                                                        <i class="spinner-border spinner-border-sm"
+                                                           role="status"
+                                                           aria-hidden="true"
+                                                           x-show="submitting"></i><span x-show="!submitting">{% trans 'Add To Cart' %}</span>
+                                                    </button>
+                                                </form>
                                             </td>
                                             <td class="product-item-close">
-                                                <a href="javascript:void(0);"><i class="ti-close"></i></a>
+                                                <form action="{% url 'basket:remove' pk=product.pk %}"
+                                                      method="post"
+                                                      hx-swap="delete"
+                                                      hx-boost="true"
+                                                      hx-target="closest tr"
+                                                      hx-push-url="false"
+                                                      hx-confirm="{% blocktrans with product_title=product.get_title %}
+                                                                      Are you sure you wanted to remove {{ product_title }} from your wishlist?
+                                                                  {% endblocktrans %}"
+                                                      @submit="$data.submitting = true;"
+                                                      @htmx:after-on-load="$data.submitting = false;"
+                                                      @htmx:response-error="console.error($event);"
+                                                      x-data="{submitting: false}">
+                                                    {% csrf_token %}
+                                                    <button type="submit">
+                                                        <i class="spinner-border spinner-border-sm"
+                                                           role="status"
+                                                           aria-hidden="true"
+                                                           x-show="submitting"><i class="ti-close" x-show="!submitting"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     {% endwith %}

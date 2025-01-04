@@ -3,11 +3,9 @@ import logging
 from box import Box
 from django.core.cache import cache
 from django.core.signing import BadSignature, Signer
+from oscar.apps.basket.utils import *  # noqa: F403
 
 from .constants import BASKET_CACHE_KEY
-from .middleware import BasketMiddleware
-from .models import Basket
-from .serializers import BasketSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +19,10 @@ def get_or_create_basket_cache(request):
 	Returns:
 	    dict: Serialized basket data or an empty list if no basket exists.
 	"""
+	from oscar.apps.basket.middleware import BasketMiddleware
+
+	from .models import Basket
+	from .serializers import BasketSerializer
 
 	def get_cache_key():
 		if request.user.is_authenticated:
@@ -46,8 +48,16 @@ def get_or_create_basket_cache(request):
 	cache_key = get_cache_key()
 	cached_basket = cache.get(cache_key)
 
+	def box_cache(data):
+		boxed = Box(data)
+		boxed.lines.all = lambda: boxed.lines
+		for line in boxed.lines:
+			line.product_id = line.product
+			line.basket_id = line.basket
+		return boxed
+
 	if cached_basket:
-		return Box(cached_basket)
+		return box_cache(cached_basket)
 
 	basket = fetch_basket()
 	if not basket:
@@ -55,4 +65,4 @@ def get_or_create_basket_cache(request):
 
 	serialized_basket = BasketSerializer(basket).data
 	cache.set(cache_key, serialized_basket, timeout=CACHE_TIMEOUT)
-	return Box(serialized_basket)
+	return box_cache(serialized_basket)

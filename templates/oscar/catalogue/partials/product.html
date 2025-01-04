@@ -1,5 +1,5 @@
 {% load i18n partials %}
-{% load purchase_info_tags basket_tags image_tags currency_filters %}
+{% load purchase_info_tags basket_tags wishlist_tags image_tags currency_filters %}
 {% partialdef add-to-wishlist %}
 <form id="add_to_wishlist_form"
       action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"

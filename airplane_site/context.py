@@ -26,7 +26,6 @@ def populate_products(request):
 		#'recommended_categories':[],
 		"shopping_cart": [],
 		"shopping_cart_total": 0.0,
-		"wishlists": [],
 	}
 	if not request.user.is_authenticated:
 		return {}

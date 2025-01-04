@@ -69,7 +69,8 @@
                                         <div class="img-preview">
                                             {% with image=product.primary_image %}
                                                 {% oscar_thumbnail image.original "780x1050" as thumb %}
-                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                                                <img src="{{ thumb.url }}"
+                                                     alt="{{ image.caption|default:product.get_title }}">
                                             {% endwith %}
                                         </div>
                                     </div>

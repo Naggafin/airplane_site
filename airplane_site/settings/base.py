@@ -114,7 +114,7 @@ MIDDLEWARE = [
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
 	"oscar.apps.basket.middleware.BasketMiddleware",
-	"oscar_apps.wishlist.middleware.WishListMiddleware",
+	"oscar_apps.wishlists.middleware.WishListMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 	"django_user_agents.middleware.UserAgentMiddleware",
 ]
@@ -132,6 +132,7 @@ TEMPLATES = [
 				"django.template.context_processors.request",
 				"django.contrib.auth.context_processors.auth",
 				"django.contrib.messages.context_processors.messages",
+				"oscar_apps.wishlists.context.wishlist",
 				"oscar.apps.search.context_processors.search_form",
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.apps.communication.notifications.context_processors.notifications",
@@ -171,6 +172,8 @@ AUTHENTICATION_BACKENDS = [
 	"guardian.backends.ObjectPermissionBackend",
 	"django.contrib.auth.backends.ModelBackend",
 ]
+
+LOGIN_REDIRECT_URL = "/"
 
 
 # Internationalization
