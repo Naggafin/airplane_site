@@ -6,10 +6,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, UpdateView
 from django_extensions.auth.mixins import ModelUserFieldPermissionMixin
+from django_extensions.views.mixins import AdjustablePaginationMixin
 from django_htmx.http import reswap, retarget
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
 from htmx_utils.views.mixins import HtmxFormMixin
 
+from airplane_site.paginator import CountlessPaginator
 from oscar_apps.catalogue.models import Product
 from oscar_apps.wishlists.models import Line, WishList
 from oscar_apps.wishlists.utils import fetch_wishlist
@@ -17,14 +19,18 @@ from oscar_apps.wishlists.utils import fetch_wishlist
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
 
 
-class WishListDetailView(DetailView):
+class WishListDetailView(AdjustablePaginationMixin, DetailView):
 	model = WishList
 	slug_field = "key"
+	paginator_class = CountlessPaginator
 	template_name = "pixio/shop-wishlist.html"
 
 	def get_queryset(self):
 		queryset = super().get_queryset().prefetch_related("lines__product")
 		return queryset
+
+	def get_lines_queryset(self):
+		return self.object.lines.all()
 
 	def get_object(self, queryset=None):
 		try:
@@ -43,7 +49,9 @@ class WishListDetailView(DetailView):
 			return redirect("customer:wishlist-detail")
 
 	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
+		context = super().get_context_data(
+			object_list=self.get_lines_queryset(), **kwargs
+		)
 		context["wishlist"] = self.object
 		return context
 

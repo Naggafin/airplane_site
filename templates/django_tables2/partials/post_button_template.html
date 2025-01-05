@@ -1,0 +1,24 @@
+<form action="{{ url }}"
+      method="post"
+      {% if confirmation %}hx-confirm="{{ confirmation }}"{% endif %}
+      hx-target="{{ row_id }}"
+      hx-push-url="false"
+      hx-swap="outerHTML"
+      hx-boost="true"
+      x-data="{submitting: false}"
+      @htmx:before-send="$data.submitting = true;"
+      @htmx:after-swap="$data.submitting = false;"
+      @htmx:response-error="console.log($event);">
+    {% csrf_token %}
+    <button type="submit"
+            :disabled="submitting"
+            {% with attrs=btn_attrs %}
+            {% include 'django/forms/attrs.html' %}
+            {% endwith %}>
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i>
+        <span>{{ btn_text }}</span>
+    </button>
+</form>
