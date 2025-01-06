@@ -86,6 +86,7 @@ INSTALLED_APPS = [
 	"allauth.socialaccount.providers.facebook",
 	"allauth.socialaccount.providers.google",
 	# other 3rd party dependencies
+	"silk",
 	"taggit",
 	"guardian",
 	"widget_tweaks",
@@ -97,6 +98,8 @@ INSTALLED_APPS = [
 	"template_partials",
 	"django_htmx",
 	"django_user_agents",
+	"django_extensions",
+	"view_breadcrumbs",
 ]
 
 SITE_ID = 1
@@ -107,6 +110,7 @@ MIDDLEWARE = [
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"silk.middleware.SilkyMiddleware",
 	"django_htmx.middleware.HtmxMiddleware",
 	"htmx_utils.middleware.HtmxRedirectMiddleware",
 	"htmx_utils.middleware.HtmxMessagesMiddleware",
@@ -135,7 +139,6 @@ TEMPLATES = [
 				"oscar_apps.wishlists.context.wishlist",
 				"oscar.apps.search.context_processors.search_form",
 				"oscar.apps.checkout.context_processors.checkout",
-				"oscar.apps.communication.notifications.context_processors.notifications",
 				"oscar.core.context_processors.metadata",
 				"airplane_site.context.populate_products",
 			],
@@ -340,3 +343,14 @@ OSCAR_GOOGLE_ANALYTICS_ID = None
 
 HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "pixio/elements/alert.html"
 HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alert"
+
+
+# django-silk
+
+SILKY_PYTHON_PROFILER = False
+SILKY_PYTHON_PROFILER_BINARY = True
+SILKY_PYTHON_PROFILER_EXTENDED_FILE_NAME = True
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+SILKY_META = True
+SILKY_INTERCEPT_PERCENT = 100  # log 100% of requests

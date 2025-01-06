@@ -15,24 +15,20 @@ logger = logging.getLogger(__name__)
 CACHE_TIMEOUT = 60 * 5  # 5 minutes
 
 
-def fetch_wishlist(request, eager=True):
+def fetch_wishlist(request):
 	user = request.user
 	if not user.is_authenticated:
 		return None
 
-	queryset = WishList.objects.all()
-	# Prefetch 'lines__product' when fetching the wishlist for a user, if eager
-	if eager:
-		queryset = queryset.prefetch_related("lines__product")
 	try:
-		wishlist, created = queryset.get_or_create(owner=user)
+		wishlist, created = WishList.objects.get_or_create(owner=user)
 		return wishlist
 	except WishList.MultipleObjectsReturned:
 		logger.warning(f"Multiple wishlists found for user #{user.pk}. Merging them.")
 
 		# Use 'prefetch_related' to ensure 'lines__product' is fetched in the merged wishlists
 		wishlists = list(
-			queryset.filter(owner=user).annotate(
+			WishList.objects.filter(owner=user).annotate(
 				total_lines_quantity=Sum("lines__quantity")
 			)
 		)
@@ -91,7 +87,7 @@ def get_or_create_wishlist_cache(request):
 	if cached_wishlist:
 		return box_cache(cached_wishlist)
 
-	wishlist = fetch_wishlist(request.user)
+	wishlist = fetch_wishlist(request)
 	if not wishlist:
 		return None
 

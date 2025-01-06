@@ -9,6 +9,12 @@
 {% load purchase_info_tags %}
 {% load currency_filters %}
 {% block additional_css %}{% endblock %}
+{% block js %}
+    <script src="{% static 'pixio/vendor/magnific-popup/magnific-popup.js' %}"></script>
+    <script src="{% static 'pixio/vendor/lightgallery/dist/lightgallery.min.js' %}"></script>
+    <script src="{% static 'pixio/vendor/lightgallery/dist/plugins/thumbnail/lg-thumbnail.min.js' %}"></script>
+    <script src="{% static 'pixio/vendor/lightgallery/dist/plugins/zoom/lg-zoom.min.js' %}"></script>
+{% endblock %}
 {% partialdef top-products-section %}
 <section class="main-slider style-1">
     <div class="container-fluid">

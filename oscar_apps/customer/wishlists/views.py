@@ -2,35 +2,42 @@ from http import HTTPStatus
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import TemplateView, UpdateView
+from django.views.generic.detail import SingleObjectMixin
 from django_extensions.auth.mixins import ModelUserFieldPermissionMixin
 from django_extensions.views.mixins import AdjustablePaginationMixin
 from django_htmx.http import reswap, retarget
+from django_tables2.paginators import LazyPaginator
+from django_tables2.views import SingleTableMixin
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
 from htmx_utils.views.mixins import HtmxFormMixin
 
-from airplane_site.paginator import CountlessPaginator
 from oscar_apps.catalogue.models import Product
 from oscar_apps.wishlists.models import Line, WishList
+from oscar_apps.wishlists.tables import LineTable
 from oscar_apps.wishlists.utils import fetch_wishlist
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
 
 
-class WishListDetailView(AdjustablePaginationMixin, DetailView):
+class WishListDetailView(
+	AdjustablePaginationMixin, SingleTableMixin, SingleObjectMixin, TemplateView
+):
 	model = WishList
 	slug_field = "key"
-	paginator_class = CountlessPaginator
+	table_class = LineTable
+	paginator_class = LazyPaginator
 	template_name = "pixio/shop-wishlist.html"
 
-	def get_queryset(self):
-		queryset = super().get_queryset().prefetch_related("lines__product")
-		return queryset
-
-	def get_lines_queryset(self):
-		return self.object.lines.all()
+	def get(self, request, *args, **kwargs):
+		self.object = self.get_object()
+		self.object_list = self.get_object_list()
+		context = self.get_context_data(
+			object=self.object, object_list=self.object_list
+		)
+		return self.render_to_response(context)
 
 	def get_object(self, queryset=None):
 		try:
@@ -40,18 +47,18 @@ class WishListDetailView(AdjustablePaginationMixin, DetailView):
 			return obj
 		except AttributeError:
 			if not self.request.user.is_authenticated:
-				return redirect("index")
-			obj = get_object_or_404(self.model, owner=self.request.user)
-			return obj
+				return redirect("pixio:index")
+			return self.request.wishlist
 		except Http404:
 			if not self.request.user.is_authenticated:
 				raise
 			return redirect("customer:wishlist-detail")
 
+	def get_object_list(self):
+		return self.object.lines.all()
+
 	def get_context_data(self, **kwargs):
-		context = super().get_context_data(
-			object_list=self.get_lines_queryset(), **kwargs
-		)
+		context = super().get_context_data(**kwargs)
 		context["wishlist"] = self.object
 		return context
 

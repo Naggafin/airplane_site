@@ -9,12 +9,13 @@ from oscar_apps.catalogue.models import Category, Product
 _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 
 
-# TODO
+# TODO 1: implememt real logic to populate these lists
+# TODO 2: implement caching for performance
 def populate_products(request):
 	products = list(
-		Product.objects.all()
-		.select_related("parent", "product_class")
+		Product.objects.select_related("parent", "product_class")
 		.prefetch_related("images", "stockrecords")
+		.all()
 	)
 	categories = list(Category.objects.all())
 	return {

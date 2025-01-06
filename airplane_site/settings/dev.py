@@ -69,7 +69,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 # oscar
-
 OSCAR_URL_SCHEMA = "http"
 
 
@@ -91,6 +90,7 @@ DEBUG_TOOLBAR_CONFIG = {
 	"SHOW_TOOLBAR_CALLBACK": "airplane_site.middleware.show_toolbar_superuser"
 }
 
+
 # nplusone
 INSTALLED_APPS.append("nplusone.ext.django")  # noqa: F405
 MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")  # noqa: F405
@@ -101,6 +101,11 @@ LOGGING["loggers"]["nplusone"] = {  # noqa: F405
 	"handlers": ["console"],
 	"level": logging.WARN,
 }
+
+
+# django-silk -- no need to profile in debug mode
+INSTALLED_APPS.remove("silk")  # noqa: F405
+MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")  # noqa: F405
 
 
 # django-allauth

@@ -1,7 +1,7 @@
 {% load django_tables2 i18n model_tools partials %}
 {% block table-wrapper %}
     <div {% if table.container_id %}id="{{ table.container_id }}"{% endif %}
-         class="table-container
+         class="table-container table-responsive
                 {% if table.container_classes %}
                     {% for class in table.container_classes %}{{ class }}{% endfor %}
                 {% endif %}"
@@ -19,10 +19,11 @@
                                     <th {{ column.attrs.th.as_html }} scope="col">
                                         {% if column.orderable %}
                                             <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}"
-                                               hx-target="closest .table-container"
+                                               hx-boost="true"
+                                               hx-push-url="false"
                                                hx-swap="outerHTML"
-                                               hx-indicator="closest .table-container"
-                                               hx-push-url="false">{{ column.header|safe }}</a>
+                                               hx-target="closest .table-container"
+                                               hx-indicator="closest .table-container">{{ column.header|safe }}</a>
                                         {% else %}
                                             {{ column.header|safe }}
                                         {% endif %}
@@ -36,7 +37,7 @@
                     <tbody {{ table.attrs.tbody.as_html }}>
                         {% for row in table.paginated_rows %}
                             {% block table.tbody.row %}
-                                <tr {{ row.attrs.as_html }}>
+                                <tr {{ row.attrs.as_html }}{% if forloop.last and table.page.has_next %} hx-get="{% querystring table.prefixed_page_field=table.page.next_page_number %}" hx-trigger="revealed" hx-swap="afterend"{% endif %}>
                                     {% for column, cell in row.items %}
                                         <td {{ column.attrs.td.as_html }}>
                                             {% if column.localize == None %}
@@ -68,7 +69,8 @@
                         <tfoot {{ table.attrs.tfoot.as_html }}>
                             <tr>
                                 {% for column in table.columns %}
-                                    <td {{ column.attrs.tf.as_html }}>{{ column.footer }}
+                                    <td {{ column.attrs.tf.as_html }}>
+                                        {{ column.footer }}
                                     </td>
                                 {% endfor %}
                             </tr>
@@ -81,9 +83,8 @@
             <noscript>
                 {% with total_count=table.data|length %}
                     {% if total_count > 0 or table.page and table.paginator.num_pages > 1 %}
-                        <hr class="horizontal dark">
-                        <div class="position-relative d-flex justify-content-center pt-2"
-                             hx-boost="true">
+                        <hr class="horizontal">
+                        <div class="position-relative d-flex justify-content-center pt-2">
                             {% if total_count > 0 %}
                                 <div class="text-xxs position-absolute bottom-1 start-1">
                                     {% with table_meta=table|meta %}
@@ -104,12 +105,12 @@
                                             {% block pagination.previous %}
                                                 <li class="previous page-item mx-1">
                                                     <a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}"
-                                                       hx-target="closest .table-container"
-                                                       hx-swap="outerHTML"
-                                                       hx-indicator="closest .table-container"
+                                                       class="page-link"
+                                                       hx-boost="true"
                                                        hx-push-url="false"
-                                                       @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
-                                                       class="page-link">
+                                                       hx-swap="outerHTML"
+                                                       hx-target="closest .table-container"
+                                                       hx-indicator="closest .table-container">
                                                         <span aria-hidden="true">&laquo;</span>
                                                         {% trans 'previous' %}
                                                     </a>
@@ -125,13 +126,13 @@
                                                         <a {% if p != '...' %}
                                                                href="{% querystring table.prefixed_page_field=p %}"
                                                            {% endif %}
-                                                           hx-target="closest .table-container"
-                                                           hx-swap="outerHTML"
-                                                           hx-indicator="closest .table-container"
-                                                           hx-push-url="false"
-                                                           @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
                                                            class="page-link
-                                                                  {% if table.page.number == p %}text-white{% endif %}">{{ p }}</a>
+                                                                  {% if table.page.number == p %}text-white{% endif %}"
+                                                           hx-boost="true"
+                                                           hx-push-url="false"
+                                                           hx-swap="outerHTML"
+                                                           hx-target="closest .table-container"
+                                                           hx-indicator="closest .table-container">{{ p }}</a>
                                                     </li>
                                                 {% endfor %}
                                             {% endblock pagination.range %}
@@ -140,12 +141,12 @@
                                             {% block pagination.next %}
                                                 <li class="next page-item mx-1">
                                                     <a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}"
-                                                       hx-target="closest .table-container"
-                                                       hx-swap="outerHTML"
-                                                       hx-indicator="closest .table-container"
+                                                       class="page-link"
+                                                       hx-boost="true"
                                                        hx-push-url="false"
-                                                       @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
-                                                       class="page-link">
+                                                       hx-swap="outerHTML"
+                                                       hx-target="closest .table-container"
+                                                       hx-indicator="closest .table-container">
                                                         {% trans 'next' %}
                                                         <span aria-hidden="true">&raquo;</span>
                                                     </a>

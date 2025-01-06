@@ -84,6 +84,7 @@ target/
 ### Django ###
 *.log
 *.pot
+*.prof
 *.pyc
 node_modules/
 __pycache__/

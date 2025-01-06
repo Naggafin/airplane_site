@@ -18,6 +18,7 @@ Including another URLconf
 from allauth.account.decorators import secure_admin_login
 from django.apps import apps
 from django.conf import settings
+from django.conf.urls import handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.urls import include, path
 
@@ -32,6 +33,9 @@ urlpatterns = [
 	path("", include(apps.get_app_config("airplane_site").urls[0])),
 ]
 
+if not settings.DEBUG:
+	urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))
+
 if settings.DEBUG:
 	import debug_toolbar
 	from django.conf.urls.static import static
@@ -44,8 +48,8 @@ if settings.DEBUG:
 	)
 	urlpatterns = [
 		path("__debug__/", include(debug_toolbar.urls)),
-		# path("400/", handler400, kwargs={"exception": Exception("Bad request")}),
-		# path("403/", handler403, kwargs={"exception": Exception("Forbidden")}),
-		# path("404/", handler404, kwargs={"exception": Exception("Page not Found")}),
-		# path("500/", handler500),
+		path("400/", handler400, kwargs={"exception": Exception("Bad request")}),
+		path("403/", handler403, kwargs={"exception": Exception("Forbidden")}),
+		path("404/", handler404, kwargs={"exception": Exception("Page not found")}),
+		path("500/", handler500, kwargs={"exception": Exception("Server error")}),
 	] + urlpatterns

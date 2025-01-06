@@ -12,6 +12,7 @@ django-guardian
 git+https://www.github.com/Naggafin/django-htmx-utils.git
 django-oscar
 django-redis
+django-silk
 django-taggit
 django-template-partials
 django-user-agents

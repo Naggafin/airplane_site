@@ -1,16 +1,30 @@
-from oscar.apps.wishlists.abstract_models import AbstractWishList
+import auto_prefetch
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from oscar.apps.wishlists.abstract_models import AbstractLine, AbstractWishList
+from oscar.core.compat import AUTH_USER_MODEL
 
 
-class WishList(AbstractWishList):
+class WishList(auto_prefetch.Model, AbstractWishList):
+	owner = auto_prefetch.ForeignKey(
+		AUTH_USER_MODEL,
+		related_name="wishlists",
+		on_delete=models.CASCADE,
+		verbose_name=_("Owner"),
+	)
+
 	def remove(self, line_pk=None, product_pk=None, delete=False):
 		"""
 		Remove a product from this wishlist.
 		"""
-		# Determine filter condition based on provided primary key or product
-		filter_conditions = {"pk": line_pk} if line_pk else {"product_id": product_pk}
 
-		# Fetch the line using the filter conditions and prefetch product details
-		line = self.lines.select_related("product").get(**filter_conditions)
+		# Fetch the line using the filter conditions in a manner that exploits cache
+		lines = list(self.lines.all())
+		line = [
+			line
+			for line in lines
+			if line.pk == line_pk or line.product_id == product_pk
+		][0]
 		product = line.product
 
 		# Handle deletion or quantity adjustment
@@ -26,14 +40,20 @@ class WishList(AbstractWishList):
 
 		return line, product
 
+	remove.alters_data = True
+
 	def merge_line(self, line, add_quantities=True):
 		"""
 		For transferring a line from another wishlist to this one.
 		"""
-		Line = type(line)
 		try:
-			existing_line = self.lines.get(product=line.product_id)
-		except Line.DoesNotExist:
+			existing_lines = list(self.lines.all())
+			existing_line = [
+				existing_line
+				for existing_line in existing_lines
+				if existing_line.product_id == line.product_id
+			][0]
+		except IndexError:
 			# Line does not already exist - reassign its wishlist
 			line.wishlist = self
 			line.save()
@@ -63,6 +83,29 @@ class WishList(AbstractWishList):
 		wishlist.delete()
 
 	merge.alters_data = True
+
+	class Meta(auto_prefetch.Model.Meta, AbstractWishList.Meta):
+		pass
+
+
+class Line(auto_prefetch.Model, AbstractLine):
+	wishlist = auto_prefetch.ForeignKey(
+		"wishlists.WishList",
+		on_delete=models.CASCADE,
+		related_name="lines",
+		verbose_name=_("Wish List"),
+	)
+	product = auto_prefetch.ForeignKey(
+		"catalogue.Product",
+		verbose_name=_("Product"),
+		related_name="wishlists_lines",
+		on_delete=models.SET_NULL,
+		blank=True,
+		null=True,
+	)
+
+	class Meta(auto_prefetch.Model.Meta, AbstractLine.Meta):
+		pass
 
 
 from oscar.apps.wishlists.models import *  # noqa: E402, F403

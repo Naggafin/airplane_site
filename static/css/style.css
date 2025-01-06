@@ -45,6 +45,23 @@
   color: var(--bs-primary);
 }
 
+
+.check-tbl .product-item-close button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--secondary);
+  display: inline-block;
+  text-align: center;
+  line-height: 36px;
+}
+.check-tbl .product-item-close i.ti-close {
+  color: #fff;
+  font-weight: 900;
+  vertical-align: middle;
+}
+
+
 .htmx-indicator {
   display: none;
 }
@@ -54,6 +71,7 @@
   z-index: 2000;
   pointer-events: none;
 }
+
 
 .require-js {
   display: none !important;

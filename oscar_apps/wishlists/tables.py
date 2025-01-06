@@ -21,31 +21,34 @@ class LineTable(tables.Table):
 		"product_price": "product-item-price",
 		"product_stock": "product-item-stock",
 		"quantity": "",
-		"add": "product-item-totle",
-		"remove": "product-item-close",
+		"line_add": "product-item-totle",
+		"line_remove": "product-item-close",
 	}
 
-	product_image = tables.Column(verbose_name=_("Product"), orderable=False)
+	product_image = tables.Column(
+		verbose_name=_("Product"), empty_values=(), orderable=False
+	)
 	product_title = tables.Column(
 		verbose_name="",
 		accessor="product__get_title",
 		linkify=lambda record: record.product.get_absolute_url(),
 		order_by="product__title",
 	)
-	product_price = tables.Column(verbose_name=_("Price"), order_by="product__title")
-	product_stock = tables.Column(verbose_name=_("Stock"))
-	line_quantity = tables.Column(verbose_name=_("Quantity"), order_by="quantity")
-	line_add = tables.Column(verbose_name="", orderable=False)
-	line_remove = tables.Column(verbose_name="", orderable=False)
+	product_price = tables.Column(verbose_name=_("Price"), empty_values=())
+	product_stock = tables.Column(verbose_name=_("Stock"), empty_values=())
+	quantity = tables.Column(verbose_name=_("Quantity"))
+	line_add = tables.Column(verbose_name="", empty_values=(), orderable=False)
+	line_remove = tables.Column(verbose_name="", empty_values=(), orderable=False)
 
-	def __init__(self, *args, request=None, **kwargs):
-		if request is None:
-			raise ValueError("A request object must be provided.")
-		self.request = request
+	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		for column_name, column in self.base_columns.items():
 			column.attrs = column.attrs or {}
 			column.attrs["td"] = {"class": self.column_class_map.get(column_name, "")}
+
+	def order_product_price(self, queryset, is_descending):
+		# TODO
+		return queryset
 
 	def order_product_stock(self, queryset, is_descending):
 		# TODO
@@ -54,14 +57,14 @@ class LineTable(tables.Table):
 	def render_product_image(self, record):
 		product = record.product
 		image = product.primary_image()
+		original = image["original"] if isinstance(image, dict) else image.original
+		caption = (
+			image["caption"] if isinstance(image, dict) else image.caption
+		) or product.get_title()
 		thumbnail = get_thumbnailer().generate_thumbnail(
-			image["original"], size=self.THUMBNAIL_SIZE
+			original, size=self.THUMBNAIL_SIZE
 		)
-		return format_html(
-			'<img src="{}" alt="{}">',
-			thumbnail.url,
-			image.get("caption", product.get_title()),
-		)
+		return format_html('<img src="{}" alt="{}">', thumbnail.url, caption)
 
 	def render_product_price(self, record):
 		session = purchase_info_for_product(self.request, record.product)
@@ -98,10 +101,10 @@ class LineTable(tables.Table):
 				self.request,
 				f"{self.PARTIALS_PATH}#{partial_id}",
 				context,
-			).content
+			).content.decode()
 		)
 
-	def render_line_quantity(self, record):
+	def render_quantity(self, record):
 		context = {"line": record, "product": record.product}
 		return self._render_partial("quantity", context)
 
@@ -117,13 +120,23 @@ class LineTable(tables.Table):
 		model = Line
 		template_name = "django_tables2/bootstrap5-responsive-htmx.html"
 		empty_text = _("You have no products in your wishlist.")
+		fields = (
+			"product_image",
+			"product_title",
+			"product_price",
+			"product_stock",
+			"quantity",
+			"line_add",
+			"line_remove",
+		)
 		sequence = (
 			"product_image",
 			"product_title",
 			"product_price",
 			"product_stock",
-			"line_quantity",
+			"quantity",
 			"line_add",
 			"line_remove",
 		)
+		attrs = {"class": "table check-tbl style-1"}
 		row_attrs = {"x-data": lambda record: "{quantity: %d}" % record.quantity}
