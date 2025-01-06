@@ -1,5 +1,6 @@
 import auto_prefetch
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from oscar.apps.wishlists.abstract_models import AbstractLine, AbstractWishList
 from oscar.core.compat import AUTH_USER_MODEL
@@ -12,6 +13,12 @@ class WishList(auto_prefetch.Model, AbstractWishList):
 		on_delete=models.CASCADE,
 		verbose_name=_("Owner"),
 	)
+
+	def __str__(self):
+		return _("%s's Wishlist") % self.owner
+
+	def get_absolute_url(self):
+		return reverse("customer:wishlist-detail", kwargs={"key": self.key})
 
 	def remove(self, line_pk=None, product_pk=None, delete=False):
 		"""

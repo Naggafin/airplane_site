@@ -16,6 +16,7 @@ django-silk
 django-taggit
 django-template-partials
 django-user-agents
+git+https://www.github.com/Naggafin/django-view-breadcrumbs.git
 djlint
 hiredis
 jwt

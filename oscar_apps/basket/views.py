@@ -2,7 +2,8 @@ from http import HTTPStatus
 
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_htmx.http import trigger_client_event
 from htmx_utils.views import HtmxModelActionView
@@ -12,7 +13,9 @@ from oscar.apps.basket.views import (
 	BasketView as CoreBasketView,
 )
 
+from airplane_site.utils import render_table_row
 from oscar_apps.catalogue.models import Product
+from oscar_apps.wishlists.tables import LineTable
 
 from .actions import BasketRemoveAction
 
@@ -46,13 +49,19 @@ class BasketAddView(CoreBasketAddView):
 		)
 
 		if self.request.htmx:
-			context = {"product": form.product}
-			response = render(
-				self.request,
-				"oscar/catalogue/partials/product.html#remove-from-basket",
-				context,
-			)
-			return response
+			if self.request.htmx.current_url_abs_path.startswith(
+				reverse("customer:wishlist-detail")
+			):
+				line = get_object_or_404(
+					self.request.wishlist.lines.all(), product_id=form.product.pk
+				)
+				return render_table_row(self.request, LineTable, line)
+			else:
+				return render(
+					self.request,
+					"oscar/catalogue/partials/product.html#remove-from-basket",
+					{"product": form.product},
+				)
 		return super().form_valid(form)
 
 	def form_invalid(self, form):

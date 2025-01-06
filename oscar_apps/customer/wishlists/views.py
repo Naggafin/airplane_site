@@ -1,29 +1,32 @@
 from http import HTTPStatus
 
-from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
-from django_extensions.auth.mixins import ModelUserFieldPermissionMixin
 from django_extensions.views.mixins import AdjustablePaginationMixin
 from django_htmx.http import reswap, retarget
 from django_tables2.paginators import LazyPaginator
 from django_tables2.views import SingleTableMixin
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
 from htmx_utils.views.mixins import HtmxFormMixin
+from view_breadcrumbs import DetailBreadcrumbMixin
 
 from oscar_apps.catalogue.models import Product
 from oscar_apps.wishlists.models import Line, WishList
 from oscar_apps.wishlists.tables import LineTable
-from oscar_apps.wishlists.utils import fetch_wishlist
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
 
 
 class WishListDetailView(
-	AdjustablePaginationMixin, SingleTableMixin, SingleObjectMixin, TemplateView
+	AdjustablePaginationMixin,
+	SingleTableMixin,
+	SingleObjectMixin,
+	DetailBreadcrumbMixin,
+	TemplateView,
 ):
 	model = WishList
 	slug_field = "key"
@@ -38,6 +41,11 @@ class WishListDetailView(
 			object=self.object, object_list=self.object_list
 		)
 		return self.render_to_response(context)
+
+	def get_queryset(self):
+		return self.model.prefetch_related(
+			"lines__product__stockrecords", "lines__product__images"
+		).all()
 
 	def get_object(self, queryset=None):
 		try:
@@ -57,22 +65,31 @@ class WishListDetailView(
 	def get_object_list(self):
 		return self.object.lines.all()
 
+	def get_table_kwargs(self):
+		kwargs = super().get_table_kwargs()
+		if not self.object.is_allowed_to_edit(self.request.user):
+			if "exclude" not in kwargs:
+				kwargs["exclude"] = []
+			kwargs["exclude"] = list(kwargs["exclude"]) + ["line_add", "line_remove"]
+		return kwargs
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["wishlist"] = self.object
 		return context
 
+	@property
+	def crumbs(self):
+		return [(self.detail_view_label, self.detail_view_url)]
 
-class WishListAddProduct(HtmxModelActionView):
+
+class WishListAddProduct(LoginRequiredMixin, HtmxModelActionView):
 	model = Product
 	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
 
 	def get(self, request, *args, **kwargs):
-		if request.user.is_authenticated:
-			self.object = self.get_object()
-			return redirect(self.object)
-		return redirect("index")
+		return redirect(self.get_success_url())
 
 	def get_template_names(self):
 		return ["oscar/catalogue/partials/product.html#remove-from-wishlist"]
@@ -80,14 +97,11 @@ class WishListAddProduct(HtmxModelActionView):
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
 		kwargs["product"] = self.object
-		kwargs["wishlist"] = fetch_wishlist(self.request, eager=False)
+		kwargs["wishlist"] = self.request.wishlist
 		return kwargs
 
 	def get_success_url(self):
-		login_url = settings.LOGIN_URL
-		if self.request.path.startswith(login_url):
-			return redirect("customer:wishlist-detail")
-		return self.request.path
+		return reverse("customer:wishlist-detail")
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -95,16 +109,16 @@ class WishListAddProduct(HtmxModelActionView):
 		return context
 
 
-class WishListUpdateLine(ModelUserFieldPermissionMixin, HtmxFormMixin, UpdateView):
+class WishListUpdateLine(LoginRequiredMixin, HtmxFormMixin, UpdateView):
 	model = Line
 	fields = ["quantity"]
 	pk_url_kwarg = "line_pk"
-	model_permission_user_field = "wishlist__owner"
 
 	def get(self, request, *args, **kwargs):
-		if request.user.is_authenticated:
-			return redirect(self.get_success_url())
-		return redirect("index")
+		return redirect(self.get_success_url())
+
+	def get_queryset(self):
+		return self.request.wishlist.lines.all()
 
 	def get_success_url(self):
 		return reverse("customer:wishlist-detail")
@@ -126,13 +140,11 @@ class WishListUpdateLine(ModelUserFieldPermissionMixin, HtmxFormMixin, UpdateVie
 		return redirect(self.get_success_url())
 
 
-class WishListRemoveProduct(HtmxActionView):
+class WishListRemoveProduct(LoginRequiredMixin, HtmxActionView):
 	action_class = WishlistRemoveProductAction
 
 	def get(self, request, *args, **kwargs):
-		if request.user.is_authenticated:
-			return redirect(self.get_success_url())
-		return redirect("index")
+		return redirect(self.get_success_url())
 
 	def get_template_names(self):
 		return ["oscar/catalogue/partials/product.html#add-to-wishlist"]
@@ -141,18 +153,13 @@ class WishListRemoveProduct(HtmxActionView):
 		kwargs = super().get_action_kwargs()
 		kwargs["line_pk"] = self.kwargs.get("line_pk")
 		kwargs["product_pk"] = self.kwargs.get("product_pk")
-		kwargs["wishlist"] = fetch_wishlist(self.request, eager=False)
+		kwargs["wishlist"] = self.request.wishlist
 		return kwargs
 
 	def get_success_url(self):
-		login_url = settings.LOGIN_URL
-		if self.request.path.startswith(login_url):
-			return redirect("customer:wishlist-detail")
-		return self.request.path
+		return reverse("customer:wishlist-detail")
 
 	def get_context_data(self, action, **kwargs):
 		context = super().get_context_data(**kwargs)
-		line, product = action.result
-		context["line"] = line
-		context["product"] = product
+		context["product"] = action.result
 		return context

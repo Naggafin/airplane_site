@@ -171,7 +171,7 @@ class CustomerConfig(apps.CustomerConfig):
 			path(
 				"wishlist/lines/<int:line_pk>/delete/",
 				login_required(self.wishlists_remove_product_view.as_view()),
-				name="wishlist-remove-product",
+				name="wishlist-remove-line",
 			),
 			path(
 				"wishlist/products/<int:product_pk>/delete/",

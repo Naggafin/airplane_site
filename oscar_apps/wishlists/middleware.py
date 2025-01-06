@@ -1,6 +1,6 @@
 from django.utils.functional import SimpleLazyObject
 
-from .utils import get_or_create_wishlist_cache
+from .utils import fetch_wishlist
 
 
 class WishListMiddleware:
@@ -13,9 +13,8 @@ class WishListMiddleware:
 		self.get_response = get_response
 
 	def __call__(self, request):
-		breakpoint()
 		request.wishlist = SimpleLazyObject(lambda: self.get_wishlist(request))
 		return self.get_response(request)
 
 	def get_wishlist(self, request):
-		return get_or_create_wishlist_cache(request)
+		return fetch_wishlist(request)

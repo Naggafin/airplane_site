@@ -354,3 +354,8 @@ SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_INTERCEPT_PERCENT = 100  # log 100% of requests
+
+
+# django-view-breadcrumbs
+
+BREADCRUMBS_TEMPLATE = "pixio/elements/breadcrumbs.html"

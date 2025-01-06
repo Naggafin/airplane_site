@@ -105,15 +105,30 @@ class LineTable(tables.Table):
 		)
 
 	def render_quantity(self, record):
-		context = {"line": record, "product": record.product}
+		context = {
+			"line": record,
+			"product": record.product,
+			"wishlist": record.wishlist,
+			"request": self.request,
+		}
 		return self._render_partial("quantity", context)
 
 	def render_line_add(self, record):
-		context = {"line": record, "product": record.product}
+		context = {
+			"line": record,
+			"product": record.product,
+			"wishlist": record.wishlist,
+			"request": self.request,
+		}
 		return self._render_partial("add", context)
 
 	def render_line_remove(self, record):
-		context = {"line": record, "product": record.product}
+		context = {
+			"line": record,
+			"product": record.product,
+			"wishlist": record.wishlist,
+			"request": self.request,
+		}
 		return self._render_partial("remove", context)
 
 	class Meta:

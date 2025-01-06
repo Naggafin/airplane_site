@@ -20,7 +20,7 @@ class WishlistAddProductAction(Action):
 class WishlistRemoveProductAction(Action):
 	def action(self, wishlist, line_pk=None, product_pk=None):
 		try:
-			line, product = wishlist.remove(
+			__, product = wishlist.remove(
 				line_pk=line_pk, product_pk=product_pk, delete=True
 			)
 		except Line.DoesNotExist as e:

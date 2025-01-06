@@ -18,3 +18,10 @@ def is_in_wishlist(product, request):
 	product_pks = set(line.product_id for line in cached_wishlist.lines.all())
 
 	return product.pk in product_pks
+
+
+@register.filter
+def can_edit_wishlist(wishlist, user):
+	if not user.is_authenticated:
+		return False
+	return wishlist.is_allowed_to_edit(user)

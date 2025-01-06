@@ -12,13 +12,16 @@ _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 # TODO 1: implememt real logic to populate these lists
 # TODO 2: implement caching for performance
 def populate_products(request):
+	session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+	if session_key in _cache:
+		return _cache[session_key]
 	products = list(
 		Product.objects.select_related("parent", "product_class")
 		.prefetch_related("images", "stockrecords")
 		.all()
 	)
 	categories = list(Category.objects.all())
-	return {
+	_cache[session_key] = context = {
 		"top_products": random.sample(products, 5),
 		"popular_products": random.sample(products, 20),
 		"recommended_products": random.sample(products, 10),
@@ -28,10 +31,4 @@ def populate_products(request):
 		"shopping_cart": [],
 		"shopping_cart_total": 0.0,
 	}
-	if not request.user.is_authenticated:
-		return {}
-	session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-	if session_key in _cache:
-		return _cache[session_key]
-	_cache[session_key] = {}
-	return _cache[session_key]
+	return context
