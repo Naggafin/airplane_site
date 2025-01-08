@@ -38,7 +38,7 @@
                min="1"
                aria-label="{% trans 'Quantity of item in wishlist' %}"
                hx-post="{% url 'customer:wishlist-update-line' line_pk=line.pk %}"
-               hx-trigger="input changed delay:500ms, search"
+               hx-trigger="input changed delay:500ms, change"
                hx-vals="{'csrfmiddlewaretoken': '{{ csrf_token }}'}"
                hx-swap="none"
                x-model="quantity">
@@ -106,7 +106,7 @@
         <i class="spinner-border spinner-border-sm"
            role="status"
            aria-hidden="true"
-           x-show="submitting"><i class="ti-close" x-show="!submitting"></i>
+           x-show="submitting"></i><i class="ti-close" x-show="!submitting"></i>
     </button>
 </form>
 {% endpartialdef %}

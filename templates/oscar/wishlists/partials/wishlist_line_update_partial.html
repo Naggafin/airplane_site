@@ -1,0 +1,14 @@
+{% load purchase_info_tags %}
+{% with num_items=basket.num_items %}
+    <span id="cartQuantity"
+          class="badge badge-light
+                 {% if num_items < 1 %}d-none{% endif %}"
+          hx-swap-oob="true">{{ basket.num_items }}</span>
+{% endwith %}
+<h5 id="cartSubtotal" class="mb-0" hx-swap-oob="true">{{ basket.total_excl_tax|currency }}</h5>
+{% purchase_info_for_product request product as session %}
+<h6 id="basket-line-{{ line.pk }}-price"
+    class="dz-price mb-0"
+    hx-swap-oob="outerHTML:#shopping-cart-pane #basket-line-{{ line.pk }} #basket-line-{{ line.pk }}-price">
+    {{ session.price.excl_tax|currency:session.price.currency }}
+</h6>

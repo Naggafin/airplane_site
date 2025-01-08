@@ -20,6 +20,21 @@ class WishList(auto_prefetch.Model, AbstractWishList):
 	def get_absolute_url(self):
 		return reverse("customer:wishlist-detail", kwargs={"key": self.key})
 
+	def add(self, product):
+		"""
+		Add a product to this wishlist
+		"""
+		lines = self.lines.filter(product=product)
+		if len(lines) == 0:
+			created = True
+			line = self.lines.create(product=product, title=product.get_title())
+		else:
+			created = False
+			line = lines[0]
+			line.quantity += 1
+			line.save()
+		return line, created
+
 	def remove(self, line_pk=None, product_pk=None, delete=False):
 		"""
 		Remove a product from this wishlist.

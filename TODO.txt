@@ -1,5 +1,5 @@
 django-filter to filter listings
 pinax-messages for user messaging
 Fix navigation for partners dashboard
-oscar_apps.customer.wishlists.views.WishListUpdateLine
 auto_prefetch on models
+collapse migrations when django-oscar commits 4.0 release

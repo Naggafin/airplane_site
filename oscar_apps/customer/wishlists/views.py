@@ -1,13 +1,10 @@
-from http import HTTPStatus
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponse
-from django.shortcuts import redirect
+from django.http import Http404
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import TemplateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django_extensions.views.mixins import AdjustablePaginationMixin
-from django_htmx.http import reswap, retarget
 from django_tables2.paginators import LazyPaginator
 from django_tables2.views import SingleTableMixin
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
@@ -92,7 +89,7 @@ class WishListAddProduct(LoginRequiredMixin, HtmxModelActionView):
 		return redirect(self.get_success_url())
 
 	def get_template_names(self):
-		return ["oscar/catalogue/partials/product.html#remove-from-wishlist"]
+		return ["oscar/wishlist/partials/wishlist_line_add_partial.html"]
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
@@ -103,9 +100,11 @@ class WishListAddProduct(LoginRequiredMixin, HtmxModelActionView):
 	def get_success_url(self):
 		return reverse("customer:wishlist-detail")
 
-	def get_context_data(self, **kwargs):
+	def get_context_data(self, action, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["product"] = self.object
+		line, product = action.result
+		context["line"] = line
+		context["product"] = product
 		return context
 
 
@@ -125,6 +124,7 @@ class WishListUpdateLine(LoginRequiredMixin, HtmxFormMixin, UpdateView):
 
 	def form_valid(self, form):
 		line = form.instance
+		product = line.product
 		deleted = line.quantity <= 0
 
 		if deleted:
@@ -133,10 +133,16 @@ class WishListUpdateLine(LoginRequiredMixin, HtmxFormMixin, UpdateView):
 			line.save()
 
 		if self.request.htmx:
-			response = HttpResponse(status=HTTPStatus.NO_CONTENT)
-			if deleted:
-				response = reswap(retarget(response, "closest tr"), "delete")
-			return response
+			context = {
+				"line": line,
+				"product": product,
+			}
+			template = (
+				"oscar/wishlist/partials/wishlist_line_remove_partial.html"
+				if deleted
+				else "oscar/wishlist/partials/wishlist_line_update_partial.html"
+			)
+			return render(self.request, template, context)
 		return redirect(self.get_success_url())
 
 
@@ -147,7 +153,7 @@ class WishListRemoveProduct(LoginRequiredMixin, HtmxActionView):
 		return redirect(self.get_success_url())
 
 	def get_template_names(self):
-		return ["oscar/catalogue/partials/product.html#add-to-wishlist"]
+		return ["oscar/wishlist/partials/wishlist_line_remove_partial.html"]
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
@@ -161,5 +167,7 @@ class WishListRemoveProduct(LoginRequiredMixin, HtmxActionView):
 
 	def get_context_data(self, action, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["product"] = action.result
+		line, product = action.result
+		context["line"] = line
+		context["product"] = product
 		return context

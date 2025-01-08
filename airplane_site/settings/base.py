@@ -136,11 +136,12 @@ TEMPLATES = [
 				"django.template.context_processors.request",
 				"django.contrib.auth.context_processors.auth",
 				"django.contrib.messages.context_processors.messages",
-				"oscar_apps.wishlists.context.wishlist",
+				# "oscar_apps.wishlists.context.wishlist",
 				"oscar.apps.search.context_processors.search_form",
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.core.context_processors.metadata",
 				"airplane_site.context.populate_products",
+				"airplane_site.context.site_ui",
 			],
 			"builtins": [
 				"django_extensions.templatetags.misc",
@@ -289,6 +290,13 @@ LOGGING = {
 			"propagate": False,
 		},
 	},
+}
+
+
+# site ui settings
+
+SITE_UI_VARS = {
+	"num_sidebar_preview_lines": 5,
 }
 
 

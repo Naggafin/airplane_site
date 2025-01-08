@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django_fastdev.apps import fastdev_ignore
-from oscar.apps.basket.forms import AddToBasketForm
+from oscar.apps.basket.forms import *  # noqa: F403
 
 
 @fastdev_ignore

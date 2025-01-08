@@ -9,18 +9,18 @@ from oscar_apps.wishlists.models import Line
 
 class WishlistAddProductAction(Action):
 	def action(self, wishlist, product):
-		wishlist.add(product)
+		line, __ = wishlist.add(product)
 		message = _("<strong>%s</strong> was added to your wish list.") % escape(
 			product.get_title()
 		)
 		self.add_message(mark_safe(message))
-		return product
+		return line, product
 
 
 class WishlistRemoveProductAction(Action):
 	def action(self, wishlist, line_pk=None, product_pk=None):
 		try:
-			__, product = wishlist.remove(
+			line, product = wishlist.remove(
 				line_pk=line_pk, product_pk=product_pk, delete=True
 			)
 		except Line.DoesNotExist as e:
@@ -30,4 +30,4 @@ class WishlistRemoveProductAction(Action):
 			product.get_title()
 		)
 		self.add_message(mark_safe(message))
-		return product
+		return line, product

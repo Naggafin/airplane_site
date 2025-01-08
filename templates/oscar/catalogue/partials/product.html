@@ -1,12 +1,10 @@
 {% load i18n partials %}
 {% load purchase_info_tags basket_tags wishlist_tags image_tags currency_filters %}
 {% partialdef add-to-wishlist %}
-<form id="add_to_wishlist_form"
-      action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"
+<form action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"
       method="post"
-      hx-swap="outerHTML show:none"
       hx-boost="true"
-      hx-target="this"
+      hx-target="none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -28,12 +26,10 @@
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
-<form id="add_to_wishlist_form"
-      action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
+<form action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
       method="post"
-      hx-swap="outerHTML show:none"
       hx-boost="true"
-      hx-target="this"
+      hx-target="none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -56,11 +52,10 @@
 {% endpartialdef %}
 {% partialdef add-to-basket %}
 {% basket_form request product 'single' as basket_form %}
-<form action="{% url 'basket:add' pk=product.pk %}"
+<form action="{% url 'basket:add-product' product_pk=product.pk %}"
       method="post"
-      hx-swap="outerHTML show:none"
       hx-boost="true"
-      hx-target="this"
+      hx-target="none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -85,9 +80,8 @@
 {% partialdef remove-from-basket %}
 <form action="{% url 'basket:remove' pk=product.pk %}"
       method="post"
-      hx-swap="outerHTML show:none"
       hx-boost="true"
-      hx-target="this"
+      hx-target="none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -116,7 +110,9 @@
             <div class="dz-media">
                 {% with image=product.primary_image %}
                     {% oscar_thumbnail image.original "450x600" as thumb %}
-                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="mx-auto">
+                    <img src="{{ thumb.url }}"
+                         alt="{{ image.caption|default:product.get_title }}"
+                         class="mx-auto">
                 {% endwith %}
                 <div class="shop-meta">
                     <a href="{{ product.get_absolute_url }}"
@@ -128,14 +124,18 @@
                         <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                     </a>
                     {% if product|is_in_wishlist:request %}
-                        {% partial remove-from-wishlist %}
+                        <div id="wishlist-remove-product-{{ product.pk }}">{% partial remove-from-wishlist %}</div>
                     {% else %}
-                        {% partial add-to-wishlist %}
+                        <div id="wishlist-add-product-{{ product.pk }}">{% partial add-to-wishlist %}</div>
                     {% endif %}
                     {% if product|is_in_basket:request %}
-                        {% partial remove-from-basket %}
-                    {% elif session.availability.is_available_to_buy and session.price.exists %}
-                        {% partial add-to-basket %}
+                        <div id="basket-remove-product-{{ product.pk }}">{% partial remove-from-basket %}</div>
+                    {% else %}
+                        <div id="basket-add-product-{{ product.pk }}">
+                            {% if session.availability.is_available_to_buy and session.price.exists %}
+                                {% partial add-to-basket %}
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -150,8 +150,6 @@
                         {% if session.price.exists %}
                             {% if session.price.excl_tax == 0 %}
                                 {% trans "Free" %}
-                            {% elif session.price.is_tax_known %}
-                                {{ session.price.incl_tax|currency:session.price.currency }}
                             {% else %}
                                 {{ session.price.excl_tax|currency:session.price.currency }}
                             {% endif %}
@@ -163,13 +161,14 @@
             </div>
             <div class="product-tag">
                 {% block product_availability %}
-                    {% if not session.price.exists or not session.availability.is_available_to_buy %}
+                    {% if not session.availability.is_available_to_buy and session.price.exists %}
                         <span class="badge border">{% trans 'Unavailable' %}</span>
                     {% endif %}
                 {% endblock %}
                 {# TODO <span class="badge border">Get 20% Off</span> #}
             </div>
             {% comment %}
+            TODO
             <div class="product-rating">
             {% block product_rating %}
                 {% iffeature "reviews" %}

@@ -9,6 +9,10 @@ from oscar_apps.catalogue.models import Category, Product
 _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 
 
+def site_ui(request):
+	return settings.SITE_UI_VARS
+
+
 # TODO 1: implememt real logic to populate these lists
 # TODO 2: implement caching for performance
 def populate_products(request):
@@ -28,7 +32,5 @@ def populate_products(request):
 		"top_categories": random.sample(categories, 5),
 		"popular_categories": random.sample(categories, len(categories)),
 		#'recommended_categories':[],
-		"shopping_cart": [],
-		"shopping_cart_total": 0.0,
 	}
 	return context

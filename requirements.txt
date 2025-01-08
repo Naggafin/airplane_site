@@ -4,6 +4,7 @@ django
 djangorestframework
 django-allauth
 django-allauth-ui
+django-auto-prefetch
 django-debug-toolbar
 git+https://www.github.com/Naggafin/django-extensions.git
 django-fastdev
@@ -16,7 +17,7 @@ django-silk
 django-taggit
 django-template-partials
 django-user-agents
-git+https://www.github.com/Naggafin/django-view-breadcrumbs.git
+git+https://www.github.com/Naggafin/django-view-breadcrumbs.git@improvements
 djlint
 hiredis
 jwt

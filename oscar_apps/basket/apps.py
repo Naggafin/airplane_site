@@ -9,13 +9,24 @@ class BasketConfig(apps.BasketConfig):
 
 	def ready(self):
 		super().ready()
-		self.remove_view = get_class("basket.views", "BasketRemoveView")
+		self.update_view = get_class("basket.views", "BasketLineUpdate")
+		self.remove_view = get_class("basket.views", "BasketLineRemove")
 
 	def get_urls(self):
 		urls = [
 			path("", self.summary_view.as_view(), name="summary"),
-			path("add/<int:pk>/", self.add_view.as_view(), name="add"),
-			path("remove/<int:pk>/", self.remove_view.as_view(), name="remove"),
+			path("add/<int:product_pk>/", self.add_view.as_view(), name="add-product"),
+			path(
+				"update/<int:line_pk>/", self.update_view.as_view(), name="update-line"
+			),
+			path(
+				"remove/<int:line_pk>/", self.remove_view.as_view(), name="remove-line"
+			),
+			path(
+				"remove/<int:product_pk>/",
+				self.remove_view.as_view(),
+				name="remove-product",
+			),
 			path("vouchers/add/", self.add_voucher_view.as_view(), name="vouchers-add"),
 			path(
 				"vouchers/<int:pk>/remove/",

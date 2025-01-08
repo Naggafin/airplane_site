@@ -92,6 +92,10 @@
 }
 */
 
+.check-tbl .product-item-totle button {
+	width: 100%;
+}
+
 
 .htmx-indicator {
   display: none;

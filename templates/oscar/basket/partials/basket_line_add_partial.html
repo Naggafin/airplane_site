@@ -1,0 +1,11 @@
+{% include 'oscar/basket/partials/basket_line_update_partial.html' %}
+<div id="basket-remove-product-{{ product.pk }}"
+     hx-swap-oob="outerHTML:#basket-add-product-{{ product.pk }}">
+    {% include 'oscar/catalogue/partials/product.html#remove-from-basket' %}
+</div>
+<template>
+    <li id="basket-line-{{ line.pk }}"
+        hx-swap-oob="afterbegin:#shopping-cart-pane .sidebar-cart-list">
+        {% include 'pixio/elements/header.html#side-bar-basket-line' %}
+    </li>
+</template>
