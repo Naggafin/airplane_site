@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -80,7 +79,7 @@ class WishListDetailView(
 		return [(self.detail_view_label, self.detail_view_url)]
 
 
-class WishListAddProduct(LoginRequiredMixin, HtmxModelActionView):
+class WishListAddProduct(HtmxModelActionView):
 	model = Product
 	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
@@ -108,7 +107,7 @@ class WishListAddProduct(LoginRequiredMixin, HtmxModelActionView):
 		return context
 
 
-class WishListUpdateLine(LoginRequiredMixin, HtmxFormMixin, UpdateView):
+class WishListUpdateLine(HtmxFormMixin, UpdateView):
 	model = Line
 	fields = ["quantity"]
 	pk_url_kwarg = "line_pk"
@@ -146,7 +145,7 @@ class WishListUpdateLine(LoginRequiredMixin, HtmxFormMixin, UpdateView):
 		return redirect(self.get_success_url())
 
 
-class WishListRemoveProduct(LoginRequiredMixin, HtmxActionView):
+class WishListRemoveProduct(HtmxActionView):
 	action_class = WishlistRemoveProductAction
 
 	def get(self, request, *args, **kwargs):

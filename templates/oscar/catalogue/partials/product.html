@@ -6,10 +6,10 @@
 {% load image_tags %}
 {% load currency_filters %}
 {% partialdef add-to-wishlist %}
-<form action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"
+<form action="{% url 'customer:wishlist-add-product' pk=product.pk %}"
       method="post"
       hx-boost="true"
-      hx-target="none"
+      hx-swap="none show:none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -31,10 +31,10 @@
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
-<form action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
+<form action="{% url 'customer:wishlist-remove-product' pk=product.pk %}"
       method="post"
       hx-boost="true"
-      hx-target="none"
+      hx-swap="none show:none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -57,10 +57,10 @@
 {% endpartialdef %}
 {% partialdef add-to-basket %}
 {% basket_form request product 'single' as basket_form %}
-<form action="{% url 'basket:add-product' product_pk=product.pk %}"
+<form action="{% url 'basket:add-product' pk=product.pk %}"
       method="post"
       hx-boost="true"
-      hx-target="none"
+      hx-swap="none show:none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"
@@ -83,10 +83,10 @@
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-basket %}
-<form action="{% url 'basket:remove' pk=product.pk %}"
+<form action="{% url 'basket:remove-product' pk=product.pk %}"
       method="post"
       hx-boost="true"
-      hx-target="none"
+      hx-swap="none show:none"
       hx-push-url="false"
       @submit="$data.submitting = true;"
       @htmx:after-on-load="$data.submitting = false;"

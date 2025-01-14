@@ -48,8 +48,7 @@
                                                 </div>
                                             </div>
                                             <div class="content-btn m-b30 wow fadeInUp" data-wow-delay="0.8s">
-                                                <form action="{% url 'basket:add-product' product_pk=product.pk %}"
-                                                      method="post">
+                                                <form action="{% url 'basket:add-product' pk=product.pk %}" method="post">
                                                     <button type="submit" class="btn btn-secondary me-xl-3 me-2 btnhover20">{% trans 'ADD TO CART' %}</button>
                                                 </form>
                                                 <a href="{{ product.get_absolute_url }}"

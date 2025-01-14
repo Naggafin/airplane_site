@@ -1,4 +1,5 @@
 {% load purchase_info_tags %}
+{% load currency_filters %}
 {% with num_items=request.basket.num_items %}
     <span id="cartQuantity"
           class="badge badge-light

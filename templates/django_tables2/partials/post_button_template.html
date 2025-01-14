@@ -1,7 +1,7 @@
 <form action="{{ url }}"
       method="post"
       {% if confirmation %}hx-confirm="{{ confirmation }}"{% endif %}
-      hx-target="{{ row_id }}"
+      hx-target="#{{ row_id }}"
       hx-push-url="false"
       hx-swap="outerHTML"
       hx-boost="true"

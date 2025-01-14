@@ -5,7 +5,7 @@
 {% partialdef quantity %}
 {% if wishlist|can_edit_wishlist:request.user %}
     <noscript>
-        <form action="{% url 'customer:wishlist-update-line' line_pk=line.pk %}"
+        <form action="{% url 'customer:wishlist-update-line' pk=line.pk %}"
               method="post">
             {% csrf_token %}
             <div class="d-flex align-items-center gap-2">
@@ -37,7 +37,7 @@
                class="form-control"
                min="1"
                aria-label="{% trans 'Quantity of item in wishlist' %}"
-               hx-post="{% url 'customer:wishlist-update-line' line_pk=line.pk %}"
+               hx-post="{% url 'customer:wishlist-update-line' pk=line.pk %}"
                hx-trigger="input changed delay:500ms, change"
                hx-vals="{'csrfmiddlewaretoken': '{{ csrf_token }}'}"
                hx-swap="none"
@@ -86,7 +86,7 @@
 {% endif %}
 {% endpartialdef %}
 {% partialdef remove %}
-<form action="{% url 'customer:wishlist-remove-line' line_pk=line.pk %}"
+<form action="{% url 'customer:wishlist-remove-line' pk=line.pk %}"
       method="post"
       hx-swap="delete"
       hx-boost="true"

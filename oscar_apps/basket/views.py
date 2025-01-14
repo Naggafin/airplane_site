@@ -25,10 +25,6 @@ class BasketView(CoreBasketView):
 
 
 class BasketAddView(CoreBasketAddView):
-	def dispatch(self, *args, **kwargs):
-		breakpoint()
-		return super().dispatch(*args, **kwargs)
-
 	def form_valid(self, form):
 		offers_before = self.request.basket.applied_offers()
 
@@ -90,6 +86,11 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 
 	def get_success_url(self):
 		return reverse("basket:summary")
+
+	def get_form_kwargs(self):
+		kwargs = super().get_form_kwargs()
+		kwargs["strategy"] = self.request.strategy
+		return kwargs
 
 	def form_valid(self, form):
 		line = form.instance

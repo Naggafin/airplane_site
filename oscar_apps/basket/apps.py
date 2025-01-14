@@ -15,15 +15,11 @@ class BasketConfig(apps.BasketConfig):
 	def get_urls(self):
 		urls = [
 			path("", self.summary_view.as_view(), name="summary"),
-			path("add/<int:product_pk>/", self.add_view.as_view(), name="add-product"),
+			path("add/<int:pk>/", self.add_view.as_view(), name="add-product"),
+			path("update/<int:pk>/", self.update_view.as_view(), name="update-line"),
+			path("remove/<int:pk>/", self.remove_view.as_view(), name="remove-line"),
 			path(
-				"update/<int:line_pk>/", self.update_view.as_view(), name="update-line"
-			),
-			path(
-				"remove/<int:line_pk>/", self.remove_view.as_view(), name="remove-line"
-			),
-			path(
-				"remove/<int:product_pk>/",
+				"remove/<int:pk>/",
 				self.remove_view.as_view(),
 				name="remove-product",
 			),
