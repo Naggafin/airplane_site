@@ -7,7 +7,7 @@
         {% csrf_token %}
         <div class="mb-3">
             {% include 'oscar/dashboard/partials/form_fields.html' with form=form %}
-            <small>{% trans 'Note: Adding both the edit and delete roles will make this user an "owner," and they will be able to alter other users\' roles.' %}</small>
+            <small>{% trans 'Note: Adding both the edit and delete roles will make this user an "owner," and they will be able to alter other users\roles.' %}</small>
         </div>
         <div class="form-actions">
             <button class="btn btn-primary"

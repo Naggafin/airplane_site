@@ -5,7 +5,7 @@ from oscar.apps.basket.forms import *  # noqa: F403
 
 
 @fastdev_ignore
-class SimpleAddToBasketForm(AddToBasketForm):
+class SimpleAddToBasketForm(AddToBasketForm):  # noqa: F405
 	quantity = forms.IntegerField(
 		initial=1, min_value=1, label=_("Quantity"), widget=forms.HiddenInput
 	)

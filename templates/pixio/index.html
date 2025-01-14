@@ -344,17 +344,19 @@
                             <div class="meta-content m-b20 d-flex align-items-end">
                                 <div class="me-3">
                                     <span class="form-label">{% trans 'Price' %}</span>
-                                    {% if session.price.exists %}
-                                        {% if session.price.excl_tax == 0 %}
-                                            <span class="price">{% trans "Free" %}</span>
-                                        {% elif session.price.is_tax_known %}
-                                            <span class="price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+                                    <span class="price">
+                                        {% if session.price.exists %}
+                                            {% if session.price.excl_tax == 0 %}
+                                                {% trans "Free" %}
+                                            {% elif session.price.is_tax_known %}
+                                                {{ session.price.incl_tax|currency:session.price.currency }}
+                                            {% else %}
+                                                {{ session.price.excl_tax|currency:session.price.currency }}
+                                            {% endif %}
                                         {% else %}
-                                            <span class="price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                                            &nbsp;
                                         {% endif %}
-                                    {% else %}
-                                        <span class="price">&nbsp;</span>
-                                    {% endif %}
+                                    </span>
                                     {# <span class="price">$125.75 <del>$132.17</del></span> #}
                                 </div>
                                 <div class="btn-quantity light me-0">

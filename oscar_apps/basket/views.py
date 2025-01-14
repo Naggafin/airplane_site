@@ -25,6 +25,10 @@ class BasketView(CoreBasketView):
 
 
 class BasketAddView(CoreBasketAddView):
+	def dispatch(self, *args, **kwargs):
+		breakpoint()
+		return super().dispatch(*args, **kwargs)
+
 	def form_valid(self, form):
 		offers_before = self.request.basket.applied_offers()
 

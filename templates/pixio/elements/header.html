@@ -490,7 +490,7 @@
                              tabindex="0">
                             <div class="shop-sidebar-cart">
                                 <ul class="sidebar-cart-list">
-                                    {% for line in wishlist.lines.all|slice:":5" %}
+                                    {% for line in request.wishlist.lines.all|slice:":5" %}
                                         {% partial side-bar-wishlist-line %}
                                     {% endfor %}
                                 </ul>

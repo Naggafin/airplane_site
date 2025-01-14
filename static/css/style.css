@@ -1,48 +1,48 @@
-/* TODO
-.shop-card {
-  min-width: 450px;
-  min-height: 600px;
-  max-width: 450px;
-  max-height: 600px;
-}
-*/
-.shop-card .product-rating {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-@media only screen and (max-width: 575px) {
-  .shop-card .product-rating {
-    bottom: 10px;
-    left: 10px;
-  }
+.shop-card .dz-content {
+  background: #fff;
+  border-radius: 15px;
 }
 
-.star-rating {
-  color: var(--bs-gray-400);
+.shop-card .dz-media img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }
-.star-rating i {
-  letter-spacing: -1px;
-  width: auto;
+
+.shop-card .product-rating {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
 }
-.star-rating.One i:first-child {
-  color: var(--bs-primary);
+
+.shop-card:hover .product-rating {
+  opacity: 0;
 }
-.star-rating.Two i:first-child, .star-rating.Two i:first-child + i {
-  color: var(--bs-primary);
+
+.shop-card .product-rating li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.star-rating.Three i:first-child, .star-rating.Three i:first-child + i, .star-rating.Three i:first-child + i + i {
-  color: var(--bs-primary);
+
+.shop-card .product-rating li i {
+  color: #808080;
+  font-size: 16px;
 }
-.star-rating.Four i:first-child, .star-rating.Four i:first-child + i, .star-rating.Four i:first-child + i + i, .star-rating.Four i:first-child + i + i + i {
-  color: var(--bs-primary);
-}
-.star-rating.Five i {
-  color: var(--bs-primary);
+
+.shop-card .product-rating li.star-fill i {
+  color: #FFD266;
 }
 
 
@@ -65,7 +65,7 @@
 /* Hover effect for better UX */
 .close-button:hover {
   background-color: #f5f5f5;
-  color: #ff0000; /* Optional: Change icon color on hover */
+  color: #ff0000;
 }
 
 /* Focus outline for accessibility */
@@ -93,7 +93,7 @@
 */
 
 .check-tbl .product-item-totle button {
-	width: 100%;
+  width: 100%;
 }
 
 

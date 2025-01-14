@@ -1,5 +1,10 @@
 {% load i18n partials %}
-{% load purchase_info_tags basket_tags wishlist_tags image_tags currency_filters %}
+{% load display_tags %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+{% load wishlist_tags %}
+{% load image_tags %}
+{% load currency_filters %}
 {% partialdef add-to-wishlist %}
 <form action="{% url 'customer:wishlist-add-product' product_pk=product.pk %}"
       method="post"
@@ -137,50 +142,49 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                </div>
+                    <ul class="product-rating">
+                        {% block product_rating %}
+                            {% iffeature "reviews" %}
+                            {% for i in 5|range %}
+                                <li {% if i <= product.rating %}class="star-fill"{% endif %}>
+                                    <i class="flaticon-star-1"></i>
+                                </li>
+                            {% endfor %}
+                        {% endiffeature %}
+                    {% endblock %}
+                </ul>
             </div>
-            <div class="dz-content">
-                {% block product_title %}
-                    <h5 class="title">
-                        <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
-                    </h5>
-                {% endblock %}
-                {% block product_price %}
-                    <h5 class="price">
-                        {% if session.price.exists %}
-                            {% if session.price.excl_tax == 0 %}
-                                {% trans "Free" %}
-                            {% else %}
-                                {{ session.price.excl_tax|currency:session.price.currency }}
-                            {% endif %}
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </h5>
-                {% endblock %}
-            </div>
-            <div class="product-tag">
-                {% block product_availability %}
-                    {% if not session.availability.is_available_to_buy and session.price.exists %}
-                        <span class="badge border">{% trans 'Unavailable' %}</span>
-                    {% endif %}
-                {% endblock %}
-                {# TODO <span class="badge border">Get 20% Off</span> #}
-            </div>
-            {% comment %}
-            TODO
-            <div class="product-rating">
-            {% block product_rating %}
-                {% iffeature "reviews" %}
-                    {% for i in 5|range %}
-                    <li {% if i <= product.rating %}class="star-fill"{% endif %}>
-                        <i class="flaticon-star-1"></i>
-                    </li>
-                    {% endfor %}
-	            {% endiffeature %}
-	        {% endblock %}
-			</div>
-            {% endcomment %}
         </div>
-    </li>
+        <div class="dz-content">
+            {% block product_title %}
+                <h5 class="title">
+                    <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
+                </h5>
+            {% endblock %}
+            {% block product_price %}
+                <h5 class="price">
+                    {% if session.price.exists %}
+                        {% if session.price.excl_tax == 0 %}
+                            {% trans "Free" %}
+                        {% elif session.price.is_tax_known %}
+                            {{ session.price.incl_tax|currency:session.price.currency }}
+                        {% else %}
+                            {{ session.price.excl_tax|currency:session.price.currency }}
+                        {% endif %}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </h5>
+            {% endblock %}
+        </div>
+        <div class="product-tag">
+            {% block product_availability %}
+                {% if not session.availability.is_available_to_buy %}
+                    <span class="badge border">{% trans 'Unavailable' %}</span>
+                {% endif %}
+            {% endblock %}
+            {# TODO <span class="badge border">Get 20% Off</span> #}
+        </div>
+    </div>
+</li>
 {% endblock %}
