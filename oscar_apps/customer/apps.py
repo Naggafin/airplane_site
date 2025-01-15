@@ -159,7 +159,7 @@ class CustomerConfig(apps.CustomerConfig):
 				name="wishlist-detail",
 			),
 			path(
-				"wishlist/add/<int:pk>/",
+				"wishlist/products/<int:pk>/add/",
 				login_required(self.wishlists_add_product_view.as_view()),
 				name="wishlist-add-product",
 			),
@@ -169,12 +169,12 @@ class CustomerConfig(apps.CustomerConfig):
 				name="wishlist-update-line",
 			),
 			path(
-				"wishlist/lines/<int:pk>/delete/",
+				"wishlist/lines/<int:line_pk>/delete/",
 				login_required(self.wishlists_remove_product_view.as_view()),
 				name="wishlist-remove-line",
 			),
 			path(
-				"wishlist/products/<int:pk>/delete/",
+				"wishlist/products/<int:product_pk>/delete/",
 				login_required(self.wishlists_remove_product_view.as_view()),
 				name="wishlist-remove-product",
 			),

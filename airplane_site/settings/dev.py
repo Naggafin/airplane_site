@@ -103,10 +103,5 @@ LOGGING["loggers"]["nplusone"] = {  # noqa: F405
 }
 
 
-# django-silk -- no need to profile in debug mode
-INSTALLED_APPS.remove("silk")  # noqa: F405
-MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")  # noqa: F405
-
-
 # django-allauth
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "HTTP"

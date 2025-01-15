@@ -86,7 +86,6 @@ INSTALLED_APPS = [
 	"allauth.socialaccount.providers.facebook",
 	"allauth.socialaccount.providers.google",
 	# other 3rd party dependencies
-	"silk",
 	"taggit",
 	"guardian",
 	"widget_tweaks",
@@ -110,7 +109,7 @@ MIDDLEWARE = [
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
-	"silk.middleware.SilkyMiddleware",
+	"htmx_utils.middleware.HtmxDebugMiddleware",
 	"django_htmx.middleware.HtmxMiddleware",
 	"htmx_utils.middleware.HtmxRedirectMiddleware",
 	"htmx_utils.middleware.HtmxMessagesMiddleware",
@@ -140,6 +139,7 @@ TEMPLATES = [
 				"oscar.apps.search.context_processors.search_form",
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.core.context_processors.metadata",
+				"htmx_utils.context_processors.htmx_utils_context",
 				"airplane_site.context.populate_products",
 				"airplane_site.context.site_ui",
 			],
@@ -250,7 +250,7 @@ LOGGING = {
 	},
 	"handlers": {
 		"console": {
-			"level": "INFO",
+			"level": "DEBUG",
 			"filters": ["require_debug_true"],
 			"class": "logging.StreamHandler",
 		},
@@ -288,6 +288,10 @@ LOGGING = {
 			"handlers": ["django.server"],
 			"level": "INFO",
 			"propagate": False,
+		},
+		"htmx_utils.middleware": {
+			"handlers": ["console"],
+			"level": "DEBUG",
 		},
 	},
 }
@@ -350,7 +354,7 @@ OSCAR_GOOGLE_ANALYTICS_ID = None
 # django-htmx-utils
 
 HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "pixio/elements/alert.html"
-HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alert"
+HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alert-container"
 
 
 # django-silk

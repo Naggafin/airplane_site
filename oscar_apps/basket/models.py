@@ -26,11 +26,16 @@ class Basket(auto_prefetch.Model, AbstractBasket):
 
 		# Fetch the line using the filter conditions in a manner that exploits cache
 		lines = list(self.all_lines())
-		line = [
-			line
-			for line in lines
-			if line.pk == line_pk or line.product_id == product_pk
-		][0]
+
+		try:
+			line = [
+				line
+				for line in lines
+				if line.pk == line_pk or line.product_id == product_pk
+			][0]
+		except IndexError as e:
+			raise Line.DoesNotExist from e
+
 		product = line.product
 
 		# Handle deletion or quantity adjustment

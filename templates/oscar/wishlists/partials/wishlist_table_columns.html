@@ -86,7 +86,7 @@
 {% endif %}
 {% endpartialdef %}
 {% partialdef remove %}
-<form action="{% url 'customer:wishlist-remove-line' pk=line.pk %}"
+<form action="{% url 'customer:wishlist-remove-line' line_pk=line.pk %}"
       method="post"
       hx-swap="delete"
       hx-boost="true"

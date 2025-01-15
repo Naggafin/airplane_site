@@ -49,6 +49,11 @@ SESSION_CACHE_ALIAS = "default"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 
+# django-silk
+INSTALLED_APPS.append("silk")  # noqa: F405
+MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")  # noqa: F405
+
+
 # oscar
 
 OSCAR_URL_SCHEMA = "https"

@@ -165,8 +165,7 @@
                                 {% with num_items=request.basket.num_items %}
                                     <span id="cartQuantity"
                                           class="badge badge-circle
-                                                 {% if num_items < 1 %}d-none{% endif %}"
-                                          hx-swap-oob="true">{{ num_items }}</span>
+                                                 {% if num_items < 1 %}d-none{% endif %}">{{ num_items }}</span>
                                 {% endwith %}
                             </a>
                         </li>
@@ -268,137 +267,130 @@
 {% partialdef side-bar-basket-line %}
 {% with product=line.product %}
     {% purchase_info_for_product request product as session %}
-    <li id="basket-line-{{ line.pk }}"
-        {% if swap_oob %}hx-swap-oob="{{ swap_oob }}"{% endif %}>
-        <div class="cart-widget">
-            <div class="dz-media me-3">
-                {% with image=product.primary_image %}
-                    {% oscar_thumbnail image.original "100x100" as thumb %}
-                    <img src="{{ thumb.url }}"
-                         alt="{{ image.caption|default:product.get_title }}">
-                {% endwith %}
-            </div>
-            <div class="cart-content">
-                <h6 class="title">
-                    <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
-                </h6>
-                <div class="d-flex align-items-center">
-                    <noscript>
-                        <form action="{% url 'basket:update-line' pk=line.pk %}" method="post">
-                            {% csrf_token %}
-                            <div class="d-flex align-items-center gap-2">
-                                <button type="submit"
-                                        name="quantity"
-                                        value="{{ line.quantity|add:-1 }}"
-                                        class="btn btn-light rounded-circle"
-                                        {% if line.quantity <= 1 %}disabled{% endif %}>-</button>
-                                <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
-                                <input id="quantity-{{ line.pk }}"
-                                       type="number"
-                                       name="quantity"
-                                       class="form-control"
-                                       min="1"
-                                       max="{{ line.max_allowed_quantity }}"
-                                       value="{{ line.quantity }}"
-                                       aria-label="{% trans 'Quantity of item in wishlist' %}">
-                                <button type="submit"
-                                        name="quantity"
-                                        value="{{ line.quantity|add:1 }}"
-                                        class="btn btn-light rounded-circle"
-                                        {% if line.quantity >= line.max_allowed_quantity %}disabled{% endif %}>+</button>
-                            </div>
-                            <button type="submit" class="btn btn-secondary btn-sm mt-1">{% trans 'Update' %}</button>
-                        </form>
-                    </noscript>
-                    <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
-                    <div class="require-js btn-quantity light quantity-sm me-3">
-                        <input id="quantity-{{ line.pk }}"
-                               type="number"
-                               min="1"
-                               max="{{ line.max_allowed_quantity }}"
-                               value="{{ line.quantity }}"
-                               aria-label="{% trans 'Quantity of item in cart' %}"
-                               hx-post="{% url 'basket:update-line' pk=line.pk %}"
-                               hx-trigger="input changed delay:500ms, change"
-                               hx-vals='{"csrfmiddlewaretoken":"{{ csrf_token }}"}'
-                               hx-swap="none show:none"
-                               x-model="quantity-{{ line.pk }}">
-                    </div>
-                    <h6 id="basket-line-{{ line.pk }}-price" class="dz-price mb-0">
-                        {{ session.price.excl_tax|currency:session.price.currency }}
-                    </h6>
-                </div>
-            </div>
-            <form action="{% url 'basket:remove-line' pk=line.pk %}"
-                  method="post"
-                  hx-swap="delete"
-                  hx-boost="true"
-                  hx-target="closest li"
-                  hx-push-url="false"
-                  hx-confirm="{% blocktrans with product_title=product.get_title %}
-                                  Are you sure you wanted to remove {{ product_title }} from your cart?
-                              {% endblocktrans %}"
-                  @submit="$data.submitting = true;"
-                  @htmx:after-on-load="$data.submitting = false;"
-                  @htmx:response-error="console.error($event);"
-                  x-data="{submitting: false}">
-                {% csrf_token %}
-                <button type="submit"
-                        class="close-button"
-                        aria-label="{% trans 'Remove From Cart' %}">
-                    <i class="spinner-border spinner-border-sm"
-                       role="status"
-                       aria-hidden="true"
-                       x-show="submitting"></i><i class="ti-close" x-show="!submitting"></i>
-                </button>
-            </form>
+    <div class="cart-widget">
+        <div class="dz-media me-3">
+            {% with image=product.primary_image %}
+                {% oscar_thumbnail image.original "100x100" as thumb %}
+                <img src="{{ thumb.url }}"
+                     alt="{{ image.caption|default:product.get_title }}">
+            {% endwith %}
         </div>
-    </li>
+        <div class="cart-content">
+            <h6 class="title">
+                <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
+            </h6>
+            <div class="d-flex align-items-center">
+                <noscript>
+                    <form action="{% url 'basket:update-line' pk=line.pk %}" method="post">
+                        {% csrf_token %}
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="submit"
+                                    name="quantity"
+                                    value="{{ line.quantity|add:-1 }}"
+                                    class="btn btn-light rounded-circle"
+                                    {% if line.quantity <= 1 %}disabled{% endif %}>-</button>
+                            <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
+                            <input id="quantity-{{ line.pk }}"
+                                   type="number"
+                                   name="quantity"
+                                   class="form-control"
+                                   min="1"
+                                   max="{{ line.max_allowed_quantity }}"
+                                   value="{{ line.quantity }}"
+                                   aria-label="{% trans 'Quantity of item in wishlist' %}">
+                            <button type="submit"
+                                    name="quantity"
+                                    value="{{ line.quantity|add:1 }}"
+                                    class="btn btn-light rounded-circle"
+                                    {% if line.quantity >= line.max_allowed_quantity %}disabled{% endif %}>+</button>
+                        </div>
+                        <button type="submit" class="btn btn-secondary btn-sm mt-1">{% trans 'Update' %}</button>
+                    </form>
+                </noscript>
+                <label for="quantity-{{ line.pk }}" class="visually-hidden">{% trans 'Quantity' %}</label>
+                <div class="require-js btn-quantity light quantity-sm me-3">
+                    <input id="quantity-{{ line.pk }}"
+                           type="number"
+                           min="1"
+                           max="{{ line.max_allowed_quantity }}"
+                           value="{{ line.quantity }}"
+                           aria-label="{% trans 'Quantity of item in cart' %}"
+                           hx-post="{% url 'basket:update-line' pk=line.pk %}"
+                           hx-trigger="input changed delay:500ms, change"
+                           hx-vals='{"csrfmiddlewaretoken":"{{ csrf_token }}"}'
+                           hx-swap="none show:none">
+                </div>
+                <h6 id="basket-line-{{ line.pk }}-price" class="dz-price mb-0">
+                    {{ session.price.excl_tax|currency:session.price.currency }}
+                </h6>
+            </div>
+        </div>
+        <form action="{% url 'basket:remove-line' line_pk=line.pk %}"
+              method="post"
+              hx-swap="delete"
+              hx-boost="true"
+              hx-target="closest li"
+              hx-push-url="false"
+              hx-confirm="{% blocktrans with product_title=product.get_title %}
+                              Are you sure you wanted to remove {{ product_title }} from your cart?
+                          {% endblocktrans %}"
+              @submit="$data.submitting = true;"
+              @htmx:after-on-load="$data.submitting = false;"
+              @htmx:response-error="console.error($event);"
+              x-data="{submitting: false}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="close-button"
+                    aria-label="{% trans 'Remove From Cart' %}">
+                <i class="spinner-border spinner-border-sm"
+                   role="status"
+                   aria-hidden="true"
+                   x-show="submitting"></i><i class="ti-close" x-show="!submitting"></i>
+            </button>
+        </form>
+    </div>
 {% endwith %}
 {% endpartialdef %}
 {% partialdef side-bar-wishlist-line %}
 {% with product=line.product %}
     {% purchase_info_for_product request product as session %}
-    <li id="wishlist-line-{{ line.pk }}"
-        {% if swap_oob %}hx-swap-oob="{{ swap_oob }}"{% endif %}>
-        <div class="cart-widget">
-            <div class="dz-media me-3">
-                {% with image=product.primary_image %}
-                    {% oscar_thumbnail image.original "100x100" as thumb %}
-                    <img src="{{ thumb.url }}"
-                         alt="{{ image.caption|default:product.get_title }}">
-                {% endwith %}
-            </div>
-            <div class="cart-content">
-                <h6 class="title">
-                    <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
-                </h6>
-            </div>
-            <form action="{% url 'customer:wishlist-remove-product' pk=product.pk %}"
-                  method="post"
-                  hx-swap="delete"
-                  hx-boost="true"
-                  hx-target="closest li"
-                  hx-push-url="false"
-                  hx-confirm="{% blocktrans with product_title=product.get_title %}
-                                  Are you sure you wanted to remove {{ product_title }} from your wishlist?
-                              {% endblocktrans %}"
-                  @submit="$data.submitting = true;"
-                  @htmx:after-on-load="$data.submitting = false;"
-                  @htmx:response-error="console.error($event);"
-                  x-data="{submitting: false}">
-                {% csrf_token %}
-                <button type="submit"
-                        class="close-button"
-                        aria-label="{% trans 'Remove From Wishlist' %}">
-                    <i class="spinner-border spinner-border-sm"
-                       role="status"
-                       aria-hidden="true"
-                       x-show="submitting"></i><i class="ti-close" x-show="!submitting"></i>
-                </button>
-            </form>
+    <div class="cart-widget">
+        <div class="dz-media me-3">
+            {% with image=product.primary_image %}
+                {% oscar_thumbnail image.original "100x100" as thumb %}
+                <img src="{{ thumb.url }}"
+                     alt="{{ image.caption|default:product.get_title }}">
+            {% endwith %}
         </div>
-    </li>
+        <div class="cart-content">
+            <h6 class="title">
+                <a href="{{ product.get_absolute_url }}">{{ product.title|truncatechars:30 }}</a>
+            </h6>
+        </div>
+        <form action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
+              method="post"
+              hx-swap="delete"
+              hx-boost="true"
+              hx-target="closest li"
+              hx-push-url="false"
+              hx-confirm="{% blocktrans with product_title=product.get_title %}
+                              Are you sure you wanted to remove {{ product_title }} from your wishlist?
+                          {% endblocktrans %}"
+              @submit="$data.submitting = true;"
+              @htmx:after-on-load="$data.submitting = false;"
+              @htmx:response-error="console.error($event);"
+              x-data="{submitting: false}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="close-button"
+                    aria-label="{% trans 'Remove From Wishlist' %}">
+                <i class="spinner-border spinner-border-sm"
+                   role="status"
+                   aria-hidden="true"
+                   x-show="submitting"></i><i class="ti-close" x-show="!submitting"></i>
+            </button>
+        </form>
+    </div>
 {% endwith %}
 {% endpartialdef %}
 {% partialdef side-bar-section %}
@@ -426,8 +418,7 @@
                             {% with num_items=request.basket.num_items %}
                                 <span id="cartQuantity"
                                       class="badge badge-light
-                                             {% if num_items < 1 %}d-none{% endif %}"
-                                      hx-swap-oob="true">{{ num_items }}</span>
+                                             {% if num_items < 1 %}d-none{% endif %}">{{ num_items }}</span>
                             {% endwith %}
                         </button>
                     </li>
@@ -450,10 +441,10 @@
                          role="tabpanel"
                          aria-labelledby="shopping-cart"
                          tabindex="0">
-                        <div class="shop-sidebar-cart" x-data>
+                        <div class="shop-sidebar-cart">
                             <ul class="sidebar-cart-list">
                                 {% for line in request.basket.all_lines|slice:":num_sidebar_preview_lines" %}
-                                    {% partial side-bar-basket-line %}
+                                    <li id="basket-line-{{ line.pk }}">{% partial side-bar-basket-line %}</li>
                                 {% endfor %}
                             </ul>
                             <div class="cart-total">
@@ -492,7 +483,7 @@
                             <div class="shop-sidebar-cart">
                                 <ul class="sidebar-cart-list">
                                     {% for line in request.wishlist.lines.all|slice:":5" %}
-                                        {% partial side-bar-wishlist-line %}
+                                        <li id="wishlist-line-{{ line.pk }}">{% partial side-bar-wishlist-line %}</li>
                                     {% endfor %}
                                 </ul>
                                 <div class="mt-auto">

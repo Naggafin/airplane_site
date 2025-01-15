@@ -31,7 +31,7 @@
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-wishlist %}
-<form action="{% url 'customer:wishlist-remove-product' pk=product.pk %}"
+<form action="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
       method="post"
       hx-boost="true"
       hx-swap="none show:none"
@@ -83,7 +83,7 @@
 </form>
 {% endpartialdef %}
 {% partialdef remove-from-basket %}
-<form action="{% url 'basket:remove-product' pk=product.pk %}"
+<form action="{% url 'basket:remove-product' product_pk=product.pk %}"
       method="post"
       hx-boost="true"
       hx-swap="none show:none"

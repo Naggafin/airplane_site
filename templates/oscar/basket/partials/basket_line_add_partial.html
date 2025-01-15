@@ -3,9 +3,6 @@
      hx-swap-oob="outerHTML:#basket-add-product-{{ product.pk }}">
     {% include 'oscar/catalogue/partials/product.html#remove-from-basket' %}
 </div>
-<template>
-    <li id="basket-line-{{ line.pk }}"
-        hx-swap-oob="afterbegin:#shopping-cart-pane .sidebar-cart-list">
-        {% include 'pixio/elements/header.html#side-bar-basket-line' %}
-    </li>
-</template>
+<ul hx-swap-oob="beforeend:#shopping-cart-pane .sidebar-cart-list">
+    <li id="basket-line-{{ line.pk }}">{% include 'pixio/elements/header.html#side-bar-basket-line' %}</li>
+</ul>
