@@ -42,11 +42,16 @@ class WishList(auto_prefetch.Model, AbstractWishList):
 
 		# Fetch the line using the filter conditions in a manner that exploits cache
 		lines = list(self.lines.all())
-		line = [
-			line
-			for line in lines
-			if line.pk == line_pk or line.product_id == product_pk
-		][0]
+
+		try:
+			line = [
+				line
+				for line in lines
+				if line.pk == line_pk or line.product_id == product_pk
+			][0]
+		except IndexError as e:
+			raise Line.DoesNotExist from e
+
 		product = line.product
 
 		# Handle deletion or quantity adjustment

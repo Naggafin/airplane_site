@@ -49,10 +49,13 @@
                                             </div>
                                             <div class="content-btn m-b30 wow fadeInUp" data-wow-delay="0.8s">
                                                 <form action="{% url 'basket:add-product' pk=product.pk %}" method="post">
-                                                    <button type="submit" class="btn btn-secondary me-xl-3 me-2 btnhover20">{% trans 'ADD TO CART' %}</button>
+                                                    <button type="submit"
+                                                            class="btn btn-secondary me-xl-3 me-2 btnhover20 text-uppercase">
+                                                        {% trans 'Add to cart' %}
+                                                    </button>
                                                 </form>
                                                 <a href="{{ product.get_absolute_url }}"
-                                                   class="btn btn-outline-secondary btnhover20">{% trans 'VIEW DETAIL' %}</a>
+                                                   class="btn btn-outline-secondary btnhover20 text-uppercase">{% trans 'View detail' %}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -235,7 +238,7 @@
                     <ul class="filters" data-bs-toggle="buttons">
                         <li class="btn active">
                             <input type="radio">
-                            <a href="javascript:void(0);">{% trans 'ALL' %}</a>
+                            <a href="javascript:void(0);" class="text-uppercase">{% trans 'All' %}</a>
                         </li>
                         {% for category in popular_categories %}
                             <li data-filter=".{{ category.name|capfirst }}" class="btn">

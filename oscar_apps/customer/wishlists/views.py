@@ -81,14 +81,13 @@ class WishListDetailView(
 
 class WishListAddProduct(HtmxModelActionView):
 	model = Product
-	pk_url_kwarg = "product_pk"
 	action_class = WishlistAddProductAction
 
 	def get(self, request, *args, **kwargs):
 		return redirect(self.get_success_url())
 
 	def get_template_names(self):
-		return ["oscar/wishlist/partials/wishlist_line_add_partial.html"]
+		return ["oscar/wishlists/partials/wishlist_line_add_partial.html"]
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()
@@ -110,7 +109,6 @@ class WishListAddProduct(HtmxModelActionView):
 class WishListUpdateLine(HtmxFormMixin, UpdateView):
 	model = Line
 	fields = ["quantity"]
-	pk_url_kwarg = "line_pk"
 
 	def get(self, request, *args, **kwargs):
 		return redirect(self.get_success_url())
@@ -137,9 +135,9 @@ class WishListUpdateLine(HtmxFormMixin, UpdateView):
 				"product": product,
 			}
 			template = (
-				"oscar/wishlist/partials/wishlist_line_remove_partial.html"
+				"oscar/wishlists/partials/wishlist_line_remove_partial.html"
 				if deleted
-				else "oscar/wishlist/partials/wishlist_line_update_partial.html"
+				else "oscar/wishlists/partials/wishlist_line_update_partial.html"
 			)
 			return render(self.request, template, context)
 		return redirect(self.get_success_url())
@@ -152,7 +150,7 @@ class WishListRemoveProduct(HtmxActionView):
 		return redirect(self.get_success_url())
 
 	def get_template_names(self):
-		return ["oscar/wishlist/partials/wishlist_line_remove_partial.html"]
+		return ["oscar/wishlists/partials/wishlist_line_remove_partial.html"]
 
 	def get_action_kwargs(self):
 		kwargs = super().get_action_kwargs()

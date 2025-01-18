@@ -1,9 +1,8 @@
-{% include 'oscar/basket/partials/basket_line_update_partial.html' %}
+{% include 'oscar/wishlists/partials/wishlist_line_update_partial.html' %}
 <div id="wishlist-add-product-{{ product.pk }}"
      hx-swap-oob="outerHTML:#wishlist-remove-product-{{ product.pk }}">
     {% include 'oscar/catalogue/partials/product.html#add-to-wishlist' %}
 </div>
-<template>
-    <li id="wishlist-line-{{ line.pk }}"
-        hx-swap-oob="delete:#wishlist-pane .sidebar-cart-list #wishlist-line-{{ line.pk }}"></li>
-</template>
+<ul hx-swap-oob="delete:#wishlist-pane .sidebar-cart-list #wishlist-line-{{ line.pk }}">
+    <li id="wishlist-line-{{ line.pk }}"></li>
+</ul>

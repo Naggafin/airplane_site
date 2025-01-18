@@ -50,6 +50,7 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 
 # django-silk
+
 INSTALLED_APPS.append("silk")  # noqa: F405
 MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")  # noqa: F405
 

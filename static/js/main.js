@@ -32,7 +32,7 @@ function applyAutoCloseTo(elem) {
 	elem.addEventListener('mouseleave', startAutoClose);
 
 	startAutoClose();
-});
+}
 
 
 // Add primary event listeners after DOM is loaded

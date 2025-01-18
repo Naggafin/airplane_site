@@ -10,6 +10,7 @@ git+https://www.github.com/Naggafin/django-extensions.git
 django-fastdev
 django-filter
 django-guardian
+django-haystack
 git+https://www.github.com/Naggafin/django-htmx-utils.git
 django-oscar
 django-redis
@@ -19,6 +20,7 @@ django-template-partials
 django-user-agents
 git+https://www.github.com/Naggafin/django-view-breadcrumbs.git@improvements
 djlint
+elasticsearch
 hiredis
 jwt
 isort
