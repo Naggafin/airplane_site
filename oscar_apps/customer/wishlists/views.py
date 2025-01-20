@@ -8,13 +8,16 @@ from django_tables2.paginators import LazyPaginator
 from django_tables2.views import SingleTableMixin
 from htmx_utils.views import HtmxActionView, HtmxModelActionView
 from htmx_utils.views.mixins import HtmxFormMixin
+from oscar.core.loading import get_model
 from view_breadcrumbs import DetailBreadcrumbMixin
 
-from oscar_apps.catalogue.models import Product
-from oscar_apps.wishlists.models import Line, WishList
 from oscar_apps.wishlists.tables import LineTable
 
 from .actions import WishlistAddProductAction, WishlistRemoveProductAction
+
+Product = get_model("catalogue", "product")
+Line = get_model("wishlists", "line")
+WishList = get_model("wishlists", "wishlist")
 
 
 class WishListDetailView(

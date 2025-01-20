@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from csp.constants import NONE, SELF
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from oscar.defaults import *  # noqa: F403
@@ -100,6 +101,7 @@ INSTALLED_APPS = [
 	"django_user_agents",
 	"django_extensions",
 	"view_breadcrumbs",
+	"csp",
 ]
 
 SITE_ID = 1
@@ -121,6 +123,7 @@ MIDDLEWARE = [
 	"oscar_apps.wishlists.middleware.WishListMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 	"django_user_agents.middleware.UserAgentMiddleware",
+	"csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "airplane_site.urls"
@@ -302,6 +305,11 @@ LOGGING = {
 
 SITE_UI_VARS = {
 	"num_sidebar_preview_lines": 5,
+	"num_top_products": 5,
+	"num_popular_products": 20,
+	"num_recommended_products": 10,
+	"num_top_categories": 5,
+	"num_popular_categories": 10,
 }
 
 
@@ -372,3 +380,31 @@ SILKY_INTERCEPT_PERCENT = 100  # log 100% of requests
 # django-view-breadcrumbs
 
 BREADCRUMBS_TEMPLATE = "pixio/elements/breadcrumbs.html"
+
+
+# django-csp
+
+CONTENT_SECURITY_POLICY = {
+	"EXCLUDE_URL_PREFIXES": [],
+	"DIRECTIVES": {
+		"default-src": [SELF],
+		"frame-ancestors": [SELF],
+		"form-action": [SELF],
+		"report-uri": "/csp-report/",
+	},
+}
+
+CONTENT_SECURITY_POLICY_REPORT_ONLY = {
+	"EXCLUDE_URL_PREFIXES": [],
+	"DIRECTIVES": {
+		"default-src": [NONE],
+		"connect-src": [SELF],
+		"img-src": [SELF],
+		"form-action": [SELF],
+		"frame-ancestors": [SELF],
+		"script-src": [SELF],
+		"style-src": [SELF],
+		"upgrade-insecure-requests": True,
+		"report-uri": "/csp-report/",
+	},
+}

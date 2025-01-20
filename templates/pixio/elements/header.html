@@ -331,7 +331,7 @@
               hx-boost="true"
               hx-target="closest li"
               hx-push-url="false"
-              hx-confirm="{% blocktrans with product_title=product.get_title %}
+              hx-confirm="{% blocktrans trimmed with product_title=product.get_title %}
                               Are you sure you wanted to remove {{ product_title }} from your cart?
                           {% endblocktrans %}"
               @submit="$data.submitting = true;"
@@ -373,7 +373,7 @@
               hx-boost="true"
               hx-target="closest li"
               hx-push-url="false"
-              hx-confirm="{% blocktrans with product_title=product.get_title %}
+              hx-confirm="{% blocktrans trimmed with product_title=product.get_title %}
                               Are you sure you wanted to remove {{ product_title }} from your wishlist?
                           {% endblocktrans %}"
               @submit="$data.submitting = true;"

@@ -1,0 +1,13 @@
+{% load product_tags %}
+<template hx-swap-oob="outerHTML:#popularProductsCategoryForm">
+    {% include 'pixio/index.html#popular-products-category-form' %}
+</template>
+{% if style %}
+    {% for product in products %}
+        {% render_product product %}
+    {% endfor %}
+{% else %}
+    {% for product in products %}
+        {% render_product product style %}
+    {% endfor %}
+{% endif %}

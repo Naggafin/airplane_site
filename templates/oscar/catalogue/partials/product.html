@@ -109,82 +109,79 @@
 {% endpartialdef %}
 {% block product %}
     {% purchase_info_for_product request product as session %}
-    <li class="card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp"
-        data-wow-delay="0.6s">
-        <div class="shop-card">
-            <div class="dz-media">
-                {% with image=product.primary_image %}
-                    {% oscar_thumbnail image.original "450x600" as thumb %}
-                    <img src="{{ thumb.url }}"
-                         alt="{{ image.caption|default:product.get_title }}"
-                         class="mx-auto">
-                {% endwith %}
-                <div class="shop-meta">
-                    <a href="{{ product.get_absolute_url }}"
-                       class="btn btn-secondary btn-md btn-rounded"
-                       hx-boost="true"
-                       hx-target="#modalContainer"
-                       hx-push-url="false">
-                        <i class="fa-solid fa-eye d-md-none d-block"></i>
-                        <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
-                    </a>
-                    {% if product|is_in_wishlist:request %}
-                        <div id="wishlist-remove-product-{{ product.pk }}">{% partial remove-from-wishlist %}</div>
-                    {% else %}
-                        <div id="wishlist-add-product-{{ product.pk }}">{% partial add-to-wishlist %}</div>
-                    {% endif %}
-                    {% if product|is_in_basket:request %}
-                        <div id="basket-remove-product-{{ product.pk }}">{% partial remove-from-basket %}</div>
-                    {% else %}
-                        <div id="basket-add-product-{{ product.pk }}">
-                            {% if session.availability.is_available_to_buy and session.price.exists %}
-                                {% partial add-to-basket %}
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                    <ul class="product-rating">
-                        {% block product_rating %}
-                            {% iffeature "reviews" %}
-                            {% for i in 5|range %}
-                                <li {% if i <= product.rating %}class="star-fill"{% endif %}>
-                                    <i class="flaticon-star-1"></i>
-                                </li>
-                            {% endfor %}
-                        {% endiffeature %}
-                    {% endblock %}
-                </ul>
-            </div>
-        </div>
-        <div class="dz-content">
-            {% block product_title %}
-                <h5 class="title">
-                    <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
-                </h5>
-            {% endblock %}
-            {% block product_price %}
-                <h5 class="price">
-                    {% if session.price.exists %}
-                        {% if session.price.excl_tax == 0 %}
-                            {% trans "Free" %}
-                        {% elif session.price.is_tax_known %}
-                            {{ session.price.incl_tax|currency:session.price.currency }}
-                        {% else %}
-                            {{ session.price.excl_tax|currency:session.price.currency }}
-                        {% endif %}
-                    {% else %}
-                        &nbsp;
-                    {% endif %}
-                </h5>
-            {% endblock %}
-        </div>
-        <div class="product-tag">
-            {% block product_availability %}
-                {% if not session.availability.is_available_to_buy %}
-                    <span class="badge border">{% trans 'Unavailable' %}</span>
+    <div class="shop-card{% if style %} {{ style }}{% endif %}">
+        <div class="dz-media">
+            {% with image=product.primary_image %}
+                {% oscar_thumbnail image.original "450x600" as thumb %}
+                <img src="{{ thumb.url }}"
+                     alt="{{ image.caption|default:product.get_title }}"
+                     class="mx-auto">
+            {% endwith %}
+            <div class="shop-meta">
+                <a href="{{ product.get_absolute_url }}"
+                   class="btn btn-secondary btn-md btn-rounded"
+                   hx-boost="true"
+                   hx-target="#modalContainer"
+                   hx-push-url="false">
+                    <i class="fa-solid fa-eye d-md-none d-block"></i>
+                    <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
+                </a>
+                {% if product|is_in_wishlist:request %}
+                    <div id="wishlist-remove-product-{{ product.pk }}">{% partial remove-from-wishlist %}</div>
+                {% else %}
+                    <div id="wishlist-add-product-{{ product.pk }}">{% partial add-to-wishlist %}</div>
                 {% endif %}
-            {% endblock %}
-            {# TODO <span class="badge border">Get 20% Off</span> #}
+                {% if product|is_in_basket:request %}
+                    <div id="basket-remove-product-{{ product.pk }}">{% partial remove-from-basket %}</div>
+                {% else %}
+                    <div id="basket-add-product-{{ product.pk }}">
+                        {% if session.availability.is_available_to_buy and session.price.exists %}
+                            {% partial add-to-basket %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <ul class="product-rating">
+                    {% block product_rating %}
+                        {% iffeature "reviews" %}
+                        {% for i in 5|range %}
+                            <li {% if i <= product.rating %}class="star-fill"{% endif %}>
+                                <i class="flaticon-star-1"></i>
+                            </li>
+                        {% endfor %}
+                    {% endiffeature %}
+                {% endblock %}
+            </ul>
         </div>
     </div>
-</li>
+    <div class="dz-content">
+        {% block product_title %}
+            <h5 class="title">
+                <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
+            </h5>
+        {% endblock %}
+        {% block product_price %}
+            <h5 class="price">
+                {% if session.price.exists %}
+                    {% if session.price.excl_tax == 0 %}
+                        {% trans "Free" %}
+                    {% elif session.price.is_tax_known %}
+                        {{ session.price.incl_tax|currency:session.price.currency }}
+                    {% else %}
+                        {{ session.price.excl_tax|currency:session.price.currency }}
+                    {% endif %}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </h5>
+        {% endblock %}
+    </div>
+    <div class="product-tag">
+        {% block product_availability %}
+            {% if not session.availability.is_available_to_buy %}
+                <span class="badge border">{% trans 'Unavailable' %}</span>
+            {% endif %}
+        {% endblock %}
+        {# TODO <span class="badge border">Get 20% Off</span> #}
+    </div>
+</div>
 {% endblock %}

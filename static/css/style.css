@@ -2,13 +2,11 @@
   background: #fff;
   border-radius: 15px;
 }
-
 .shop-card .dz-media img {
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
 }
-
 .shop-card .product-rating {
   position: absolute;
   bottom: 10px;
@@ -25,28 +23,47 @@
   transition: opacity 0.3s ease-in-out;
   opacity: 1;
 }
-
 .shop-card:hover .product-rating {
   opacity: 0;
 }
-
 .shop-card .product-rating li {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-
 .shop-card .product-rating li i {
   color: #808080;
   font-size: 16px;
 }
-
 .shop-card .product-rating li.star-fill i {
   color: #FFD266;
 }
 
 
-/* Styling the close button */
+.site-filters li button {
+  margin: 0;
+  display: inline-flex;
+  font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--title);
+  font-family: var(--font-family-base);
+}
+.site-filters li button span {
+  font-size: 14px;
+  color: #5E626F;
+  margin-left: 4px;
+}
+.site-filters li.active button {
+  color: var(--primary);
+}
+@media only screen and (max-width: 991px) {
+  .site-filters ul li button {
+    font-size: 14px;
+  }
+}
+
+
 .close-button {
   display: inline-flex;
   justify-content: center;
@@ -61,17 +78,14 @@
   border-radius: 50%;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-/* Hover effect for better UX */
 .close-button:hover {
   background-color: #f5f5f5;
   color: #ff0000;
 }
-
-/* Focus outline for accessibility */
 .close-button:focus {
   outline: 2px solid #007bff;
 }
+
 
 /*
 .check-tbl .product-item-close button {
@@ -91,7 +105,6 @@
   vertical-align: middle;
 }
 */
-
 .check-tbl .product-item-totle button {
   width: 100%;
 }
@@ -114,15 +127,12 @@
   animation: fadeInSlideDown 0.5s, fadeOutSlideUp 0.5s 4.5s;
   animation-fill-mode: forwards;
 }
-
 .alert-item.error {
   background-color: #f44336;
 }
-
 .alert-item.info {
   background-color: #2196f3;
 }
-
 .alert-item.warning {
   background-color: #ff9800;
 }
@@ -160,19 +170,16 @@
 .htmx-indicator {
   display: none;
 }
-.htmx-request>.htmx-indicator,
-.htmx-request.htmx-indicator {
+
+.htmx-request.htmx-indicator,
+.htmx-request>.htmx-indicator {
   display: inline;
   z-index: 2000;
   pointer-events: none;
 }
 
 
+[x-cloak],
 .require-js {
-  display: none !important;
-}
-
-/* alpinejs cloak property; prevents items from being displayed before alpinejs was able to load fully */
-[x-cloak] {
   display: none !important;
 }

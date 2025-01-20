@@ -2,25 +2,30 @@ from urllib.parse import quote
 
 from django.contrib.auth import get_permission_codename
 from django.http import Http404, HttpResponsePermanentRedirect
+from django_extensions.views.mixins import AdjustablePaginationMixin
 from django_filters.views import FilterMixin
 from haystack.query import EmptySearchQuerySet
 from oscar.core.loading import get_class, get_model
 
 from oscar_apps.catalogue.filters import ProductFilter
 
-from .base import BaseSearchView
-
+BaseSearchView = get_class("search.views.base", "BaseSearchView")
 BrowseCategoryForm = get_class("search.forms", "BrowseCategoryForm")
 CategoryForm = get_class("search.forms", "CategoryForm")
 Category = get_model("catalogue", "Category")
 
 
-class CatalogueView(FilterMixin, BaseSearchView):
+class CatalogueView(AdjustablePaginationMixin, FilterMixin, BaseSearchView):
+	pagination_choices = [20, 30, 50, 100]
 	form_class = BrowseCategoryForm
 	filter_class = ProductFilter
 	context_object_name = "products"
-	template_name = "oscar/catalogue/browse.html"
 	enforce_paths = True
+
+	def get_template_name(self):
+		if self.request.htmx:
+			return ["oscar/catalogue/partials/browse.html"]
+		return ["pixio/shop.html"]
 
 	def get_category(self):
 		try:
@@ -38,7 +43,7 @@ class CatalogueView(FilterMixin, BaseSearchView):
 		return category.is_public or has_view_perm
 
 	def redirect_if_necessary(self, current_path, category):
-		if self.enforce_paths:
+		if self.enforce_paths and not self.request.htmx:
 			# Categories are fetched by primary key to allow slug changes.
 			# If the slug has changed, issue a redirect.
 			expected_path = category.get_absolute_url()

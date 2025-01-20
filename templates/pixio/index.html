@@ -220,40 +220,67 @@
     </div>
 </section>
 {% endpartialdef %}
+{% partialdef popular-products-category-form %}
+<form id="popularProductsCategoryForm"
+      method="get"
+      action="{% url 'catalogue:index' %}"
+      class="site-filters clearfix style-1 align-items-center wow fadeInUp ms-lg-auto"
+      data-wow-delay="0.4s"
+      role="search"
+      aria-labelledby="filter-label"
+      hx-boost="true"
+      hx-swap="outerHTML show:none"
+      hx-push-url="false"
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
+    <input type="hidden" name="paginate_by" value="{{ num_popular_products }}">
+    <fieldset>
+        <legend id="filter-label" class="visually-hidden">{% trans 'Filter Categories' %}</legend>
+        <ul class="filters" data-bs-toggle="buttons" role="radiogroup">
+            <li>
+                <input type="radio">
+                <button type="submit"
+                        class="btn"
+                        name="selected_facets"
+                        value="category:*"
+                        aria-label="{% trans 'All' %}" />
+            </li>
+            {% for category in categories %}
+                <li class="btn">
+                    <input type="submit"
+                           name="selected_facets"
+                           value="category:{{ category.name }}"
+                           aria-label="{{ category.name|capfirst }}" />
+                </li>
+            {% endfor %}
+        </ul>
+    </fieldset>
+</form>
+{% endpartialdef %}
 {% partialdef popular-products-section %}
 <section class="content-inner">
     <div class="container">
         <div class=" row justify-content-md-between align-items-start">
             <div class="col-lg-6 col-md-12">
-                <div class="section-head style-1 m-b30  wow fadeInUp"
-                     data-wow-delay="0.2s">
+                <div class="section-head style-1 m-b30 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="left-content">
                         <h2 class="title">{% trans 'Most popular products' %}</h2>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-12">
-                <div class="site-filters clearfix style-1 align-items-center wow fadeInUp ms-lg-auto"
-                     data-wow-delay="0.4s">
-                    <ul class="filters" data-bs-toggle="buttons">
-                        <li class="btn active">
-                            <input type="radio">
-                            <a href="javascript:void(0);" class="text-uppercase">{% trans 'All' %}</a>
-                        </li>
-                        {% for category in popular_categories %}
-                            <li data-filter=".{{ category.name|capfirst }}" class="btn">
-                                <input type="radio">
-                                <a href="javascript:void(0);">{{ category.name|capfirst }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% with categories=popular_categories %}
+                    {% partial popular-products-category-form %}
+                {% endwith %}
             </div>
         </div>
         <div class="clearfix">
             <ul id="masonry" class="row g-xl-4 g-3">
                 {% for product in popular_products %}
-                    {% render_product product %}
+                    <li class="card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp"
+                        data-wow-delay="0.6s">{% render_product product %}</li>
                 {% endfor %}
             </ul>
         </div>

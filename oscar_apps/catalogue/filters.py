@@ -1,6 +1,7 @@
 import django_filters
 from oscar.core.loading import get_model
 
+Category = get_model("catalogue", "Category")
 Product = get_model("catalogue", "Product")
 
 
@@ -8,7 +9,7 @@ class ProductFilter(django_filters.FilterSet):
 	price_min = django_filters.NumberFilter(field_name="price", lookup_expr="gte")
 	price_max = django_filters.NumberFilter(field_name="price", lookup_expr="lte")
 	category = django_filters.ModelChoiceFilter(
-		queryset=Product.objects.values_list("category", flat=True).distinct()
+		field_name="categories__id", queryset=Category.objects.all()
 	)
 	title = django_filters.CharFilter(field_name="title", lookup_expr="icontains")
 

@@ -13,7 +13,7 @@ def site_ui(request):
 	return settings.SITE_UI_VARS
 
 
-# TODO 1: implememt real logic to populate these lists
+# TODO 1: implement real logic to populate these lists
 # TODO 2: implement caching for performance
 def populate_products(request):
 	session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
@@ -26,11 +26,22 @@ def populate_products(request):
 	)
 	categories = list(Category.objects.all())
 	_cache[session_key] = context = {
-		"top_products": random.sample(products, 5),
-		"popular_products": random.sample(products, 20),
-		"recommended_products": random.sample(products, 10),
-		"top_categories": random.sample(categories, 5),
-		"popular_categories": random.sample(categories, len(categories)),
+		"top_products": random.sample(
+			products, settings.SITE_UI_VARS["num_top_products"]
+		),
+		"popular_products": random.sample(
+			products, settings.SITE_UI_VARS["num_popular_products"]
+		),
+		"recommended_products": random.sample(
+			products, settings.SITE_UI_VARS["num_recommended_products"]
+		),
+		"top_categories": random.sample(
+			categories, settings.SITE_UI_VARS["num_top_categories"]
+		),
+		"popular_categories": random.sample(
+			categories,
+			min(len(categories), settings.SITE_UI_VARS["num_popular_products"]),
+		),
 		#'recommended_categories':[],
 	}
 	return context
