@@ -24,23 +24,35 @@
         {% block additional_css %}{% endblock %}
         {% block global_css %}
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}">
+                  href="{% static 'pixio/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/swiper/swiper-bundle.min.css' %}">
+                  href="{% static 'pixio/vendor/swiper/swiper-bundle.min.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/nouislider/nouislider.min.css' %}">
+                  href="{% static 'pixio/vendor/nouislider/nouislider.min.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/animate/animate.css' %}">
+                  href="{% static 'pixio/vendor/animate/animate.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/lightgallery/dist/css/lightgallery.css' %}">
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lightgallery.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-thumbnail.css' %}">
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-thumbnail.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-zoom.css' %}">
+                  href="{% static 'pixio/vendor/lightgallery/dist/css/lg-zoom.css' %}"
+                  nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'pixio/vendor/magnific-popup/magnific-popup.min.css' %}">
-            <link rel="stylesheet" href="{% static 'pixio/css/style.css' %}">
-            <link rel="stylesheet" href="{% static 'css/style.css' %}">
+                  href="{% static 'pixio/vendor/magnific-popup/magnific-popup.min.css' %}"
+                  nonce="{{ request.csp_nonce }}">
+            <link rel="stylesheet"
+                  href="{% static 'pixio/css/style.css' %}"
+                  nonce="{{ request.csp_nonce }}">
+            <link rel="stylesheet"
+                  href="{% static 'css/style.css' %}"
+                  nonce="{{ request.csp_nonce }}">
         {% endblock %}
         <!-- GOOGLE FONTS-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,20 +61,28 @@
               rel="stylesheet">
         {% block global_js %}
             {% if debug and not request.user_agent.is_pc %}
-                <script src="{% static 'js/eruda.js' %}"></script>
-                <script src="{% static 'js/eruda-code.js' %}"></script>
-                <script type="text/javascript">
+                <script src="{% static 'js/eruda.js' %}" nonce="{{ request.csp_nonce }}"></script>
+                <script src="{% static 'js/eruda-code.js' %}" nonce="{{ request.csp_nonce }}"></script>
+                <script type="text/javascript" nonce="{{ request.csp_nonce }}">
 					eruda.add(erudaCode);
 					eruda.init();
                 </script>
             {% endif %}
-            <script src="{% static 'js/main.js' %}"></script>
+            <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
             {% if debug %}
-                <script src="{% static 'js/htmx.js' %}" defer="true"></script>
-                <script src="{% static 'js/alpine.js' %}" defer="true"></script>
+                <script src="{% static 'js/htmx.js' %}"
+                        defer="true"
+                        nonce="{{ request.csp_nonce }}"></script>
+                <script src="{% static 'js/alpine.js' %}"
+                        defer="true"
+                        nonce="{{ request.csp_nonce }}"></script>
             {% else %}
-                <script src="{% static 'js/htmx.min.js' %}" defer="true"></script>
-                <script src="{% static 'js/alpine.min.js' %}" defer="true"></script>
+                <script src="{% static 'js/htmx.min.js' %}"
+                        defer="true"
+                        nonce="{{ request.csp_nonce }}"></script>
+                <script src="{% static 'js/alpine.min.js' %}"
+                        defer="true"
+                        nonce="{{ request.csp_nonce }}"></script>
             {% endif %}
             {% django_htmx_script %}
         {% endblock %}
@@ -95,26 +115,43 @@
         </div>
         <!-- JAVASCRIPT FILES ========================================= -->
         {% block top_js %}
-            <script src="{% static 'pixio/js/jquery.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/wow/wow.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+            <script src="{% static 'pixio/js/jquery.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/wow/wow.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
         {% endblock %}
         {% block js %}{% endblock %}
         {% block bottom_js %}
-            <script src="{% static 'pixio/vendor/bootstrap-touchspin/bootstrap-touchspin.js' %}"></script>
-            <script src="{% static 'pixio/vendor/counter/waypoints-min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/counter/counterup.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/swiper/swiper-bundle.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/imagesloaded/imagesloaded.js' %}"></script>
-            <script src="{% static 'pixio/vendor/masonry/masonry-4.2.2.js' %}"></script>
-            <script src="{% static 'pixio/vendor/masonry/isotope.pkgd.min.js' %}"></script>
-            <script src="{% static 'pixio/vendor/countdown/jquery.countdown.js' %}"></script>
-            <script src="{% static 'pixio/vendor/wnumb/wNumb.js' %}"></script>
-            <script src="{% static 'pixio/vendor/nouislider/nouislider.min.js' %}"></script>
-            <script src="{% static 'pixio/js/dz.carousel.js' %}"></script>
-            <script src="{% static 'pixio/js/dz.ajax.js' %}"></script>
-            <script src="{% static 'pixio/js/custom.js' %}"></script>
+            <script src="{% static 'pixio/vendor/bootstrap-touchspin/bootstrap-touchspin.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/counter/waypoints-min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/counter/counterup.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/swiper/swiper-bundle.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/imagesloaded/imagesloaded.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/masonry/masonry-4.2.2.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/masonry/isotope.pkgd.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/countdown/jquery.countdown.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/wnumb/wNumb.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/vendor/nouislider/nouislider.min.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/js/dz.carousel.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/js/dz.ajax.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'pixio/js/custom.js' %}"
+                    nonce="{{ request.csp_nonce }}"></script>
         {% endblock %}
     </body>
 </html>

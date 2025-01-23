@@ -13,6 +13,7 @@ class BasketRemoveLineAction(Action):
 			line, product = basket.remove(
 				line_pk=line_pk, product_pk=product_pk, delete=True
 			)
+			line.pk = line_pk  # this is necessary as .delete() clears pk
 		except Line.DoesNotExist as e:
 			raise Http404 from e
 

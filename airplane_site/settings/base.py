@@ -13,7 +13,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-from csp.constants import NONE, SELF
+from csp.constants import (
+	NONCE,
+	NONE,
+	SELF,
+	STRICT_DYNAMIC,
+	UNSAFE_EVAL,
+	UNSAFE_INLINE,
+)
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from oscar.defaults import *  # noqa: F403
@@ -388,12 +395,21 @@ CONTENT_SECURITY_POLICY = {
 	"EXCLUDE_URL_PREFIXES": [],
 	"DIRECTIVES": {
 		"default-src": [SELF],
+		"script-src": [SELF, NONCE, UNSAFE_EVAL, STRICT_DYNAMIC],
+		"script-src-elem": [SELF, NONCE],
+		"style-src": [SELF, NONCE],
+		"style-src-elem": [SELF, UNSAFE_INLINE, "fonts.googleapis.com"],
+		"style-src-attr": [SELF, UNSAFE_INLINE],
 		"frame-ancestors": [SELF],
+		"img-src": [SELF, "data:", "opencollective.com"],
+		"font-src": [SELF, "data:", "fonts.gstatic.com"],
+		"object-src": [NONE],
 		"form-action": [SELF],
 		"report-uri": "/csp-report/",
 	},
 }
 
+"""
 CONTENT_SECURITY_POLICY_REPORT_ONLY = {
 	"EXCLUDE_URL_PREFIXES": [],
 	"DIRECTIVES": {
@@ -408,3 +424,4 @@ CONTENT_SECURITY_POLICY_REPORT_ONLY = {
 		"report-uri": "/csp-report/",
 	},
 }
+"""

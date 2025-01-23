@@ -57,7 +57,7 @@
 {% endpartialdef %}
 {% partialdef add %}
 {% if not product|is_in_basket:request %}
-    <form action="{% url 'basket:add' pk=product.pk %}"
+    <form action="{% url 'basket:add-product' pk=product.pk %}"
           method="post"
           hx-swap="outerHTML show:none"
           hx-boost="true"

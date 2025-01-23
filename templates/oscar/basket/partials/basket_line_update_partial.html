@@ -1,12 +1,12 @@
 {% load purchase_info_tags %}
 {% load currency_filters %}
-{% with num_items=request.basket.num_items %}
+{% with num_lines=request.basket.num_lines %}
     <span class="badge badge-light
-                 {% if num_items < 1 %}d-none{% endif %}"
-          hx-swap-oob="outerHTML:.offcanvas span.badge">{{ num_items }}</span>
+                 {% if num_lines < 1 %}d-none{% endif %}"
+          hx-swap-oob="outerHTML:.offcanvas span.badge">{{ num_lines }}</span>
     <span class="badge badge-circle
-                 {% if num_items < 1 %}d-none{% endif %}"
-          hx-swap-oob="outerHTML:.extra-nav span.badge">{{ num_items }}</span>
+                 {% if num_lines < 1 %}d-none{% endif %}"
+          hx-swap-oob="outerHTML:.extra-nav span.badge">{{ num_lines }}</span>
 {% endwith %}
 <h5 id="cartSubtotal" class="mb-0" hx-swap-oob="true">{{ request.basket.total_excl_tax|currency }}</h5>
 {% purchase_info_for_product request product as session %}

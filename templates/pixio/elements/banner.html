@@ -1,6 +1,7 @@
 {% load view_breadcrumbs i18n %}
 <div class="dz-bnr-inr bg-secondary overlay-black-light"
-     style="background-image:url({{ banner_background }})">
+     style="background-image:url({{ banner_background }})"
+     nonce="{{ request.csp_nonce }}">
     <div class="container">
         <div class="dz-bnr-inr-entry">
             <h1>{{ page_title }}</h1>

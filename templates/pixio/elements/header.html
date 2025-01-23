@@ -162,10 +162,10 @@
                                data-bs-target="#offcanvasRight"
                                aria-controls="offcanvasRight">
                                 <i class="iconly-Broken-Buy"></i>
-                                {% with num_items=request.basket.num_items %}
+                                {% with num_lines=request.basket.num_lines %}
                                     <span id="cartQuantity"
                                           class="badge badge-circle
-                                                 {% if num_items < 1 %}d-none{% endif %}">{{ num_items }}</span>
+                                                 {% if num_lines < 1 %}d-none{% endif %}">{{ num_lines }}</span>
                                 {% endwith %}
                             </a>
                         </li>
@@ -313,11 +313,13 @@
                            type="number"
                            min="1"
                            max="{{ line.max_allowed_quantity }}"
+                           name="quantity"
                            value="{{ line.quantity }}"
                            aria-label="{% trans 'Quantity of item in cart' %}"
                            hx-post="{% url 'basket:update-line' pk=line.pk %}"
-                           hx-trigger="input changed delay:500ms, change"
-                           hx-vals='{"csrfmiddlewaretoken":"{{ csrf_token }}"}'
+                           hx-trigger="keyup changed delay:500ms"
+                           hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
+                           hx-include="this"
                            hx-swap="none show:none">
                 </div>
                 <h6 id="basket-line-{{ line.pk }}-price" class="dz-price mb-0">
@@ -415,10 +417,10 @@
                                 aria-controls="shopping-cart-pane"
                                 aria-selected="true">
                             {% trans 'Shopping Cart' %}
-                            {% with num_items=request.basket.num_items %}
+                            {% with num_lines=request.basket.num_lines %}
                                 <span id="cartQuantity"
                                       class="badge badge-light
-                                             {% if num_items < 1 %}d-none{% endif %}">{{ num_items }}</span>
+                                             {% if num_lines < 1 %}d-none{% endif %}">{{ num_lines }}</span>
                             {% endwith %}
                         </button>
                     </li>
@@ -461,7 +463,7 @@
                                         <div class="shipping-content">
                                             <h6 class="title pe-4">Congratulations , you've got free shipping!</h6>
                                             <div class="progress">
-                                                <div class="progress-bar progress-animated border-0" style="width: 75%" role="progressbar">
+                                                <div class="progress-bar progress-animated border-0" style="width: 75%" role="progressbar" nonce="{{ request.csp_nonce }}">
                                                     <span class="sr-only">75% Complete</span>
                                                 </div>
                                             </div>

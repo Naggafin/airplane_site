@@ -126,10 +126,12 @@
                     <i class="fa-solid fa-eye d-md-none d-block"></i>
                     <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
                 </a>
-                {% if product|is_in_wishlist:request %}
-                    <div id="wishlist-remove-product-{{ product.pk }}">{% partial remove-from-wishlist %}</div>
-                {% else %}
-                    <div id="wishlist-add-product-{{ product.pk }}">{% partial add-to-wishlist %}</div>
+                {% if request.user.is_authenticated %}
+                    {% if product|is_in_wishlist:request %}
+                        <div id="wishlist-remove-product-{{ product.pk }}">{% partial remove-from-wishlist %}</div>
+                    {% else %}
+                        <div id="wishlist-add-product-{{ product.pk }}">{% partial add-to-wishlist %}</div>
+                    {% endif %}
                 {% endif %}
                 {% if product|is_in_basket:request %}
                     <div id="basket-remove-product-{{ product.pk }}">{% partial remove-from-basket %}</div>

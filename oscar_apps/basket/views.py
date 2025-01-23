@@ -82,7 +82,7 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 		return redirect(self.get_success_url())
 
 	def get_queryset(self):
-		return self.request.basket.lines.all()
+		return self.request.basket.all_lines()
 
 	def get_success_url(self):
 		return reverse("basket:summary")
@@ -102,6 +102,9 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 		else:
 			line.save()
 
+		# clear basket lines cache or it computes incorrect value
+		self.request.basket._lines = None
+
 		if self.request.htmx:
 			context = {
 				"line": line,
@@ -114,6 +117,10 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 			)
 			return render(self.request, template, context)
 		return redirect(self.get_success_url())
+
+	def form_invalid(self, form):
+		# TODO
+		return super().form_invalid(form)
 
 
 class BasketLineRemove(HtmxActionView):
