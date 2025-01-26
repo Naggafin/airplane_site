@@ -18,6 +18,76 @@
             nonce="{{ request.csp_nonce }}"></script>
     <script src="{% static 'pixio/vendor/lightgallery/dist/plugins/zoom/lg-zoom.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
+    <script nonce="{{ request.csp_nonce }}">
+        function handleCategoryFilter(event) {
+            const originElem = event.target;
+            const productsList = document.getElementById('masonry');
+        
+            // disable filter buttons
+            originElem.classList.add('pe-none');
+            originElem.closest('li').classList.add('disabled');
+        
+            if (productsList) {
+                console.debug("found products list element");
+                // create a loading message container
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = productsList.id;
+                loadingDiv.className = 'd-flex justify-content-center align-items-center';
+                loadingDiv.style.height = '100%';
+                loadingDiv.innerHTML = `
+                                    <div class="spinner-border text-primary" role="status">
+                                      <span class="visually-hidden">{% trans 'Loading...' %}</span>
+                                    </div>
+                                  `;
+        
+                // replace the original element with the loading message
+                productsList.replaceWith(loadingDiv);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('htmx:beforeSwap', (event) => {
+                if (event.detail.target.id !== 'masonry') return;
+        
+                // template container to hold response content
+                const tempContainer = document.createElement('template');
+                tempContainer.innerHTML = event.detail.xhr.responseText;
+        
+                // process elements matching the ID pattern "product-{ some text }-card"
+                const productCards = tempContainer.querySelectorAll('[id^="product-"][id$="-card"]');
+                if (productCards.length > 0) {
+                    // create a new <ul> container
+                    const listContainer = document.createElement('ul');
+                    listContainer.id = 'masonry';
+                    listContainer.className = 'row g-xl-4 g-3';
+        
+			        // encapsulate every product card in an <li>
+                    productCards.forEach((productCard) => {
+                        console.debug(`replacing #${productCard.id} in response HTML`);
+                        const listItem = document.createElement('li');
+                        listItem.className = 'card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp';
+                        listItem.setAttribute('data-wow-delay', '0.6s');
+                        listItem.appendChild(productCard.cloneNode(true));
+                        productCard.remove();
+                        listContainer.appendChild(listItem);
+                    });
+        
+                    // update only the modified elements in the HTMX response
+                    console.debug('updating response content');
+                    tempContainer.appendChild(listContainer);
+                    {% if debug %}console.debug(tempContainer.innerHTML);{% endif %}
+                    event.detail.serverResponse = tempContainer.innerHTML;
+                }
+        
+                // now re-enable category filter buttons
+                const buttonContainer = document.getElementById('popularCategoryFilter');
+                buttonContainer.querySelectorAll('.pe-none, .disabled').forEach(elem => {
+                    elem.classList.remove('pe-none');
+                    elem.classList.remove('disabled');
+                });
+            });
+        });
+    </script>
 {% endblock %}
 {% partialdef top-products-section %}
 <section class="main-slider style-1">
@@ -83,7 +153,8 @@
                                             {% with image=product.primary_image %}
                                                 {% oscar_thumbnail image.original "780x1050" as thumb %}
                                                 <img src="{{ thumb.url }}"
-                                                     alt="{{ image.caption|default:product.get_title }}">
+                                                     alt="{{ image.caption|default:product.get_title }}"
+                                                     nonce="{{ request.csp_nonce }}">
                                             {% endwith %}
                                         </div>
                                     </div>
@@ -106,8 +177,8 @@
                     <path d="M52.6617 37.6496L58.7381 40.0325L75.0609 49.0874L66.6016 63.7422L49.9214 54.6872L45.1557 50.7554L46.1088 57.1892V75.18H28.952V57.1892L30.0243 50.5171L24.9011 54.6872L8.45924 63.7422L0 49.0874L16.3228 39.7942L22.3991 37.6496L16.3228 35.1475L0 26.2117L8.45924 11.557L25.1394 20.4928L30.0243 24.6629L28.952 18.3482V0H46.1088V18.3482L45.1557 24.4246L49.9214 20.4928L66.6016 11.557L75.0609 26.2117L58.7381 35.3858L52.6617 37.6496Z" fill="black" />
                 </svg>
                 <div>
-                    <span class="sub-title">TODO: TAG LINE HEADER</span>
-                    <h4 class="title">TODO: TAG LINE</h4>
+                    <span class="sub-title">{{ tag_line_header }}</span>
+                    <h4 class="title">{{ tag_line }}</h4>
                 </div>
             </div>
         </div>
@@ -128,10 +199,9 @@
          fill="none">
         <path d="M41 0L45.277 39.592L81.7032 23.5L49.554 47L81.7032 70.5L45.277 54.408L41 94L36.723 54.408L0.296806 70.5L32.446 47L0.296806 23.5L36.723 39.592L41 0Z" fill="black" />
     </svg>
-    <a class="animation-btn popup-youtube"
-       href="https://www.youtube.com/watch?v=YwYoyQ1JdpQ">
+    <a class="animation-btn popup-youtube" href="#TODO">
         <div class="text-row word-rotate-box c-black">
-            <span class="word-rotate">More Collection Explore</span>
+            <span class="word-rotate">{% trans 'More Collection Explore' %}</span>
             <i class="fa-solid fa-play text-dark badge__emoji"></i>
         </div>
     </a>
@@ -151,9 +221,14 @@
                                         {% with image=category.image %}
                                             {% if image %}
                                                 {% oscar_thumbnail image "x255" as thumb %}
-                                                <img src="{{ thumb.url }}" alt="{{ category.name }}">
+                                                <img src="{{ thumb.url }}"
+                                                     alt="{{ category.name }}"
+                                                     nonce="{{ request.csp_nonce }}">
                                             {% else %}
-                                                <img width="255" height="255" alt="{{ category.name }}">
+                                                <img width="255"
+                                                     height="255"
+                                                     alt="{{ category.name }}"
+                                                     nonce="{{ request.csp_nonce }}">
                                             {% endif %}
                                         {% endwith %}
                                     </div>
@@ -224,45 +299,6 @@
     </div>
 </section>
 {% endpartialdef %}
-{% partialdef popular-products-category-form %}
-<form id="popularProductsCategoryForm"
-      method="get"
-      action="{% url 'catalogue:index' %}"
-      class="site-filters clearfix style-1 align-items-center wow fadeInUp ms-lg-auto"
-      data-wow-delay="0.4s"
-      role="search"
-      aria-labelledby="filter-label"
-      hx-boost="true"
-      hx-swap="outerHTML show:none"
-      hx-push-url="false"
-      @submit="$data.submitting = true;"
-      @htmx:after-on-load="$data.submitting = false;"
-      @htmx:response-error="console.error($event);"
-      x-data="{submitting: false}">
-    <input type="hidden" name="paginate_by" value="{{ num_popular_products }}">
-    <fieldset>
-        <legend id="filter-label" class="visually-hidden">{% trans 'Filter Categories' %}</legend>
-        <ul class="filters" data-bs-toggle="buttons" role="radiogroup">
-            <li>
-                <input type="radio">
-                <button type="submit"
-                        class="btn"
-                        name="selected_facets"
-                        value="category:*"
-                        aria-label="{% trans 'All' %}" />
-            </li>
-            {% for category in categories %}
-                <li class="btn">
-                    <input type="submit"
-                           name="selected_facets"
-                           value="category:{{ category.name }}"
-                           aria-label="{{ category.name|capfirst }}" />
-                </li>
-            {% endfor %}
-        </ul>
-    </fieldset>
-</form>
-{% endpartialdef %}
 {% partialdef popular-products-section %}
 <section class="content-inner">
     <div class="container">
@@ -275,9 +311,46 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-12">
-                {% with categories=popular_categories %}
-                    {% partial popular-products-category-form %}
-                {% endwith %}
+                <div id="popularCategoryFilter"
+                     class="site-filters clearfix style-1 align-items-center wow fadeInUp ms-lg-auto"
+                     data-wow-delay="0.4s"
+                     x-data="{ activeCategory: '' }">
+                    <ul class="filters" data-bs-toggle="buttons" role="radiogroup">
+                        <li class="btn" :class="{ 'active': activeCategory === '' }">
+                            <input type="radio"
+                                   id="filter-all"
+                                   name="category_filter"
+                                   value=""
+                                   x-model="activeCategory">
+                            <label for="filter-all">
+                                <a href="{% url 'catalogue:index' %}"
+                                   hx-boost="true"
+                                   hx-swap="show:none"
+                                   hx-target="#masonry"
+                                   hx-push-url="false"
+                                   @click.prevent="activeCategory = ''; handleCategoryFilter($event);">ALL</a>
+                            </label>
+                        </li>
+                        {% for category in popular_categories %}
+                            <li class="btn"
+                                :class="{ 'active': activeCategory === '{{ category.name }}' }">
+                                <input type="radio"
+                                       id="filter-{{ category.name|slugify }}"
+                                       name="category_filter"
+                                       value="{{ category.name }}"
+                                       x-model="activeCategory">
+                                <label for="filter-{{ category.name|slugify }}">
+                                    <a href="{{ category.get_absolute_url }}"
+                                       hx-boost="true"
+                                       hx-swap="show:none"
+                                       hx-target="#masonry"
+                                       hx-push-url="false"
+                                       @click.prevent="activeCategory = '{{ category.name }}'; handleCategoryFilter($event);">{{ category.name|capfirst }}</a>
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="clearfix">

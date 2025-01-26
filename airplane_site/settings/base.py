@@ -116,6 +116,7 @@ SITE_ID = 1
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
+	"django.middleware.locale.LocaleMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -308,40 +309,6 @@ LOGGING = {
 }
 
 
-# site ui settings
-
-SITE_UI_VARS = {
-	"num_sidebar_preview_lines": 5,
-	"num_top_products": 5,
-	"num_popular_products": 20,
-	"num_recommended_products": 10,
-	"num_top_categories": 5,
-	"num_popular_categories": 10,
-}
-
-
-# allauth-ui
-
-ALLAUTH_UI_THEME = "light"
-
-
-# django-allauth
-
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-SOCIALACCOUNT_PROVIDERS = {
-	"google": {
-		"APP": {
-			"client_id": os.getenv("ALLAUTH_GOOGLE_CLIENT_ID"),
-			"secret": os.getenv("ALLAUTH_GOOGLE_SECRET"),
-			"key": os.getenv("ALLAUTH_GOOGLE_KEY"),
-		}
-	},
-	"facebook": {
-		"APP": {},
-	},
-}
-
-
 # django-oscar
 
 OSCAR_SHOP_NAME = "Aircraft e-commerce site"
@@ -365,6 +332,44 @@ OSCAR_FROM_EMAIL = "noreply@airvehicleservices.com"
 OSCAR_BASKET_COOKIE_OPEN = "aircraft_site_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
+
+
+# site ui settings
+
+SITE_UI_VARS = {
+	"num_sidebar_preview_lines": 5,
+	"num_top_products": 5,
+	"num_popular_products": 20,
+	"num_recommended_products": 10,
+	"num_top_product_classes": 5,
+	"num_popular_product_classes": 10,
+	"num_top_categories": 5,
+	"num_popular_categories": 10,
+	"tag_line": _("Products you'll love"),
+	"tag_line_header": _("Best in class"),
+}
+
+
+# allauth-ui
+
+ALLAUTH_UI_THEME = "light"
+
+
+# django-allauth
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+SOCIALACCOUNT_PROVIDERS = {
+	"google": {
+		"APP": {
+			"client_id": os.getenv("ALLAUTH_GOOGLE_CLIENT_ID"),
+			"secret": os.getenv("ALLAUTH_GOOGLE_SECRET"),
+			"key": os.getenv("ALLAUTH_GOOGLE_KEY"),
+		}
+	},
+	"facebook": {
+		"APP": {},
+	},
+}
 
 
 # django-htmx-utils

@@ -194,10 +194,10 @@
     <button type="button"
             class="btn-close"
             data-bs-dismiss="offcanvas"
-            aria-label="Close">&times;</button>
+            aria-label="{% trans 'Close' %}">&times;</button>
     <div class="container">
         <form class="header-item-search"
-              action="{% url 'search:search' %}"
+              action="{% url 'catalogue:index' %}"
               method="get">
             <div class="input-group search-input">
                 <select name="selected_facets" class="default-select">
@@ -206,10 +206,10 @@
                     {% for category, info in tree_categories %}
                         {% if info.has_children %}
                             <optgroup label="{{ category.name|capfirst }}">
-                                <option value="productcategory:{{ category.pk }}">{% trans 'All' %} {{ category.name|capfirst }}</option>
+                                <option value="category:{{ category.pk }}">{% trans 'All' %} {{ category.name|capfirst }}</option>
                                 {% for n in info.num_to_close %}</optgroup>{% endfor %}
                         {% else %}
-                            <option value="productcategory:{{ category.pk }}">{{ category.name|capfirst }}</option>
+                            <option value="category:{{ category.pk }}">{{ category.name|capfirst }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -223,7 +223,7 @@
             </div>
             <ul class="recent-tag">
                 <li class="pe-0">
-                    <span>{% trans 'Popular' %} :</span>
+                    <span>{% trans 'Quick Search' %} :</span>
                 </li>
                 {% for category in popular_categories %}
                     <li>

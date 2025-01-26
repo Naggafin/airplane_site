@@ -3,8 +3,11 @@ import random
 
 from cachetools import TTLCache
 from django.conf import settings
+from oscar.core.loading import get_model
 
-from oscar_apps.catalogue.models import Category, Product
+Category = get_model("catalogue", "Category")
+Product = get_model("catalogue", "Product")
+ProductClass = get_model("catalogue", "ProductClass")
 
 _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 
@@ -24,7 +27,8 @@ def populate_products(request):
 		.prefetch_related("images", "stockrecords")
 		.all()
 	)
-	categories = list(Category.objects.all())
+	product_classes = list(ProductClass.objects.all())
+	categories = list(Category.objects.filter(depth=1))
 	_cache[session_key] = context = {
 		"top_products": random.sample(
 			products, settings.SITE_UI_VARS["num_top_products"]
@@ -35,13 +39,24 @@ def populate_products(request):
 		"recommended_products": random.sample(
 			products, settings.SITE_UI_VARS["num_recommended_products"]
 		),
+		"top_product_classes": random.sample(
+			product_classes,
+			min(len(product_classes), settings.SITE_UI_VARS["num_top_product_classes"]),
+		),
+		"popular_product_classes": random.sample(
+			product_classes,
+			min(
+				len(product_classes),
+				settings.SITE_UI_VARS["num_popular_product_classes"],
+			),
+		),
 		"top_categories": random.sample(
-			categories, settings.SITE_UI_VARS["num_top_categories"]
+			categories,
+			min(len(categories), settings.SITE_UI_VARS["num_top_categories"]),
 		),
 		"popular_categories": random.sample(
 			categories,
-			min(len(categories), settings.SITE_UI_VARS["num_popular_products"]),
+			min(len(categories), settings.SITE_UI_VARS["num_popular_categories"]),
 		),
-		#'recommended_categories':[],
 	}
 	return context

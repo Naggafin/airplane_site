@@ -1,13 +1,14 @@
-{% load product_tags %}
-<template hx-swap-oob="outerHTML:#popularProductsCategoryForm">
-    {% include 'pixio/index.html#popular-products-category-form' %}
-</template>
-{% if style %}
-    {% for product in products %}
-        {% render_product product %}
-    {% endfor %}
+{% load i18n product_tags %}
+{% if products|length > 0 %}
+    {% if style %}
+        {% for product in products %}
+            {% render_product product style %}
+        {% endfor %}
+    {% else %}
+        {% for product in products %}
+            {% render_product product %}
+        {% endfor %}
+    {% endif %}
 {% else %}
-    {% for product in products %}
-        {% render_product product style %}
-    {% endfor %}
+    <div id="masonry" class="text-center fs-2 fw-bold">{% trans 'There are no products to display' %}</div>
 {% endif %}

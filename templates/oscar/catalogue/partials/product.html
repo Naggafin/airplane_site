@@ -109,13 +109,16 @@
 {% endpartialdef %}
 {% block product %}
     {% purchase_info_for_product request product as session %}
-    <div class="shop-card{% if style %} {{ style }}{% endif %}">
+    <div id="product-{{ product.pk }}-card"
+         class="shop-card
+                {% if style %}{{ style }}{% endif %}">
         <div class="dz-media">
             {% with image=product.primary_image %}
                 {% oscar_thumbnail image.original "450x600" as thumb %}
                 <img src="{{ thumb.url }}"
                      alt="{{ image.caption|default:product.get_title }}"
-                     class="mx-auto">
+                     class="mx-auto"
+                     nonce="{{ request.csp_nonce }}">
             {% endwith %}
             <div class="shop-meta">
                 <a href="{{ product.get_absolute_url }}"

@@ -5,7 +5,7 @@ Category = get_model("catalogue", "Category")
 Product = get_model("catalogue", "Product")
 
 
-class ProductFilter(django_filters.FilterSet):
+class ProductFilterSet(django_filters.FilterSet):
 	price_min = django_filters.NumberFilter(field_name="price", lookup_expr="gte")
 	price_max = django_filters.NumberFilter(field_name="price", lookup_expr="lte")
 	category = django_filters.ModelChoiceFilter(
