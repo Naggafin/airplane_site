@@ -15,3 +15,6 @@
     hx-swap-oob="outerHTML:#shopping-cart-pane #basket-line-{{ line.pk }} #basket-line-{{ line.pk }}-price">
     {{ session.price.excl_tax|currency:session.price.currency }}
 </h6>
+<div class="cart-btn" hx-swap-oob="outerHTML:.modal .cart-btn">
+    {% include 'pixio/index.html#product-modal-buttons' %}
+</div>

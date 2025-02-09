@@ -1,6 +1,6 @@
 {% include 'oscar/basket/partials/basket_line_update_partial.html' %}
 <div id="basket-remove-product-{{ product.pk }}"
-     hx-swap-oob="outerHTML:#basket-add-product-{{ product.pk }}">
+     hx-swap-oob="outerHTML:#product-{{ product.pk }}-card #basket-add-product-{{ product.pk }}">
     {% include 'oscar/catalogue/partials/product.html#remove-from-basket' %}
 </div>
 <ul hx-swap-oob="beforeend:#shopping-cart-pane .sidebar-cart-list">

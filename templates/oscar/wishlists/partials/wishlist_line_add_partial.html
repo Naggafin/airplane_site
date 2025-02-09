@@ -1,6 +1,6 @@
 {% include 'oscar/wishlists/partials/wishlist_line_update_partial.html' %}
 <div id="wishlist-remove-product-{{ product.pk }}"
-     hx-swap-oob="outerHTML:#wishlist-add-product-{{ product.pk }}">
+     hx-swap-oob="outerHTML:#product-{{ product.pk }}-card #wishlist-add-product-{{ product.pk }}">
     {% include 'oscar/catalogue/partials/product.html#remove-from-wishlist' %}
 </div>
 <ul hx-swap-oob="beforeend:#wishlist-pane .sidebar-cart-list">

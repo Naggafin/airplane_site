@@ -39,7 +39,7 @@
                aria-label="{% trans 'Quantity of item in wishlist' %}"
                hx-post="{% url 'customer:wishlist-update-line' pk=line.pk %}"
                hx-trigger="input changed delay:500ms, change"
-               hx-vals="{'csrfmiddlewaretoken': '{{ csrf_token }}'}"
+               hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
                hx-swap="none"
                x-model="quantity">
     </div>

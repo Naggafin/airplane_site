@@ -41,3 +41,4 @@ ruff
 sorl-thumbnail
 uv
 wheel
+Whoosh

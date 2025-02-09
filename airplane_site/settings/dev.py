@@ -74,7 +74,8 @@ OSCAR_URL_SCHEMA = "http"
 
 HAYSTACK_CONNECTIONS = {
 	"default": {
-		"ENGINE": "haystack.backends.simple_backend.SimpleEngine",
+		"ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+		"PATH": BASE_DIR / "whoosh_index",  # noqa: F405
 	},
 }
 

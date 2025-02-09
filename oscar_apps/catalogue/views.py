@@ -1,7 +1,7 @@
 from oscar.apps.catalogue.views import (
-	CatalogueView as CoreCatalogueView,
 	ProductDetailView as CoreProductDetailView,
 )
+from oscar.core.loading import get_class
 
 
 class ProductDetailView(CoreProductDetailView):
@@ -9,9 +9,10 @@ class ProductDetailView(CoreProductDetailView):
 
 	def get_template_names(self):
 		if self.request.htmx:
-			return ["pixio/index.html#product-modal"]
+			if self.request.htmx.target == "modalContainer":
+				return ["pixio/index.html#product-modal"]
 		return super().get_template_names()
 
 
-class CatalogueView(CoreCatalogueView):
-	template_name = "pixio/shop.html"
+CatalogueView = get_class("search.views", "CatalogueView")
+ProductCategoryView = get_class("search.views", "ProductCategoryView")

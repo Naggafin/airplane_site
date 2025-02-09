@@ -3,7 +3,7 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from oscar.apps.wishlists.models import Line, WishList
 
-from .constants import WISHLIST_CACHE_KEY
+from .utils import get_cache_key
 
 
 @receiver(post_save, sender=Line)
@@ -20,5 +20,5 @@ def handle_wishlist_change(sender, instance, **kwargs):
 		user_id = instance.wishlist.owner_id
 	else:
 		return
-	cache_key = WISHLIST_CACHE_KEY % user_id
+	cache_key = get_cache_key(user_id)
 	cache.delete(cache_key)

@@ -11,6 +11,17 @@ logger = logging.getLogger(__name__)
 CACHE_TIMEOUT = 60 * 5  # 5 minutes
 
 
+def get_cache_key(request):
+	if request.user.is_authenticated:
+		return BASKET_CACHE_KEY % request.user.pk
+
+	from oscar.apps.basket.middleware import BasketMiddleware
+
+	middleware = BasketMiddleware(None)
+	cookie_key = middleware.get_cookie_key(request)
+	return BASKET_CACHE_KEY % request.COOKIES.get(cookie_key, "")
+
+
 def get_or_create_basket_cache(request):
 	"""
 	Retrieve or create a cached basket for the given request.
@@ -22,15 +33,7 @@ def get_or_create_basket_cache(request):
 
 	from .serializers import BasketSerializer
 
-	middleware = BasketMiddleware(None)
-
-	def get_cache_key():
-		if request.user.is_authenticated:
-			return BASKET_CACHE_KEY % request.user.pk
-		cookie_key = middleware.get_cookie_key(request)
-		return BASKET_CACHE_KEY % request.COOKIES.get(cookie_key, "")
-
-	cache_key = get_cache_key()
+	cache_key = get_cache_key(request)
 	cached_basket = cache.get(cache_key)
 
 	def box_cache(data):
@@ -44,9 +47,14 @@ def get_or_create_basket_cache(request):
 	if cached_basket:
 		return box_cache(cached_basket)
 
+	middleware = BasketMiddleware(None)
 	basket = middleware.get_basket(request)
 	if not basket:
 		return []
+
+	# save it, or our serializer will complain
+	if not basket.pk:
+		basket.save()
 
 	serialized_basket = BasketSerializer(basket).data
 	cache.set(cache_key, serialized_basket, timeout=CACHE_TIMEOUT)

@@ -18,6 +18,7 @@ from oscar.apps.basket.views import (
 from .actions import BasketRemoveLineAction
 from .forms import BasketLineForm
 from .models import Line
+from .signals import basket_changed
 
 
 class BasketView(CoreBasketView):
@@ -77,6 +78,7 @@ class BasketAddView(CoreBasketAddView):
 class BasketLineUpdate(HtmxFormMixin, UpdateView):
 	model = Line
 	form_class = BasketLineForm
+	change_signal = basket_changed
 
 	def get(self, request, *args, **kwargs):
 		return redirect(self.get_success_url())
@@ -102,6 +104,14 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 		else:
 			line.save()
 
+		# send signal for basket change
+		self.change_signal.send(
+			sender=self,
+			product=product,
+			user=self.request.user,
+			request=self.request,
+		)
+
 		# clear basket lines cache or it computes incorrect value
 		self.request.basket._lines = None
 
@@ -125,6 +135,7 @@ class BasketLineUpdate(HtmxFormMixin, UpdateView):
 
 class BasketLineRemove(HtmxActionView):
 	action_class = BasketRemoveLineAction
+	change_signal = basket_changed
 
 	def get(self, request, *args, **kwargs):
 		return redirect(self.get_success_url())
@@ -141,6 +152,17 @@ class BasketLineRemove(HtmxActionView):
 
 	def get_success_url(self):
 		return reverse("basket:summary")
+
+	def action_valid(self, action):
+		# send signal for basket change
+		_, product = self.action.result
+		self.change_signal.send(
+			sender=self,
+			product=product,
+			user=self.request.user,
+			request=self.request,
+		)
+		return super().action_valid(action)
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)

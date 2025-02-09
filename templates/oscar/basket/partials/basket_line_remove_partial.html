@@ -2,7 +2,7 @@
 {% include 'oscar/basket/partials/basket_line_update_partial.html' %}
 {% purchase_info_for_product request product as session %}
 <div id="basket-add-product-{{ product.pk }}"
-     hx-swap-oob="outerHTML:#basket-remove-product-{{ product.pk }}">
+     hx-swap-oob="outerHTML:#product-{{ product.pk }}-card #basket-remove-product-{{ product.pk }}">
     {% if session.availability.is_available_to_buy and session.price.exists %}
         {% include 'oscar/catalogue/partials/product.html#add-to-basket' %}
     {% endif %}

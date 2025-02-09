@@ -58,6 +58,10 @@ def fetch_wishlist(request):
 		return wishlist
 
 
+def get_cache_key(user_id):
+	return WISHLIST_CACHE_KEY % user_id
+
+
 def get_or_create_wishlist_cache(request):
 	"""
 	Retrieve or create a cached wishlist for the authenticated user.
@@ -68,9 +72,6 @@ def get_or_create_wishlist_cache(request):
 
 	if not request.user.is_authenticated:
 		return None
-
-	def get_cache_key(user_id):
-		return WISHLIST_CACHE_KEY % user_id
 
 	user_id = request.user.pk
 	cache_key = get_cache_key(user_id)

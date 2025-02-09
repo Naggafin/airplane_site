@@ -18,6 +18,7 @@
     {% csrf_token %}
     <button type="submit"
             class="btn btn-primary meta-icon dz-wishicon"
+            aria-label="{% trans 'Add to wishlist' %}"
             :disabled="submitting">
         <i class="spinner-border spinner-border-sm"
            role="status"
@@ -43,6 +44,7 @@
     {% csrf_token %}
     <button type="submit"
             class="btn btn-primary meta-icon dz-wishicon"
+            aria-label="{% trans 'Remove from wishlist' %}"
             :disabled="submitting">
         <i class="spinner-border spinner-border-sm"
            role="status"
@@ -70,6 +72,7 @@
     {{ basket_form }}
     <button type="submit"
             class="btn btn-primary meta-icon dz-carticon"
+            aria-label="{% trans 'Add to cart' %}"
             :disabled="submitting">
         <i class="spinner-border spinner-border-sm"
            role="status"
@@ -95,6 +98,7 @@
     {% csrf_token %}
     <button type="submit"
             class="btn btn-primary meta-icon dz-carticon"
+            aria-label="{% trans 'Remove from cart' %}"
             :disabled="submitting">
         <i class="spinner-border spinner-border-sm"
            role="status"
@@ -123,11 +127,23 @@
             <div class="shop-meta">
                 <a href="{{ product.get_absolute_url }}"
                    class="btn btn-secondary btn-md btn-rounded"
+                   hx-swap="innerHTML show:none"
                    hx-boost="true"
                    hx-target="#modalContainer"
-                   hx-push-url="false">
-                    <i class="fa-solid fa-eye d-md-none d-block"></i>
-                    <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
+                   hx-push-url="false"
+                   @click="$data.clicked = true;"
+                   @htmx:after-on-load="$data.clicked = false;"
+                   @htmx:response-error="console.error($event);"
+                   :class="{'pe-none': clicked}"
+                   x-data="{clicked: false}">
+                    <i class="spinner-border spinner-border-sm"
+                       role="status"
+                       aria-hidden="true"
+                       x-show="clicked"></i>
+                    <div x-show="!clicked">
+                        <i class="fa-solid fa-eye d-md-none d-block"></i>
+                        <span class="d-md-block d-none">{% trans 'Quick View' %}</span>
+                    </div>
                 </a>
                 {% if request.user.is_authenticated %}
                     {% if product|is_in_wishlist:request %}
@@ -169,8 +185,6 @@
                 {% if session.price.exists %}
                     {% if session.price.excl_tax == 0 %}
                         {% trans "Free" %}
-                    {% elif session.price.is_tax_known %}
-                        {{ session.price.incl_tax|currency:session.price.currency }}
                     {% else %}
                         {{ session.price.excl_tax|currency:session.price.currency }}
                     {% endif %}
