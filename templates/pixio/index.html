@@ -370,7 +370,7 @@
     <a href="{% url 'checkout:index' %}"
        class="btn btn-secondary text-uppercase">{% trans 'Go To Checkout' %}</a>
     <button id="basket-remove-product-{{ product.pk }}"
-            class="btn btn-secondary text-uppercase"
+            class="btn btn-outline-secondary text-uppercase"
             hx-post="{% url 'basket:remove-product' product_pk=product.pk %}"
             hx-swap="none"
             hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"

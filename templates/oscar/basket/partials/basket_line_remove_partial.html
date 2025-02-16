@@ -7,4 +7,4 @@
         {% include 'oscar/catalogue/partials/product.html#add-to-basket' %}
     {% endif %}
 </div>
-{#<li hx-swap-oob="delete:#shopping-cart-pane #basket-line-{{ line.pk }}"></li>#}
+<div hx-swap-oob="delete:#shopping-cart-pane .sidebar-cart-list #basket-line-{{ line.pk }}"></div>

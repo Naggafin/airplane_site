@@ -162,6 +162,10 @@ class BasketLineRemove(HtmxActionView):
 			user=self.request.user,
 			request=self.request,
 		)
+
+		# clear basket lines cache or it computes incorrect value
+		self.request.basket._lines = None
+
 		return super().action_valid(action)
 
 	def get_context_data(self, **kwargs):

@@ -40,7 +40,9 @@ class Basket(auto_prefetch.Model, AbstractBasket):
 
 		# Handle deletion or quantity adjustment
 		if delete:
+			line_pk = line.pk
 			line.delete()
+			line.pk = line_pk  # this is necessary as .delete() clears pk
 		else:
 			# Decrease quantity, delete if zero or save if greater than zero
 			line.quantity = max(0, line.quantity - 1)

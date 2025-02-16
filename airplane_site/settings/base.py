@@ -334,7 +334,13 @@ OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
 
 
-# site ui settings
+# site settings
+
+SITE_VARS = {
+	"min_price_range_facets": 3,
+	"max_price_range_facets": 8,
+	"price_range_facets_bucket_step_size": 50,
+}
 
 SITE_UI_VARS = {
 	"num_sidebar_preview_lines": 5,
