@@ -177,7 +177,7 @@
     <div class="dz-content">
         {% block product_title %}
             <h5 class="title">
-                <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a>
+                <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|title|truncatewords:4 }}</a>
             </h5>
         {% endblock %}
         {% block product_price %}

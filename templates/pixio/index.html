@@ -45,49 +45,47 @@
                 productsList.replaceWith(loadingDiv);
             }
         }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.addEventListener('htmx:beforeSwap', (event) => {
-                if (event.detail.target.id !== 'masonry') return;
-                console.debug('preprocessing swap');
-        
-                // template container to hold response content
-                const tempContainer = document.createElement('div');
-                tempContainer.innerHTML = event.detail.xhr.responseText;
-        
-                // process elements matching the ID pattern "product-{ some text }-card"
-                const productCards = tempContainer.querySelectorAll('[id^="product-"][id$="-card"]');
-                console.debug(`num product cards found: ${productCards.length}`);
-                if (productCards.length > 0) {
-                    // create a new <ul> container
-                    const listContainer = document.createElement('ul');
-                    listContainer.id = 'masonry';
-                    listContainer.className = 'row g-xl-4 g-3';
-        
-                    // encapsulate every product card in an <li>
-                    productCards.forEach((productCard) => {
-                        console.debug(`replacing #${productCard.id} in response HTML`);
-                        const listItem = document.createElement('li');
-                        listItem.className = 'card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp';
-                        listItem.setAttribute('data-wow-delay', '0.6s');
-                        listItem.appendChild(productCard.cloneNode(true));
-                        productCard.remove();
-                        listContainer.appendChild(listItem);
-                    });
-        
-                    // update only the modified elements in the HTMX response
-                    console.debug('updating response content');
-                    tempContainer.appendChild(listContainer);
-                    {% if debug %}console.debug(tempContainer.innerHTML.trim());{% endif %}
-                    event.detail.serverResponse = tempContainer.innerHTML;
-                }
-        
-                // now re-enable category filter buttons
-                const buttonContainer = document.getElementById('popularCategoryFilter');
-                buttonContainer.querySelectorAll('.pe-none, .disabled').forEach(elem => {
-                    elem.classList.remove('pe-none');
-                    elem.classList.remove('disabled');
+
+        document.body.addEventListener('htmx:beforeSwap', (event) => {
+            if (event.detail.target.id !== 'masonry') return;
+            console.debug('preprocessing swap');
+    
+            // template container to hold response content
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = event.detail.xhr.responseText;
+    
+            // process elements matching the ID pattern "product-{ some text }-card"
+            const productCards = tempContainer.querySelectorAll('[id^="product-"][id$="-card"]');
+            console.debug(`num product cards found: ${productCards.length}`);
+            if (productCards.length > 0) {
+                // create a new <ul> container
+                const listContainer = document.createElement('ul');
+                listContainer.id = 'masonry';
+                listContainer.className = 'row g-xl-4 g-3';
+    
+                // encapsulate every product card in an <li>
+                productCards.forEach(productCard => {
+                    console.debug(`replacing #${productCard.id} in response HTML`);
+                    const listItem = document.createElement('li');
+                    listItem.className = 'card-container col-6 col-xl-3 col-lg-3 col-md-4 col-sm-6 Tops wow fadeInUp';
+                    listItem.setAttribute('data-wow-delay', '0.6s');
+                    listItem.appendChild(productCard.cloneNode(true));
+                    productCard.remove();
+                    listContainer.appendChild(listItem);
                 });
+    
+                // update only the modified elements in the HTMX response
+                console.debug('updating response content');
+                tempContainer.appendChild(listContainer);
+                {% if debug %}console.debug(tempContainer.innerHTML.trim());{% endif %}
+                event.detail.serverResponse = tempContainer.innerHTML;
+            }
+    
+            // now re-enable category filter buttons
+            const buttonContainer = document.getElementById('popularCategoryFilter');
+            buttonContainer.querySelectorAll('.pe-none, .disabled').forEach(elem => {
+                elem.classList.remove('pe-none');
+                elem.classList.remove('disabled');
             });
         });
     </script>
@@ -372,7 +370,7 @@
     <button id="basket-remove-product-{{ product.pk }}"
             class="btn btn-outline-secondary text-uppercase"
             hx-post="{% url 'basket:remove-product' product_pk=product.pk %}"
-            hx-swap="none"
+            hx-swap="none show:none"
             hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
             hx-push-url="false"
             @click="$data.submitting = true; clicked = true;"
@@ -389,7 +387,7 @@
     <button id="basket-add-product-{{ product.pk }}"
             class="btn btn-secondary text-uppercase"
             hx-post="{% url 'basket:add-product' pk=product.pk %}"
-            hx-swap="none"
+            hx-swap="none show:none"
             hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
             hx-include=".modal input#quantity-{{ product.pk }}"
             hx-push-url="false"
@@ -409,7 +407,7 @@
         <button id="wishlist-remove-product-{{ product.pk }}"
                 class="btn btn-md btn-outline-secondary btn-icon"
                 hx-post="{% url 'customer:wishlist-remove-product' product_pk=product.pk %}"
-                hx-swap="none"
+                hx-swap="none show:none"
                 hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
                 hx-push-url="false"
                 @click="$data.submitting = true; clicked = true;"
@@ -435,7 +433,7 @@
         <button id="wishlist-add-product-{{ product.pk }}"
                 class="btn btn-md btn-outline-secondary btn-icon"
                 hx-post="{% url 'customer:wishlist-add-product' pk=product.pk %}"
-                hx-swap="none"
+                hx-swap="none show:none"
                 hx-vals="js:{csrfmiddlewaretoken:'{{ csrf_token }}'}"
                 hx-include=".modal input#quantity-{{ product.pk }}"
                 hx-push-url="false"
