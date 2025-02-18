@@ -316,15 +316,25 @@ OSCAR_SHOP_TAGLINE = ""
 OSCAR_INITIAL_ORDER_STATUS = "Pending"
 OSCAR_INITIAL_LINE_STATUS = "Pending"
 OSCAR_ORDER_STATUS_PIPELINE = {
-	"Pending": (
-		"Being processed",
-		"Cancelled",
-	),
-	"Being processed": (
-		"Processed",
-		"Cancelled",
-	),
-	"Cancelled": (),
+	"Pending": ("Payment Pending", "Canceled"),
+	"Payment Pending": ("Processing Payment", "Canceled"),
+	"Processing Payment": ("Paid", "Failed Payment"),
+	"Paid": ("Awaiting Seller Confirmation", "Refund Requested"),
+	"Awaiting Seller Confirmation": ("Seller Accepted", "Seller Rejected"),
+	"Seller Accepted": ("Shipping", "Ready for Pickup", "Refund Requested"),
+	"Shipping": ("Delivered", "Refund Requested"),
+	"Ready for Pickup": ("Delivered", "Refund Requested"),
+	"Delivered": ("Completed", "Disputed"),
+	"Completed": (),
+	"Disputed": ("Refund Approved", "Dispute Rejected"),
+	"Refund Requested": ("Refund Approved", "Dispute Raised"),
+	"Refund Approved": ("Refunded"),
+	"Refunded": (),
+	"Dispute Raised": ("Dispute Resolved"),
+	"Dispute Resolved": ("Completed"),
+	"Seller Rejected": ("Refund Approved"),
+	"Failed Payment": ("Payment Pending", "Canceled"),
+	"Canceled": (),
 }
 OSCAR_PRODUCT_MODEL = "catalogue.Product"
 OSCAR_ALLOW_ANON_CHECKOUT = True

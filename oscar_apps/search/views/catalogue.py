@@ -35,6 +35,11 @@ class CatalogueView(AdjustablePaginationMixin, SortingMixin, BaseCatalogueView):
 			return ["oscar/catalogue/partials/shop.html"]
 		return super().get_template_names()
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["ordering"] = self.get_ordering()
+		return context
+
 
 class ProductCategoryView(
 	AdjustablePaginationMixin, SortingMixin, BaseProductCategoryView
@@ -64,3 +69,8 @@ class ProductCategoryView(
 			if expected_path != quote(current_path):
 				return HttpResponsePermanentRedirect(expected_path)
 		return None
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["ordering"] = self.get_ordering()
+		return context

@@ -591,16 +591,20 @@
                                 <select name="sort"
                                         class="default-select"
                                         hx-get="{% querystring sort=None %}"
-                                        hx-trigger="change"
+                                        hx-trigger="change delay:1s"
                                         hx-swap="none show:none"
-                                        hx-push-url="false">
+                                        hx-push-url="false"
+                                        multiple>
                                     <option value="">{% trans 'Relevance' %}</option>
-                                    <option value="-date_created">{% trans 'Newest' %}</option>
-                                    <option value="date_created">{% trans 'Oldest' %}</option>
-                                    <option value="-average_rating">{% trans 'Highest Rated' %}</option>
-                                    <option value="-num_purchases">{% trans 'Most Popular' %}</option>
-                                    <option value="-price">{% trans 'Price: High to Low' %}</option>
-                                    <option value="price">{% trans 'Price: Low to High' %}</option>
+                                    <option value="-date_created"
+                                            {% if ordering == '-date_created' %}selected{% endif %}>{% trans 'Newest' %}</option>
+                                    <option value="date_created"
+                                            {% if ordering == 'date_created' %}selected{% endif %}>{% trans 'Oldest' %}</option>
+                                    <option value="-rating" {% if ordering == '-rating' %}selected{% endif %}>{% trans 'Highest Rated' %}</option>
+                                    <option value="-num_purchases"
+                                            {% if ordering == '-num_purchases' %}selected{% endif %}>{% trans 'Most Popular' %}</option>
+                                    <option value="-price" {% if ordering == '-price' %}selected{% endif %}>{% trans 'Price: High to Low' %}</option>
+                                    <option value="price" {% if ordering == 'price' %}selected{% endif %}>{% trans 'Price: Low to High' %}</option>
                                 </select>
                             </div>
                             <div class="form-group Category">
@@ -615,7 +619,10 @@
                                         {% for group_name, group_choices, group_index in widget.optgroups %}
                                             {% if group_name %}<optgroup label="{{ group_name }}">{% endif %}
                                                 {% for option in group_choices %}
-                                                    <option value="{{ widget.value|stringformat:'s' }}">{{ widget.label }} {% trans 'Products' %}</option>
+                                                    <option value="{{ widget.value|stringformat:'s' }}"
+                                                            {% include "django/forms/widgets/attrs.html" %}>
+                                                        {{ widget.label }} {% trans 'Products' %}
+                                                    </option>
                                                 {% endfor %}
                                                 {% if group_name %}</optgroup>{% endif %}
                                         {% endfor %}
