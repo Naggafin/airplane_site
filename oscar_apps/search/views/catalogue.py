@@ -3,7 +3,6 @@ from urllib.parse import quote
 from django.contrib.auth import get_permission_codename
 from django.http import HttpResponsePermanentRedirect
 from django_extensions.views.mixins import AdjustablePaginationMixin
-from django_tables2.paginators import LazyPaginator
 from oscar.apps.search.views.catalogue import (
 	CatalogueView as BaseCatalogueView,
 	ProductCategoryView as BaseProductCategoryView,
@@ -25,19 +24,20 @@ class SortingMixin:
 
 class CatalogueView(AdjustablePaginationMixin, SortingMixin, BaseCatalogueView):
 	pagination_choices = [20, 30, 50, 100]
-	paginator_class = LazyPaginator
+	# paginator_class = LazyPaginator
 	template_name = "pixio/shop.html"
 
 	def get_template_names(self):
 		if self.request.htmx:
 			if self.request.htmx.target == "masonry":
 				return ["oscar/catalogue/partials/browse.html"]
-			return ["oscar/catalogue/partials/shop.html"]
+			return ["pixio/partials/shop.html"]
 		return super().get_template_names()
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["ordering"] = self.get_ordering()
+		breakpoint()
 		return context
 
 
@@ -45,14 +45,14 @@ class ProductCategoryView(
 	AdjustablePaginationMixin, SortingMixin, BaseProductCategoryView
 ):
 	pagination_choices = [20, 30, 50, 100]
-	paginator_class = LazyPaginator
+	# paginator_class = LazyPaginator
 	template_name = "pixio/shop.html"
 
 	def get_template_names(self):
 		if self.request.htmx:
 			if self.request.htmx.target == "masonry":
 				return ["oscar/catalogue/partials/browse.html"]
-			return ["oscar/catalogue/partials/shop.html"]
+			return ["pixio/partials/shop.html"]
 		return super().get_template_names()
 
 	def is_viewable(self, category, request):

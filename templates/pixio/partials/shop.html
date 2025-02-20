@@ -1,0 +1,23 @@
+{% load i18n %}
+<div hx-swap-oob="innerHTML:#filterAside">{% include 'pixio/shop.html#filter-aside' %}</div>
+<div hx-swap-oob="innerHTML:#productsRow">{% include 'pixio/shop.html#products-row' %}</div>
+<div hx-swap-oob="innerHTML:#paginationRow">{% include 'pixio/shop.html#pagination-row' %}</div>
+<span hx-swap-oob="innerHTML:.pagination-results">
+    {% if paginator.count %}
+        {% if paginator.num_pages > 1 %}
+            {% blocktrans with start=page_obj.start_index end=page_obj.end_index count num_results=paginator.count %}
+            <strong>{{ num_results }}</strong> result - showing <strong>{{ start }}</strong> to <strong>{{ end }}</strong>.
+        {% plural %}
+            <strong>{{ num_results }}</strong> results - showing <strong>{{ start }}</strong> to <strong>{{ end }}</strong>.
+        {% endblocktrans %}
+        {% else %}
+            {% blocktrans count num_results=paginator.count %}
+            <strong>{{ num_results }}</strong> result.
+        {% plural %}
+            <strong>{{ num_results }}</strong> results.
+        {% endblocktrans %}
+        {% endif %}
+    {% else %}
+        {% trans "<strong>0</strong> results." %}
+    {% endif %}
+</span>

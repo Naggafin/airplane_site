@@ -76,6 +76,10 @@ HAYSTACK_CONNECTIONS = {
 	"default": {
 		"ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
 		"PATH": BASE_DIR / "whoosh_index",  # noqa: F405
+		"EXCLUDED_INDEXES": [
+			"oscar.apps.search.search_indexes.ProductIndex",
+			"oscar_apps.search.search_indexes.CoreProductIndex",
+		],
 	},
 }
 

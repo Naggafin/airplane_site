@@ -1,16 +1,25 @@
 {% extends 'base.html' %}
 {% load i18n static %}
-{% load django_tables2 %}
+{% load partials %}
+{% load airplane_site_tags %}
 {% load category_tags %}
 {% load product_tags %}
+{% load display_tags %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+{% load wishlist_tags %}
+{% load image_tags %}
+{% load currency_filters %}
 {% block additional_css %}{% endblock %}
 {% block js %}
+    {{ block.super }}
     <script src="{% static 'pixio/vendor/lightgallery/dist/lightgallery.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
     <script src="{% static 'pixio/vendor/lightgallery/dist/plugins/thumbnail/lg-thumbnail.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
     <script src="{% static 'pixio/vendor/lightgallery/dist/plugins/zoom/lg-zoom.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
+    {% comment %}
     <script nonce="{{ request.csp_nonce }}">
         function handleCategoryFilter(event) {
             const originElem = event.target;
@@ -63,13 +72,15 @@
                 event.detail.serverResponse = tempContainer.innerHTML;
             }
         });
-    </script>
+</script>
+    {% endcomment %}
 {% endblock %}
 {% partialdef product-list-item-add-to-wishlist %}
 <div class="bookmark-btn style-1 require-js" x-data="{submitting: false}">
     <label class="form-check-label">
         <input class="form-check-input"
                type="checkbox"
+               aria-label="{% trans 'Add to wishlist' %}"
                hx-post="{% url 'customer:wishlist-add-product' pk=product.pk %}"
                hx-trigger="change"
                hx-swap="none show:none"
@@ -105,6 +116,7 @@
     <label class="form-check-label">
         <input class="form-check-input"
                type="checkbox"
+               aria-label="{% trans 'Remove from wishlist' %}"
                hx-post="{% url 'customer:wishlist-remove-product' pk=product.pk %}"
                hx-trigger="change"
                hx-swap="none show:none"
@@ -187,6 +199,7 @@
 </form>
 {% endpartialdef %}
 {% partialdef product-list-item %}
+{% purchase_info_for_product request product as session %}
 <div class="dz-shop-card style-2">
     <div class="dz-media">
         {% with image=product.primary_image %}
@@ -197,7 +210,12 @@
                  nonce="{{ request.csp_nonce }}">
         {% endwith %}
         <div class="product-tag">
-            <span class="badge badge-secondary">TODO</span>
+            <span class="badge badge-secondary">
+                {% if not session.availability.is_available_to_buy %}
+                    {% trans 'Unavailable' %}
+                {% endif %}
+                {# TODO: logic for other tags #}
+            </span>
         </div>
     </div>
     <div class="dz-content">
@@ -287,148 +305,145 @@
 </div>
 {% endpartialdef %}
 {% partialdef filter-aside %}
-<aside>
-    <div class="d-flex align-items-center justify-content-between m-b30">
-        <h6 class="title mb-0 fw-normal d-flex">
-            <i class="flaticon-filter me-3"></i>
-            {% trans 'Filter' %}
-        </h6>
-    </div>
-    <form action="{% url 'catalogue:index' %}"
-          method="get"
-          hx-boost="true"
-          hx-swap="show:none"
-          hx-target="#masonry"
-          hx-push-url="false"
-          x-ref="form"
-          x-data>
-        <div class="widget widget_search">
-            <div class="form-group">
-                <div class="input-group">
-                    <input name="q"
-                           value="{{ request.GET.q }}"
-                           required="required"
-                           type="search"
-                           class="form-control"
-                           placeholder="{% trans 'Search Products' %}">
-                    <div class="input-group-addon">
-                        <button name="submit" value="{% trans 'Search' %}" type="submit" class="btn">
-                            <i class="icon feather icon-search"></i>
-                        </button>
-                    </div>
+<div class="d-flex align-items-center justify-content-between m-b30">
+    <h6 class="title mb-0 fw-normal d-flex">
+        <i class="flaticon-filter me-3"></i>
+        {% trans 'Filter' %}
+    </h6>
+</div>
+<form action="{% url 'catalogue:index' %}"
+      method="get"
+      hx-boost="true"
+      hx-swap="none show:none"
+      hx-push-url="false"
+      x-ref="form"
+      x-data>
+    <div class="widget widget_search">
+        <div class="form-group">
+            <div class="input-group">
+                <input name="q"
+                       {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}
+                       required="required"
+                       type="search"
+                       class="form-control"
+                       placeholder="{% trans 'Search Products' %}">
+                <div class="input-group-addon">
+                    <button name="submit" value="{% trans 'Search' %}" type="submit" class="btn">
+                        <i class="icon feather icon-search"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        {% if facets.queries.price_range.items %}
-            <div class="widget">
-                <fieldset>
-                    <legend class="widget-title fs-6">{% trans 'Price range' %}</legend>
-                    {% for label, query in facets.queries.price_range.items %}
-                        <label>
-                            <input type="checkbox"
-                                   name="selected_facets"
-                                   value="price:{{ query }}"
-                                   class="form-check-input"
-                                   {% if "price:"|add:query in request.GET.selected_facets %}checked{% endif %}>
-                            {{ label }}
-                        </label>
-                        <br>
-                    {% endfor %}
-                </fieldset>
-            </div>
-        {% endif %}
-        <div>
-            <label>
-                {% trans 'In Stock Only:' %}
-                <input type="checkbox"
-                       name="num_in_stock__gte"
-                       value="1"
-                       class="form-check-input">
-            </label>
-        </div>
-        {% if facets.fields.product_class.items %}
-            <div class="widget">
-                <fieldset>
-                    <legend class="widget-title fs-6">{% trans 'Type' %}</legend>
-                    {% for facet, count in facets.fields.product_class.items %}
-                        <label>
-                            <input type="checkbox"
-                                   name="selected_facets"
-                                   value="product_class:{{ facet }}"
-                                   class="form-check-input"
-                                   {% if "product_class:"|add:facet in request.GET.selected_facets %}checked{% endif %}>
-                            {{ facet }} ({{ count }})
-                        </label>
-                        <br>
-                    {% endfor %}
-                </fieldset>
-            </div>
-        {% endif %}
-        {% if facets.fields.rating.items %}
-            <div class="widget">
-                <fieldset>
-                    <legend class="widget-title fs-6">{% trans 'Rating' %}</legend>
-                    {% for facet, count in facets.fields.rating.items %}
-                        <label>
-                            <input type="checkbox"
-                                   name="selected_facets"
-                                   value="rating:{{ rating }}"
-                                   class="form-check-input"
-                                   {% if "rating:"|add:facet in request.GET.selected_facets %}checked{% endif %}>
-                            {{ facet }} {% trans 'Stars' %} ({{ count }})
-                        </label>
-                        <br>
-                    {% endfor %}
-                </fieldset>
-            </div>
-        {% endif %}
-        {% category_tree as tree_categories %}
-        {% if tree_categories %}
-            <div class="widget widget_categories">
-                <h6 class="widget-title">{% trans 'Category' %}</h6>
-                <ul>
-                    {% for tree_category in tree_categories %}
-                        <li class="mt-2">
-                            <a href="{{ tree_category.url }}">
-                                {% if tree_category.pk == category.pk %}
-                                    <strong>{{ tree_category.name }}</strong>
-                                {% else %}
-                                    {{ tree_category.name }}
-                                {% endif %}
-                            </a>
-                            {% if tree_category.has_children %}
-                                <ul>
-                                {% else %}
-                                </li>
-                            {% endif %}
-                            {% for n in tree_category.num_to_close %}
-                            </ul>
-                        </li>
-                    {% endfor %}
+    </div>
+    {% if facets.queries.price_range.items %}
+        <div class="widget">
+            <fieldset>
+                <legend class="widget-title fs-6">{% trans 'Price range' %}</legend>
+                {% for label, query in facets.queries.price_range.items %}
+                    <label>
+                        <input type="checkbox"
+                               name="selected_facets"
+                               value="price:{{ query }}"
+                               class="form-check-input"
+                               {% if "price:"|add:query in request.GET.selected_facets %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                    <br>
                 {% endfor %}
-            </ul>
+            </fieldset>
         </div>
     {% endif %}
-    <div class="widget widget_tag_cloud">
-        <h6 class="widget-title">{% trans 'Tags' %}</h6>
-        <div class="tagcloud">
-            <a href="{% url 'pixio:blog-tag' %}">Vintage</a>
-            <a href="{% url 'pixio:blog-tag' %}">Wedding</a>
-            <a href="{% url 'pixio:blog-tag' %}">Cotton</a>
-            <a href="{% url 'pixio:blog-tag' %}">Linen</a>
-            <a href="{% url 'pixio:blog-tag' %}">Navy</a>
-            <a href="{% url 'pixio:blog-tag' %}">Urban</a>
-            <a href="{% url 'pixio:blog-tag' %}">Business Meeting</a>
-            <a href="{% url 'pixio:blog-tag' %}">Formal</a>
-        </div>
-    </div>
     <div>
-        <button name="submit" type="submit" class="btn">{% trans 'Filter' %}</button>
-        <button class="btn btn-sm font-14 btn-secondary btn-sharp"
-                @click="$refs.form.reset();">{% trans 'RESET' %}</button>
+        <label>
+            {% trans 'In Stock Only:' %}
+            <input type="checkbox"
+                   name="num_in_stock__gte"
+                   value="1"
+                   class="form-check-input">
+        </label>
     </div>
+    {% if facets.fields.product_class.items %}
+        <div class="widget">
+            <fieldset>
+                <legend class="widget-title fs-6">{% trans 'Type' %}</legend>
+                {% for facet, count in facets.fields.product_class.items %}
+                    <label>
+                        <input type="checkbox"
+                               name="selected_facets"
+                               value="product_class:{{ facet }}"
+                               class="form-check-input"
+                               {% if "product_class:"|add:facet in request.GET.selected_facets %}checked{% endif %}>
+                        {{ facet }} ({{ count }})
+                    </label>
+                    <br>
+                {% endfor %}
+            </fieldset>
+        </div>
+    {% endif %}
+    {% if facets.fields.rating.items %}
+        <div class="widget">
+            <fieldset>
+                <legend class="widget-title fs-6">{% trans 'Rating' %}</legend>
+                {% for facet, count in facets.fields.rating.items %}
+                    <label>
+                        <input type="checkbox"
+                               name="selected_facets"
+                               value="rating:{{ rating }}"
+                               class="form-check-input"
+                               {% if "rating:"|add:facet in request.GET.selected_facets %}checked{% endif %}>
+                        {{ facet }} {% trans 'Stars' %} ({{ count }})
+                    </label>
+                    <br>
+                {% endfor %}
+            </fieldset>
+        </div>
+    {% endif %}
+    {% category_tree as tree_categories %}
+    {% if tree_categories %}
+        <div class="widget widget_categories">
+            <h6 class="widget-title">{% trans 'Category' %}</h6>
+            <ul>
+                {% for tree_category in tree_categories %}
+                    <li class="mt-2">
+                        <a href="{{ tree_category.url }}">
+                            {% if tree_category.pk == category.pk %}
+                                <strong>{{ tree_category.name }}</strong>
+                            {% else %}
+                                {{ tree_category.name }}
+                            {% endif %}
+                        </a>
+                        {% if tree_category.has_children %}
+                            <ul>
+                            {% else %}
+                            </li>
+                        {% endif %}
+                        {% for n in tree_category.num_to_close %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+<div class="widget widget_tag_cloud">
+    <h6 class="widget-title">{% trans 'Tags' %}</h6>
+    <div class="tagcloud">
+        <a href="{% url 'pixio:blog-tag' %}">Vintage</a>
+        <a href="{% url 'pixio:blog-tag' %}">Wedding</a>
+        <a href="{% url 'pixio:blog-tag' %}">Cotton</a>
+        <a href="{% url 'pixio:blog-tag' %}">Linen</a>
+        <a href="{% url 'pixio:blog-tag' %}">Navy</a>
+        <a href="{% url 'pixio:blog-tag' %}">Urban</a>
+        <a href="{% url 'pixio:blog-tag' %}">Business Meeting</a>
+        <a href="{% url 'pixio:blog-tag' %}">Formal</a>
+    </div>
+</div>
+<div>
+    <button name="submit" type="submit" class="btn">{% trans 'Filter' %}</button>
+    <button class="btn btn-sm font-14 btn-secondary btn-sharp"
+            @click="$refs.form.reset();">{% trans 'RESET' %}</button>
+</div>
 </form>
-</aside>
 {% endpartialdef %}
 {% partialdef products-row %}
 <div class="col-12 tab-content shop-" id="pills-tabContent">
@@ -439,7 +454,9 @@
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xxxl-6">
                 {% for product in products %}
-                    {% partial product-list-item %}
+                    {% with product=product.object %}
+                        {% partial product-list-item %}
+                    {% endwith %}
                 {% endfor %}
             </div>
         </div>
@@ -456,11 +473,23 @@
             {% endfor %}
         </div>
     </div>
+    <div class="tab-pane fade active show"
+         id="tab-list-grid"
+         role="tabpanel"
+         aria-labelledby="tab-list-grid-btn">
+        <div class="row gx-xl-4 g-3">
+            {% for product in products %}
+                <div class="col-6 col-xl-3 col-lg-4 col-md-4 col-sm-6 m-md-b15 m-b30">
+                    {% render_product product.object 'style-1' %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endpartialdef %}
-{% partialdef filter-row %}
+{% partialdef pagination-row %}
 <div class="col-md-6">
-    <p class="page-text">
+    <p class="page-text pagination-results">
         {% if paginator.count %}
             {% if paginator.num_pages > 1 %}
                 {% blocktrans with start=page_obj.start_index end=page_obj.end_index count num_results=paginator.count %}
@@ -488,14 +517,16 @@
                     <a href="{% querystring page=page_obj.previous_page_number %}"
                        class="page-link"
                        hx-boost="true"
-                       hx-push-url="false">
+                       hx-push-url="false"
+                       hx-swap="none show:none">
                         <span aria-hidden="true">&laquo;</span>
                         {% trans 'Previous' %}
                     </a>
                 </li>
             {% endif %}
             {% if page_obj.has_previous or page_obj.has_next %}
-                {% for p in page_obj|table_page_range:paginator %}
+                {% page_range page_obj paginator 4 as pagination_items %}
+                {% for p in pagination_items %}
                     <li class="page-item">
                         <a {% if p != '...' %}
                                href="{% querystring page=p %}"
@@ -504,9 +535,7 @@
                                   {% if page_obj.number == p %}active{% endif %}"
                            hx-boost="true"
                            hx-push-url="false"
-                           hx-swap="outerHTML"
-                           hx-target="closest .table-container"
-                           hx-indicator="closest .table-container">{{ p }}</a>
+                           hx-swap="none show:none">{{ p }}</a>
                     </li>
                 {% endfor %}
             {% endif %}
@@ -516,9 +545,7 @@
                        class="page-link"
                        hx-boost="true"
                        hx-push-url="false"
-                       hx-swap="outerHTML"
-                       hx-target="closest .table-container"
-                       hx-indicator="closest .table-container">
+                       hx-swap="none show:none">
                         {% trans 'Next' %}
                         <span aria-hidden="true">&raquo;</span>
                     </a>
@@ -544,7 +571,11 @@
                                 <path d="M12.748 12.5L37.748 37.5" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </a>
-                        <div class="shop-filter mt-xl-2 mt-0">{% partial filter-aside %}</div>
+                        <div class="shop-filter mt-xl-2 mt-0">
+                            <aside id="filterAside">
+                                {% partial filter-aside %}
+                            </aside>
+                        </div>
                     </div>
                 </div>
                 <div class="col-80 col-xl-9">
@@ -567,7 +598,25 @@
                                     </a>
                                 </li>
                             </ul>
-                            <span>Showing 1–5 Of 50 Results</span>
+                            <span class="pagination-results">
+                                {% if paginator.count %}
+                                    {% if paginator.num_pages > 1 %}
+                                        {% blocktrans with start=page_obj.start_index end=page_obj.end_index count num_results=paginator.count %}
+                                            <strong>{{ num_results }}</strong> result - showing <strong>{{ start }}</strong> to <strong>{{ end }}</strong>.
+                                        {% plural %}
+                                            <strong>{{ num_results }}</strong> results - showing <strong>{{ start }}</strong> to <strong>{{ end }}</strong>.
+                                        {% endblocktrans %}
+                                    {% else %}
+                                        {% blocktrans count num_results=paginator.count %}
+                                            <strong>{{ num_results }}</strong> result.
+                                        {% plural %}
+                                            <strong>{{ num_results }}</strong> results.
+                                        {% endblocktrans %}
+                                    {% endif %}
+                                {% else %}
+                                    {% trans "<strong>0</strong> results." %}
+                                {% endif %}
+                            </span>
                         </div>
                         <div class="filter-right-area">
                             <a href="javascript:void(0);" class="panel-btn me-2">
@@ -608,25 +657,15 @@
                                 </select>
                             </div>
                             <div class="form-group Category">
-                                <select name="paginate_by"
+                                <select name="{{ pagination_form.paginate_by.name }}"
                                         class="default-select"
                                         hx-get="{{ pagination_form_url }}"
                                         hx-trigger="change"
                                         hx-swap="none show:none"
                                         hx-push-url="false">
-                                    <option value="">{% trans 'Products' %}</option>
-                                    {% with widget=pagination_form.fields.paginate_by.field.widget %}
-                                        {% for group_name, group_choices, group_index in widget.optgroups %}
-                                            {% if group_name %}<optgroup label="{{ group_name }}">{% endif %}
-                                                {% for option in group_choices %}
-                                                    <option value="{{ widget.value|stringformat:'s' }}"
-                                                            {% include "django/forms/widgets/attrs.html" %}>
-                                                        {{ widget.label }} {% trans 'Products' %}
-                                                    </option>
-                                                {% endfor %}
-                                                {% if group_name %}</optgroup>{% endif %}
-                                        {% endfor %}
-                                    {% endwith %}
+                                    {% for value, label in pagination_form.paginate_by.field.choices %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="shop-tab">
@@ -750,7 +789,7 @@
                         </div>
                     </div>
                     <div id="productsRow" class="row">{% partial products-row %}</div>
-                    <div id="paginationRow" class="row page mt-0">{% partial filter-row %}</div>
+                    <div id="paginationRow" class="row page mt-0">{% partial pagination-row %}</div>
                 </div>
             </div>
         </div>

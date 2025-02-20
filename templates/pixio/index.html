@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static i18n %}
+{% load partials %}
 {% load display_tags %}
 {% load image_tags %}
 {% load reviews_tags %}
-{% load partials %}
 {% load product_tags %}
 {% load purchase_info_tags %}
 {% load currency_filters %}
@@ -11,6 +11,7 @@
 {% load wishlist_tags %}
 {% block additional_css %}{% endblock %}
 {% block js %}
+    {{ block.super }}
     <script src="{% static 'pixio/vendor/magnific-popup/magnific-popup.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
     <script src="{% static 'pixio/vendor/lightgallery/dist/lightgallery.min.js' %}"

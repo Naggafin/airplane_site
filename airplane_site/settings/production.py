@@ -65,5 +65,9 @@ HAYSTACK_CONNECTIONS = {
 		"ENGINE": "haystack.backends.solr_backend.SolrEngine",
 		"URL": os.getenv("SOLR_URL"),
 		"INCLUDE_SPELLING": True,
+		"EXCLUDED_INDEXES": [
+			"oscar.apps.search.search_indexes.ProductIndex",
+			"oscar_apps.search.search_indexes.CoreProductIndex",
+		],
 	},
 }
