@@ -1,12 +1,17 @@
 from urllib.parse import quote
 
 from django.contrib.auth import get_permission_codename
+from django.db.models import Count, Q
 from django.http import HttpResponsePermanentRedirect
 from django_extensions.views.mixins import AdjustablePaginationMixin
 from oscar.apps.search.views.catalogue import (
 	CatalogueView as BaseCatalogueView,
 	ProductCategoryView as BaseProductCategoryView,
 )
+from oscar.core.loading import get_model
+
+Product = get_model("catalogue", "Product")
+ProductReview = get_model("reviews", "ProductReview")
 
 
 class SortingMixin:
@@ -34,10 +39,24 @@ class CatalogueView(AdjustablePaginationMixin, SortingMixin, BaseCatalogueView):
 			return ["pixio/partials/shop.html"]
 		return super().get_template_names()
 
+	def get_optimized_queryset(self, model, pks):
+		if model == Product:
+			return (
+				Product.objects.filter(id__in=pks)
+				.base_queryset()
+				.prefetch_browsable_categories()
+				.prefetch_public_children()
+				.prefetch_related("parent__images")
+				.annotate(
+					num_approved_reviews=Count(
+						"reviews", filter=Q(reviews__status=ProductReview.APPROVED)
+					)
+				)
+			)
+
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["ordering"] = self.get_ordering()
-		breakpoint()
 		return context
 
 

@@ -195,12 +195,10 @@
         {% endblock %}
     </div>
     <div class="product-tag">
-        <span class="badge border">
-            {% if not session.availability.is_available_to_buy %}
-                {% trans 'Unavailable' %}
-            {% endif %}
-            {# TODO: logic for other tags #}
-        </span>
+        {% if not session.availability.is_available_to_buy %}
+            <span class="badge border">{% trans 'Unavailable' %}</span>
+        {% endif %}
+        {# TODO: logic for other tags #}
     </div>
 </div>
 {% endblock %}

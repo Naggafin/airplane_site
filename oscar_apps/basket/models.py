@@ -55,6 +55,10 @@ class Basket(auto_prefetch.Model, AbstractBasket):
 
 	remove.alters_data = True
 
+	@property
+	def num_lines(self):
+		return len(self.all_lines())  # .count() causes a db hit
+
 	class Meta(auto_prefetch.Model.Meta, AbstractBasket.Meta):
 		pass
 

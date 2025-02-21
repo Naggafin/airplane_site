@@ -210,12 +210,10 @@
                  nonce="{{ request.csp_nonce }}">
         {% endwith %}
         <div class="product-tag">
-            <span class="badge badge-secondary">
-                {% if not session.availability.is_available_to_buy %}
-                    {% trans 'Unavailable' %}
-                {% endif %}
-                {# TODO: logic for other tags #}
-            </span>
+            {% if not session.availability.is_available_to_buy %}
+                <span class="badge badge-secondary">{% trans 'Unavailable' %}</span>
+            {% endif %}
+            {# TODO: logic for other tags #}
         </div>
     </div>
     <div class="dz-content">
@@ -225,9 +223,10 @@
                     <a href="{{ product.get_absolute_url }}">{{ product.get_title|title|truncatewords:4 }}</a>
                 </h4>
                 <ul class="dz-tags">
-                    {% with category=product.get_categories.first %}
+                    {% with category=product.get_categories.0 %}
                         {% if category %}
-                            {% for c in category.get_ancestors_and_self %}
+                            {% get_ancestors_and_self category as categories %}
+                            {% for c in categories %}
                                 <li>
                                     <a href="{{ c.get_absolute_url }}">{{ c.name }}
                                         {% if not forloop.last %},{% endif %}
