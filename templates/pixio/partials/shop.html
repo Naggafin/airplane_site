@@ -1,7 +1,36 @@
 {% load i18n %}
+{% load product_tags %}
 <div hx-swap-oob="innerHTML:#filterAside">{% include 'pixio/shop.html#filter-aside' %}</div>
-<div hx-swap-oob="innerHTML:#productsRow">{% include 'pixio/shop.html#products-row' %}</div>
 <div hx-swap-oob="innerHTML:#paginationRow">{% include 'pixio/shop.html#pagination-row' %}</div>
+<div hx-swap-oob="innerHTML:#tab-list-list">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xxxl-6">
+            {% for product in products %}
+                {% with product=product.object %}
+                    {% include 'pixio/shop.html#product-list-item' %}
+                {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div hx-swap-oob="innerHTML:#tab-list-column">
+    <div class="row gx-xl-4 g-3 mb-xl-0 mb-md-0 mb-3">
+        {% for product in products %}
+            <div class="col-6 col-xl-4 col-lg-6 col-md-6 col-sm-6 m-md-b15 m-sm-b0 m-b30">
+                {% render_product product.object 'style-1' %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div hx-swap-oob="innerHTML:#tab-list-grid">
+    <div class="row gx-xl-4 g-3">
+        {% for product in products %}
+            <div class="col-6 col-xl-3 col-lg-4 col-md-4 col-sm-6 m-md-b15 m-b30">
+                {% render_product product.object 'style-1' %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 <span hx-swap-oob="innerHTML:.pagination-results">
     {% if paginator.count %}
         {% if paginator.num_pages > 1 %}
@@ -21,3 +50,38 @@
         {% trans "<strong>0</strong> results." %}
     {% endif %}
 </span>
+<div hx-swap-oob="innerHTML:[name='sort']">
+    <select name="sort"
+            class="default-select"
+            hx-get="{% querystring sort=None %}"
+            hx-trigger="change"
+            hx-swap="none show:none"
+            hx-push-url="true">
+        <option value=""
+                {% if request.GET.sort == None or request.GET.sort == "" %}selected{% endif %}>{% trans 'Relevance' %}</option>
+        <option value="-date_created"
+                {% if request.GET.sort == '-date_created' %}selected{% endif %}>{% trans 'Newest' %}</option>
+        <option value="date_created"
+                {% if request.GET.sort == 'date_created' %}selected{% endif %}>{% trans 'Oldest' %}</option>
+        <option value="-rating"
+                {% if request.GET.sort == '-rating' %}selected{% endif %}>{% trans 'Highest Rated' %}</option>
+        <option value="-num_purchases"
+                {% if request.GET.sort == '-num_purchases' %}selected{% endif %}>{% trans 'Most Popular' %}</option>
+        <option value="-price"
+                {% if request.GET.sort == '-price' %}selected{% endif %}>{% trans 'Price: High to Low' %}</option>
+        <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>{% trans 'Price: Low to High' %}</option>
+    </select>
+</div>
+<div hx-swap-oob="innerHTML:{{ pagination_form.paginate_by.name }}">
+    <select name="{{ pagination_form.paginate_by.name }}"
+            class="default-select"
+            hx-get="{{ pagination_form_url }}"
+            hx-trigger="change"
+            hx-swap="none show:none"
+            hx-push-url="true">
+        {% for value, label in pagination_form.paginate_by.field.choices %}
+            <option value="{{ value }}"
+                    {% if request.GET.paginate_by == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+</div>

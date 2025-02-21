@@ -74,6 +74,21 @@ class ProductCategoryView(
 			return ["pixio/partials/shop.html"]
 		return super().get_template_names()
 
+	def get_optimized_queryset(self, model, pks):
+		if model == Product:
+			return (
+				Product.objects.filter(id__in=pks)
+				.base_queryset()
+				.prefetch_browsable_categories()
+				.prefetch_public_children()
+				.prefetch_related("parent__images")
+				.annotate(
+					num_approved_reviews=Count(
+						"reviews", filter=Q(reviews__status=ProductReview.APPROVED)
+					)
+				)
+			)
+
 	def is_viewable(self, category, request):
 		opts = category._meta
 		codename = get_permission_codename("view", opts)

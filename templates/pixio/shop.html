@@ -314,20 +314,26 @@
       method="get"
       hx-boost="true"
       hx-swap="none show:none"
-      hx-push-url="false"
       x-ref="form"
-      x-data>
+      @submit="$data.submitting = true;"
+      @htmx:after-on-load="$data.submitting = false;"
+      @htmx:response-error="console.error($event);"
+      x-data="{submitting: false}">
     <div class="widget widget_search">
         <div class="form-group">
             <div class="input-group">
                 <input name="q"
                        {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}
-                       required="required"
                        type="search"
                        class="form-control"
-                       placeholder="{% trans 'Search Products' %}">
+                       placeholder="{% trans 'Search Products' %}"
+                       :disabled="submitting">
                 <div class="input-group-addon">
-                    <button name="submit" value="{% trans 'Search' %}" type="submit" class="btn">
+                    <button name="submit"
+                            value="{% trans 'Search' %}"
+                            type="submit"
+                            class="btn"
+                            :disabled="submitting">
                         <i class="icon feather icon-search"></i>
                     </button>
                 </div>
@@ -336,7 +342,7 @@
     </div>
     {% if facets.queries.price_range.items %}
         <div class="widget">
-            <fieldset>
+            <fieldset :disabled="submitting">
                 <legend class="widget-title fs-6">{% trans 'Price range' %}</legend>
                 {% for label, query in facets.queries.price_range.items %}
                     <label>
@@ -352,18 +358,19 @@
             </fieldset>
         </div>
     {% endif %}
-    <div>
+    <div class="widget">
         <label>
             {% trans 'In Stock Only:' %}
             <input type="checkbox"
                    name="num_in_stock__gte"
                    value="1"
-                   class="form-check-input">
+                   class="form-check-input"
+                   :disabled="submitting">
         </label>
     </div>
     {% if facets.fields.product_class.items %}
         <div class="widget">
-            <fieldset>
+            <fieldset :disabled="submitting">
                 <legend class="widget-title fs-6">{% trans 'Type' %}</legend>
                 {% for facet, count in facets.fields.product_class.items %}
                     <label>
@@ -381,7 +388,7 @@
     {% endif %}
     {% if facets.fields.rating.items %}
         <div class="widget">
-            <fieldset>
+            <fieldset :disabled="submitting">
                 <legend class="widget-title fs-6">{% trans 'Rating' %}</legend>
                 {% for facet, count in facets.fields.rating.items %}
                     <label>
@@ -401,10 +408,11 @@
     {% if tree_categories %}
         <div class="widget widget_categories">
             <h6 class="widget-title">{% trans 'Category' %}</h6>
-            <ul>
+            <ul class="category-tree">
                 {% for tree_category in tree_categories %}
                     <li class="mt-2">
-                        <a href="{{ tree_category.url }}">
+                        <a href="{{ tree_category.url }}"
+                           :class="submitting ? 'pe-none disabled' : ''">
                             {% if tree_category.pk == category.pk %}
                                 <strong>{{ tree_category.name }}</strong>
                             {% else %}
@@ -438,53 +446,16 @@
     </div>
 </div>
 <div>
-    <button name="submit" type="submit" class="btn">{% trans 'Filter' %}</button>
+    <button type="submit" class="btn">
+        <i class="spinner-border spinner-border-sm"
+           role="status"
+           aria-hidden="true"
+           x-show="submitting"></i><span x-show="!submitting">{% trans 'Filter' %}</span>
+    </button>
     <button class="btn btn-sm font-14 btn-secondary btn-sharp"
             @click="$refs.form.reset();">{% trans 'RESET' %}</button>
 </div>
 </form>
-{% endpartialdef %}
-{% partialdef products-row %}
-<div class="col-12 tab-content shop-" id="pills-tabContent">
-    <div class="tab-pane fade"
-         id="tab-list-list"
-         role="tabpanel"
-         aria-labelledby="tab-list-list-btn">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xxxl-6">
-                {% for product in products %}
-                    {% with product=product.object %}
-                        {% partial product-list-item %}
-                    {% endwith %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <div class="tab-pane fade"
-         id="tab-list-column"
-         role="tabpanel"
-         aria-labelledby="tab-list-column-btn">
-        <div class="row gx-xl-4 g-3 mb-xl-0 mb-md-0 mb-3">
-            {% for product in products %}
-                <div class="col-6 col-xl-4 col-lg-6 col-md-6 col-sm-6 m-md-b15 m-sm-b0 m-b30">
-                    {% render_product product.object 'style-1' %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="tab-pane fade active show"
-         id="tab-list-grid"
-         role="tabpanel"
-         aria-labelledby="tab-list-grid-btn">
-        <div class="row gx-xl-4 g-3">
-            {% for product in products %}
-                <div class="col-6 col-xl-3 col-lg-4 col-md-4 col-sm-6 m-md-b15 m-b30">
-                    {% render_product product.object 'style-1' %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
 {% endpartialdef %}
 {% partialdef pagination-row %}
 <div class="col-md-6">
@@ -516,7 +487,6 @@
                     <a href="{% querystring page=page_obj.previous_page_number %}"
                        class="page-link"
                        hx-boost="true"
-                       hx-push-url="false"
                        hx-swap="none show:none">
                         <span aria-hidden="true">&laquo;</span>
                         {% trans 'Previous' %}
@@ -533,7 +503,6 @@
                            class="page-link
                                   {% if page_obj.number == p %}active{% endif %}"
                            hx-boost="true"
-                           hx-push-url="false"
                            hx-swap="none show:none">{{ p }}</a>
                     </li>
                 {% endfor %}
@@ -543,7 +512,6 @@
                     <a href="{% querystring page=page_obj.next_page_number %}"
                        class="page-link"
                        hx-boost="true"
-                       hx-push-url="false"
                        hx-swap="none show:none">
                         {% trans 'Next' %}
                         <span aria-hidden="true">&raquo;</span>
@@ -559,7 +527,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-20 col-xl-3">
-                    <div class="sticky-xl-top">
+                    <div class="sticky-xl-top"
+                         @submit="$el.querySelectorAll('.shop-filter,.panel-close-btn').forEach(elem => elem.remove('active'));"
+                         x-data>
                         <a href="javascript:void(0);" class="panel-close-btn">
                             <svg width="35"
                                  height="35"
@@ -639,20 +609,22 @@
                                 <select name="sort"
                                         class="default-select"
                                         hx-get="{% querystring sort=None %}"
-                                        hx-trigger="change delay:1s"
+                                        hx-trigger="change"
                                         hx-swap="none show:none"
-                                        hx-push-url="false"
-                                        multiple>
-                                    <option value="">{% trans 'Relevance' %}</option>
+                                        hx-push-url="true">
+                                    <option value=""
+                                            {% if request.GET.sort == None or request.GET.sort == "" %}selected{% endif %}>{% trans 'Relevance' %}</option>
                                     <option value="-date_created"
-                                            {% if ordering == '-date_created' %}selected{% endif %}>{% trans 'Newest' %}</option>
+                                            {% if request.GET.sort == '-date_created' %}selected{% endif %}>{% trans 'Newest' %}</option>
                                     <option value="date_created"
-                                            {% if ordering == 'date_created' %}selected{% endif %}>{% trans 'Oldest' %}</option>
-                                    <option value="-rating" {% if ordering == '-rating' %}selected{% endif %}>{% trans 'Highest Rated' %}</option>
+                                            {% if request.GET.sort == 'date_created' %}selected{% endif %}>{% trans 'Oldest' %}</option>
+                                    <option value="-rating"
+                                            {% if request.GET.sort == '-rating' %}selected{% endif %}>{% trans 'Highest Rated' %}</option>
                                     <option value="-num_purchases"
-                                            {% if ordering == '-num_purchases' %}selected{% endif %}>{% trans 'Most Popular' %}</option>
-                                    <option value="-price" {% if ordering == '-price' %}selected{% endif %}>{% trans 'Price: High to Low' %}</option>
-                                    <option value="price" {% if ordering == 'price' %}selected{% endif %}>{% trans 'Price: Low to High' %}</option>
+                                            {% if request.GET.sort == '-num_purchases' %}selected{% endif %}>{% trans 'Most Popular' %}</option>
+                                    <option value="-price"
+                                            {% if request.GET.sort == '-price' %}selected{% endif %}>{% trans 'Price: High to Low' %}</option>
+                                    <option value="price" {% if request.GET.sort == 'price' %}selected{% endif %}>{% trans 'Price: Low to High' %}</option>
                                 </select>
                             </div>
                             <div class="form-group Category">
@@ -661,9 +633,10 @@
                                         hx-get="{{ pagination_form_url }}"
                                         hx-trigger="change"
                                         hx-swap="none show:none"
-                                        hx-push-url="false">
+                                        hx-push-url="true">
                                     {% for value, label in pagination_form.paginate_by.field.choices %}
-                                        <option value="{{ value }}">{{ label }}</option>
+                                        <option value="{{ value }}"
+                                                {% if request.GET.paginate_by == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -671,13 +644,13 @@
                                 <ul class="nav" role="tablist" id="dz-shop-tab">
                                     <li class="nav-item" role="presentation">
                                         <a href="#tab-list-list"
-                                           class="nav-link active"
+                                           class="nav-link"
                                            id="tab-list-list-btn"
                                            data-bs-toggle="pill"
                                            data-bs-target="#tab-list-list"
                                            role="tab"
                                            aria-controls="tab-list-list"
-                                           aria-selected="true">
+                                           aria-selected="false">
                                             <svg width="512"
                                                  height="512"
                                                  viewBox="0 0 512 512"
@@ -741,13 +714,13 @@
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <a href="#tab-list-grid"
-                                           class="nav-link"
+                                           class="nav-link active"
                                            id="tab-list-grid-btn"
                                            data-bs-toggle="pill"
                                            data-bs-target="#tab-list-grid"
                                            role="tab"
                                            aria-controls="tab-list-grid"
-                                           aria-selected="false">
+                                           aria-selected="true">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  xmlns:xlink="http://www.w3.org/1999/xlink"
                                                  version="1.1"
@@ -787,7 +760,51 @@
                             </div>
                         </div>
                     </div>
-                    <div id="productsRow" class="row">{% partial products-row %}</div>
+                    <div class="row position-relative">
+                        <div class="htmx-indicator">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                        <div class="col-12 tab-content shop-" id="pills-tabContent">
+                            <div class="tab-pane fade"
+                                 id="tab-list-list"
+                                 role="tabpanel"
+                                 aria-labelledby="tab-list-list-btn">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xxxl-6">
+                                        {% for product in products %}
+                                            {% with product=product.object %}
+                                                {% partial product-list-item %}
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade"
+                                 id="tab-list-column"
+                                 role="tabpanel"
+                                 aria-labelledby="tab-list-column-btn">
+                                <div class="row gx-xl-4 g-3 mb-xl-0 mb-md-0 mb-3">
+                                    {% for product in products %}
+                                        <div class="col-6 col-xl-4 col-lg-6 col-md-6 col-sm-6 m-md-b15 m-sm-b0 m-b30">
+                                            {% render_product product.object 'style-1' %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade active show"
+                                 id="tab-list-grid"
+                                 role="tabpanel"
+                                 aria-labelledby="tab-list-grid-btn">
+                                <div class="row gx-xl-4 g-3">
+                                    {% for product in products %}
+                                        <div class="col-6 col-xl-3 col-lg-4 col-md-4 col-sm-6 m-md-b15 m-b30">
+                                            {% render_product product.object 'style-1' %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="paginationRow" class="row page mt-0">{% partial pagination-row %}</div>
                 </div>
             </div>

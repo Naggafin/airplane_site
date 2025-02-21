@@ -17,3 +17,9 @@ def product_quantity_in_basket(request, product):
 	cached_basket = get_or_create_basket_cache(request)
 	product_pks = [line.product_id for line in cached_basket.lines.all()]
 	return product_pks.count(product.pk)
+
+
+@register.simple_tag
+def basket_num_lines(request):
+	cached_basket = get_or_create_basket_cache(request)
+	return len(cached_basket.lines.all())

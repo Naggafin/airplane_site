@@ -1,7 +1,10 @@
+from functools import partial
+
 import auto_prefetch
+from cachetools import LRUCache, cachedmethod
+from cachetools.keys import hashkey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from oscar.apps.catalogue.abstract_models import (
 	AbstractAttributeOption,
@@ -29,11 +32,19 @@ class ProductClass(auto_prefetch.Model, AbstractProductClass):
 class Category(auto_prefetch.Model, AbstractCategory):
 	objects = CategoryQuerySet.as_manager()
 
-	@cached_property
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self._cache = LRUCache(maxsize=128)
+
+	@cachedmethod(
+		lambda self: self._cache, key=partial(hashkey, "get_ancestors_and_self")
+	)
 	def get_ancestors_and_self(self):
 		return super().get_ancestors_and_self()
 
-	@cached_property
+	@cachedmethod(
+		lambda self: self._cache, key=partial(hashkey, "get_descendants_and_self")
+	)
 	def get_descendants_and_self(self):
 		return super().get_descendants_and_self()
 
